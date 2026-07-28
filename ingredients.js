@@ -1,4 +1,3 @@
-// CARD TYPES
 export const CARD_TYPES = {
   PROTEIN: 'protein',
   CARB: 'carb',
@@ -6,18 +5,16 @@ export const CARD_TYPES = {
   EXTRA: 'extra'
 };
 
-// INGREDIENT CARD CLASS
 export class IngredientCard {
   constructor(id, name, type, points, tags = []) {
     this.id = id;
     this.name = name;
     this.type = type;
     this.points = points;
-    this.tags = tags; // e.g., ['meat'], ['vegan'], ['meta']
+    this.tags = tags;
   }
 }
 
-// BASE INGREDIENTS LIST
 export const BASE_INGREDIENTS = [
   new IngredientCard('c1', 'Chicken', CARD_TYPES.PROTEIN, 15, ['meat']),
   new IngredientCard('c2', 'Beef', CARD_TYPES.PROTEIN, 20, ['meat']),
