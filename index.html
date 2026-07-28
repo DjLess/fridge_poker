@@ -47,6 +47,7 @@
       overflow: hidden;
       border: 6px solid var(--panel-wood);
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      perspective: 1000px;
     }
 
     /* HUD Header */
@@ -79,7 +80,7 @@
       color: var(--accent-yellow);
     }
 
-    /* Top Bar with Diets & Recipe Book */
+    /* Top Bar */
     .top-utility-bar {
       display: flex;
       justify-content: space-between;
@@ -89,13 +90,14 @@
       z-index: 10;
     }
 
-    .diets-bar { display: flex; gap: 4px; align-items: center; }
+    .diets-bar { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
     .diet-badge {
       background: var(--accent-green);
       color: white;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       padding: 2px 6px;
       border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 
     .btn-recipe-book {
@@ -110,7 +112,7 @@
       cursor: pointer;
     }
 
-    /* Cooking Stage & Interactive Elements */
+    /* Stage Area */
     .stage {
       flex: 1;
       display: flex;
@@ -120,7 +122,7 @@
       position: relative;
     }
 
-    /* Finished Dishes Shelf */
+    /* Shelf */
     .dish-shelf-container {
       width: 100%;
       height: 48px;
@@ -157,15 +159,15 @@
       animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    /* Fridge & Trash Container Bar */
+    /* Kitchen Props */
     .kitchen-props {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin: 4px 0;
+      z-index: 5;
     }
 
-    /* Refrigerator (Deck) */
     .fridge-deck {
       width: 60px;
       height: 80px;
@@ -198,13 +200,11 @@
       color: #1d3557;
     }
 
-    /* Trash Bin */
     .trash-bin {
       width: 55px;
       height: 65px;
       background: #e63946;
-      border: 3px solid #9bf6ff;
-      border-color: #a81825;
+      border: 3px solid #a81825;
       border-radius: 6px 6px 12px 12px;
       display: flex;
       flex-direction: column;
@@ -215,7 +215,7 @@
       box-shadow: -2px 3px 0px #780000;
     }
 
-    /* Cutting Board Area */
+    /* Cutting Board / Cooking Pot Area */
     .cutting-board {
       background: #d4a373;
       border: 4px solid #bc8a5f;
@@ -227,9 +227,23 @@
       gap: 6px;
       position: relative;
       box-shadow: inset 0 4px 8px rgba(0,0,0,0.15);
+      overflow: visible;
     }
 
-    /* Dynamic Scoring Banner */
+    /* Cooking Mixing & Final Dish Animations */
+    .mixing-pot {
+      animation: potShake 0.15s infinite alternate;
+    }
+
+    .serving-plate {
+      position: absolute;
+      font-size: 4rem;
+      z-index: 50;
+      animation: plateAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+    }
+
+    /* Dynamic Banner */
     .score-banner {
       height: 36px;
       display: flex;
@@ -241,10 +255,10 @@
     }
 
     .score-pop {
-      animation: scorePulse 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: juicyPulse 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    /* Hand & Countertop */
+    /* Hand Container & 3D Arc Carousel */
     .hand-container {
       padding: 10px 8px 16px 8px;
       background: var(--counter-top);
@@ -255,17 +269,28 @@
       position: relative;
     }
 
-    .hand {
+    .hand-arc-wrapper {
+      position: relative;
+      height: 120px;
+      width: 100%;
       display: flex;
       justify-content: center;
-      gap: 6px;
-      min-height: 100px;
+      align-items: flex-end;
+      perspective: 800px;
     }
 
-    /* Flying Balatro Cards */
+    .hand {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Card Styling */
     .card {
-      width: 62px;
-      height: 94px;
+      width: 58px;
+      height: 88px;
       background: var(--card-bg);
       color: var(--text-dark);
       border-radius: 8px;
@@ -273,19 +298,21 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 5px;
-      font-size: 0.7rem;
+      padding: 4px;
+      font-size: 0.65rem;
       font-weight: 600;
       cursor: pointer;
-      position: relative;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, top 0.25s ease, left 0.25s ease;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+      position: absolute;
+      bottom: 0;
+      transform-origin: bottom center;
+      transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s, border-color 0.2s, opacity 0.2s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+      backface-visibility: hidden;
     }
 
     .card.selected {
-      transform: translateY(-16px) scale(1.05) !important;
-      border-color: var(--accent-orange);
-      box-shadow: 0 8px 12px rgba(224, 122, 95, 0.3);
+      border-color: var(--accent-orange) !important;
+      box-shadow: 0 0 15px rgba(224, 122, 95, 0.8), 0 8px 12px rgba(0,0,0,0.2) !important;
     }
 
     .card.scoring-active {
@@ -294,23 +321,23 @@
     }
 
     .card.trashed-card {
-      opacity: 0.5;
+      opacity: 0.4;
       border-color: var(--accent-red) !important;
-      transform: scale(0.8) !important;
+      transform: scale(0.7) !important;
     }
 
-    /* Fly Motion Classes */
-    .fly-draw {
-      animation: flyFromFridge 0.25s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    /* Fly Motion Keyframes */
+    .fly-draw-anim {
+      animation: flyFromFridgeToHand 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
     }
 
     .fly-trash {
-      animation: flyToTrash 0.35s ease-in forwards !important;
+      animation: flyToTrash 0.4s ease-in forwards !important;
     }
 
-    .card-icon { font-size: 1.3rem; text-align: center; }
-    .card-title { text-align: center; font-size: 0.65rem; line-height: 1; }
-    .card-points { text-align: right; font-size: 0.7rem; color: #777; }
+    .card-icon { font-size: 1.2rem; text-align: center; }
+    .card-title { text-align: center; font-size: 0.6rem; line-height: 1; }
+    .card-points { text-align: right; font-size: 0.65rem; color: #777; font-weight: bold; }
 
     /* Action Buttons */
     .actions { display: flex; gap: 8px; }
@@ -324,6 +351,7 @@
       font-weight: 700;
       cursor: pointer;
       box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+      transition: transform 0.05s;
     }
 
     .btn:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.15); }
@@ -367,20 +395,37 @@
     .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
     .shop-item { flex-direction: column; justify-content: space-between; text-align: center; }
 
+    /* Candy Crush Style Pop / Text Floaters */
+    .floating-text {
+      position: absolute;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #ffd166;
+      text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+      pointer-events: none;
+      z-index: 60;
+      animation: floatUp 0.8s ease-out forwards;
+    }
+
     /* Keyframe Animations */
-    @keyframes flyFromFridge {
-      0% { transform: translate(-150px, -200px) scale(0.3) rotate(-20deg); opacity: 0; }
-      100% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+    @keyframes flyFromFridgeToHand {
+      0% {
+        transform: translate(-140px, -240px) scale(0.3) rotate(-30deg);
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
     }
 
     @keyframes flyToTrash {
       0% { transform: scale(1); opacity: 1; }
-      100% { transform: translate(140px, -100px) scale(0.1) rotate(45deg); opacity: 0; }
+      100% { transform: translate(140px, -120px) scale(0.1) rotate(60deg); opacity: 0; }
     }
 
     @keyframes cardHighlight {
-      0% { transform: translateY(-10px) scale(1.1); box-shadow: 0 0 10px var(--accent-yellow); }
-      100% { transform: translateY(-18px) scale(1.15); box-shadow: 0 0 20px var(--accent-orange); }
+      0% { transform: scale(1.05) translateY(-5px); box-shadow: 0 0 10px var(--accent-yellow); }
+      100% { transform: scale(1.15) translateY(-12px); box-shadow: 0 0 20px var(--accent-orange); }
     }
 
     @keyframes popIn {
@@ -389,10 +434,27 @@
       100% { transform: scale(1); }
     }
 
-    @keyframes scorePulse {
-      0% { transform: scale(0.8); }
-      50% { transform: scale(1.25); color: var(--accent-orange); }
+    @keyframes juicyPulse {
+      0% { transform: scale(0.7); }
+      50% { transform: scale(1.35); color: #ffd166; }
       100% { transform: scale(1); }
+    }
+
+    @keyframes potShake {
+      0% { transform: rotate(-3deg) scale(1.02); }
+      100% { transform: rotate(3deg) scale(0.98); }
+    }
+
+    @keyframes plateAppear {
+      0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+      70% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0) scale(0.8); }
+      50% { opacity: 1; transform: translateY(-30px) scale(1.2); }
+      100% { opacity: 0; transform: translateY(-60px) scale(1); }
     }
   </style>
 </head>
@@ -420,12 +482,12 @@
       <div class="shelf-dishes" id="ui-dish-shelf"></div>
     </div>
 
-    <!-- Fridge & Trash Bin Row -->
+    <!-- Kitchen Props -->
     <div class="kitchen-props">
-      <!-- Refrigerator (Deck/Dealer) -->
+      <!-- Fridge Deck with Fridge Emoji -->
       <div class="fridge-deck" id="ui-fridge">
         <div class="fridge-handle"></div>
-        <div style="font-size:1.2rem;">🧊</div>
+        <div style="font-size:1.5rem;">🧊</div>
         <div class="fridge-count" id="ui-deck-count">0</div>
       </div>
 
@@ -435,7 +497,7 @@
       </div>
     </div>
 
-    <!-- Cutting Board Area -->
+    <!-- Cutting Board Area / Mixing Pot -->
     <div class="cutting-board" id="ui-cooking-pot"></div>
 
     <!-- Dynamic Balatro Scoring Banner -->
@@ -447,7 +509,9 @@
 
   <!-- Hand & Controls -->
   <div class="hand-container">
-    <div class="hand" id="ui-hand"></div>
+    <div class="hand-arc-wrapper">
+      <div class="hand" id="ui-hand"></div>
+    </div>
     <div class="actions">
       <button class="btn btn-cook" id="ui-cook-btn" disabled>Cook</button>
       <button class="btn btn-discard" id="ui-discard-btn" disabled>Discard</button>
@@ -476,6 +540,8 @@
   import { BASE_DIETS } from './diets.js';
   import { LevelManager } from './levels.js';
 
+  const MAX_HAND_SIZE = 9;
+
   let state = {
     week: 1,
     targetScore: 100,
@@ -496,7 +562,7 @@
     state.targetScore = level.targetScore;
     state.handsLeft = level.maxHands;
     state.discardsLeft = level.maxDiscards;
-    state.fridgeDeck = [...BASE_INGREDIENTS, ...BASE_INGREDIENTS];
+    state.fridgeDeck = [...BASE_INGREDIENTS, ...BASE_INGREDIENTS, ...BASE_INGREDIENTS];
     shuffle(state.fridgeDeck);
     drawHand();
     updateHUD();
@@ -504,14 +570,24 @@
 
   function shuffle(arr) { arr.sort(() => Math.random() - 0.5); }
 
-  function drawHand() {
-    const cardsToDraw = 5 - state.hand.length;
-    for (let i = 0; i < cardsToDraw; i++) {
+  async function drawHand() {
+    const cardsNeeded = MAX_HAND_SIZE - state.hand.length;
+    if (cardsNeeded <= 0) return;
+
+    for (let i = 0; i < cardsNeeded; i++) {
       if (state.fridgeDeck.length > 0) {
         state.hand.push(state.fridgeDeck.pop());
+        renderHand();
+        // Animación individual desplazándose desde el refrigerador
+        const handEl = document.getElementById('ui-hand');
+        const lastCard = handEl.lastElementChild;
+        if (lastCard) {
+          lastCard.classList.add('fly-draw-anim');
+        }
+        await sleep(60);
       }
     }
-    renderHand(true);
+    updateHUD();
   }
 
   function updateHUD() {
@@ -522,19 +598,41 @@
     document.getElementById('ui-deck-count').innerText = state.fridgeDeck.length;
   }
 
-  function renderHand(triggerFly = false) {
+  function renderHand() {
     const handEl = document.getElementById('ui-hand');
     handEl.innerHTML = '';
+
+    const total = state.hand.length;
+    // Cálculo de carrusel en arco 3D
+    const maxAngle = 36; // grados
+    const angleStep = total > 1 ? (maxAngle * 2) / (total - 1) : 0;
+    const centerOffset = (total - 1) / 2;
 
     state.hand.forEach((card, idx) => {
       const cardEl = document.createElement('div');
       const isSelected = state.selectedIndices.includes(idx);
-      cardEl.className = `card ${isSelected ? 'selected' : ''} ${triggerFly ? 'fly-draw' : ''}`;
+      
+      const offset = idx - centerOffset;
+      const angle = offset * (angleStep / (total > 1 ? 1 : 1));
+      const translateY = Math.abs(offset) * 6; // Curva en arco
+      const translateZ = -Math.abs(offset) * 8; // Efecto de profundidad 3D
+
+      cardEl.className = `card ${isSelected ? 'selected' : ''}`;
       cardEl.dataset.index = idx;
+      
+      let transformStr = `rotate(${angle}deg) translateY(${translateY}px) translateZ(${translateZ}px)`;
+      if (isSelected) {
+        transformStr = `rotate(${angle}deg) translateY(${translateY - 22}px) translateZ(${translateZ + 20}px) scale(1.1)`;
+      }
+
+      cardEl.style.transform = transformStr;
+      cardEl.style.left = `calc(50% - 29px + ${(offset) * 34}px)`;
+
       cardEl.onclick = () => {
         if (state.isAnimating) return;
         toggleSelectCard(idx);
       };
+
       cardEl.innerHTML = `
         <div class="card-icon">${card.icon}</div>
         <div class="card-title">${card.name}</div>
@@ -556,7 +654,9 @@
       const miniEl = document.createElement('div');
       miniEl.className = 'card';
       miniEl.id = `pot-card-${idx}`;
+      miniEl.style.position = 'relative';
       miniEl.style.transform = 'scale(0.85)';
+      miniEl.style.left = '0';
       miniEl.innerHTML = `
         <div class="card-icon">${card.icon}</div>
         <div class="card-title">${card.name}</div>
@@ -570,7 +670,7 @@
     const selIdx = state.selectedIndices.indexOf(index);
     if (selIdx > -1) state.selectedIndices.splice(selIdx, 1);
     else if (state.selectedIndices.length < 5) state.selectedIndices.push(index);
-    renderHand(false);
+    renderHand();
   }
 
   function evaluateDishPreview() {
@@ -590,13 +690,21 @@
     }
 
     const selectedCards = state.selectedIndices.map(i => state.hand[i]);
-    const dish = DishEvaluator.evaluate(selectedCards);
+    const dish = DishEvaluator.evaluate(selectedCards, state.activeDiets);
     
     bannerDish.innerText = dish.name;
     bannerCalc.innerText = `(${dish.basePoints} pts x ${dish.multiplier})`;
   }
 
-  // --- BALATRO STEP-BY-STEP SCORING & ANIMATION ---
+  function triggerFloatingText(text, containerEl) {
+    const floatEl = document.createElement('div');
+    floatEl.className = 'floating-text';
+    floatEl.innerText = text;
+    containerEl.appendChild(floatEl);
+    setTimeout(() => floatEl.remove(), 800);
+  }
+
+  // --- COOKING & ANIMATION SEQUENCES ---
   async function cookSelected() {
     if (state.handsLeft <= 0 || state.isAnimating) return;
     state.isAnimating = true;
@@ -607,16 +715,15 @@
     discardBtn.disabled = true;
 
     const selectedCards = state.selectedIndices.map(i => state.hand[i]);
-    const dish = DishEvaluator.evaluate(selectedCards);
+    const dish = DishEvaluator.evaluate(selectedCards, state.activeDiets);
+    const potEl = document.getElementById('ui-cooking-pot');
 
     const bannerDish = document.getElementById('ui-banner-dish');
     const bannerCalc = document.getElementById('ui-banner-calc');
 
     let accumulatedPoints = 0;
-    const usedIndices = [];
-    const trashedIndices = [];
 
-    // Step 1: Sequential Card Scoring
+    // Paso 1: Evaluación individual e ingrediente duplicado/basura
     for (let i = 0; i < state.selectedIndices.length; i++) {
       const idx = state.selectedIndices[i];
       const card = state.hand[idx];
@@ -625,46 +732,56 @@
       potCardEl.classList.add('scoring-active');
       await sleep(250);
 
-      // Check if card is part of valid recipe requirement, or default score logic
-      const isUsedInDish = isIngredientUsedInRecipe(card, dish, selectedCards);
+      const isCardValid = dish.validCardIndices.includes(i);
 
-      if (isUsedInDish) {
+      if (isCardValid) {
         accumulatedPoints += card.points;
-        usedIndices.push(idx);
+        triggerFloatingText(`+${card.points}`, potCardEl);
         bannerCalc.className = 'score-pop';
         bannerCalc.innerText = `${accumulatedPoints} pts`;
       } else {
-        // Ingredient not used -> scored 0 & flagged for trash!
-        trashedIndices.push(idx);
+        // Ingrediente excedente del mismo grupo -> +0 y a la basura
+        triggerFloatingText(`+0 TRASH!`, potCardEl);
         potCardEl.classList.remove('scoring-active');
         potCardEl.classList.add('trashed-card');
-        
         bannerCalc.className = 'score-pop';
         bannerCalc.innerText = `${accumulatedPoints} pts (+0 TRASHED)`;
-        
-        // Fly directly to Trash Bin
         potCardEl.classList.add('fly-trash');
       }
 
       await sleep(350);
       bannerCalc.className = '';
-      if (isUsedInDish) potCardEl.classList.remove('scoring-active');
+      if (isCardValid) potCardEl.classList.remove('scoring-active');
     }
 
-    // Apply Diets modifier
+    // Paso 2: Mezcla de ingredientes en la olla
+    potEl.classList.add('mixing-pot');
+    bannerDish.innerText = "Cooking & Mixing... 🍳";
+    await sleep(700);
+    potEl.classList.remove('mixing-pot');
+
+    // Paso 3: Aparición del plato servido final
+    potEl.innerHTML = '';
+    const plateEl = document.createElement('div');
+    plateEl.className = 'serving-plate';
+    plateEl.innerText = dish.icon;
+    potEl.appendChild(plateEl);
+
+    // Aplicar dietas sobre el acumulado base
     state.activeDiets.forEach(diet => {
       accumulatedPoints = diet.applyEffect(selectedCards, accumulatedPoints);
     });
 
-    // Step 2: Show Multiplier Blast
+    // Paso 4: Multiplicador y explosión de puntos
     const finalScore = Math.max(0, Math.round(accumulatedPoints * dish.multiplier));
-    bannerDish.innerText = `${dish.name} MULTIPLIER!`;
+    bannerDish.innerText = `${dish.name.toUpperCase()}! 🔥`;
     bannerCalc.innerText = `${accumulatedPoints} x ${dish.multiplier} = +${finalScore} PTS!`;
     bannerCalc.className = 'score-pop';
+    triggerFloatingText(`+${finalScore}!`, potEl);
 
-    await sleep(600);
+    await sleep(900);
 
-    // Step 3: Add finished dish to shelf
+    // Agregar plato terminado al estante de exhibición
     if (dish.multiplier > 0) {
       addDishToShelf(dish.icon);
     }
@@ -672,26 +789,17 @@
     state.score += finalScore;
     state.handsLeft -= 1;
 
-    // Filter out used/trashed hand cards
+    // Eliminar cartas jugadas de la mano
     state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
     state.selectedIndices = [];
 
+    potEl.innerHTML = '';
     state.isAnimating = false;
-    drawHand();
+
+    await drawHand();
+    renderHand();
     updateHUD();
     checkLevelEnd();
-  }
-
-  function isIngredientUsedInRecipe(card, dish, allSelected) {
-    // If it's a specific recipe match, all cards are used
-    if (dish.name !== 'Simple Plate' && dish.name !== 'Side Snack' && dish.name !== 'Empty Plate') {
-      return true;
-    }
-    // If simple plate, extras without protein/carb/veggie match go to trash
-    if (dish.name === 'Simple Plate' && card.type === 'extra' && !card.tags.includes('meta')) {
-      return false;
-    }
-    return true;
   }
 
   function addDishToShelf(icon) {
@@ -707,20 +815,21 @@
     if (state.discardsLeft <= 0 || state.isAnimating) return;
     state.isAnimating = true;
 
-    // Fly selected cards to trash bin
     state.selectedIndices.forEach(idx => {
       const potCardEl = document.getElementById(`pot-card-${idx}`);
       if (potCardEl) potCardEl.classList.add('fly-trash');
     });
 
-    await sleep(300);
+    await sleep(350);
 
     state.discardsLeft -= 1;
     state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
     state.selectedIndices = [];
 
     state.isAnimating = false;
-    drawHand();
+    document.getElementById('ui-cooking-pot').innerHTML = '';
+    await drawHand();
+    renderHand();
     updateHUD();
     checkLevelEnd();
   }
@@ -749,7 +858,7 @@
 
   function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
-  // --- RECIPE POPUP LOGIC ---
+  // Modales y Tienda
   function renderRecipes() {
     const listEl = document.getElementById('ui-recipe-list');
     listEl.innerHTML = '';
@@ -767,7 +876,6 @@
     });
   }
 
-  // --- SHOP LOGIC ---
   function renderShopItems() {
     const shopGrid = document.getElementById('ui-shop-items');
     shopGrid.innerHTML = '';
@@ -778,7 +886,7 @@
       BASE_DIETS[Math.floor(Math.random() * BASE_DIETS.length)]
     ];
 
-    shopOptions.forEach(item => {
+    shopOptions.forEach((item, idx) => {
       const isDiet = 'description' in item;
       const cost = item.costForks || 3;
       const itemEl = document.createElement('div');
@@ -787,11 +895,11 @@
         <div style="font-size:1.4rem;">${item.icon || '📜'}</div>
         <div style="font-weight:bold; font-size:0.85rem;">${item.name}</div>
         <div style="font-size: 0.7rem; color: #666;">${isDiet ? item.description : `+${item.points} pts`}</div>
-        <button class="btn btn-cook" style="padding: 4px; font-size: 0.85rem;" id="buy-${item.id}">Buy (🍴${cost})</button>
+        <button class="btn btn-cook" style="padding: 4px; font-size: 0.85rem;" id="buy-${idx}">Buy (🍴${cost})</button>
       `;
       shopGrid.appendChild(itemEl);
 
-      document.getElementById(`buy-${item.id}`).onclick = () => buyItem(item, cost, isDiet);
+      document.getElementById(`buy-${idx}`).onclick = () => buyItem(item, cost, isDiet);
     });
   }
 
@@ -825,11 +933,11 @@
     });
   }
 
-  // Event Bindings
+  // Event Listeners
   document.getElementById('ui-cook-btn').onclick = cookSelected;
   document.getElementById('ui-discard-btn').onclick = discardSelected;
   document.getElementById('ui-fridge').onclick = () => {
-    if (!state.isAnimating && state.hand.length < 5) drawHand();
+    if (!state.isAnimating && state.hand.length < MAX_HAND_SIZE) drawHand();
   };
   document.getElementById('ui-open-recipes-btn').onclick = () => {
     renderRecipes();

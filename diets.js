@@ -1,11 +1,12 @@
 // diets.js
 export class Diet {
-  constructor(id, name, description, type, costForks = 5) {
+  constructor(id, name, description, type, costForks = 5, allowDuplicateCategories = false) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.type = type;
     this.costForks = costForks;
+    this.allowDuplicateCategories = allowDuplicateCategories;
   }
 
   applyEffect(selectedCards, currentBasePoints) {
@@ -42,6 +43,10 @@ export class Diet {
       }
     }
 
+    if (this.type === 'buffet') {
+      scoreMod += 15;
+    }
+
     return currentBasePoints + scoreMod;
   }
 }
@@ -51,5 +56,6 @@ export const BASE_DIETS = [
   new Diet('d2', 'Sweet Tooth', '+30 pts when Extras are included', 'sweet', 5),
   new Diet('d3', 'Keto Craze', '+20 pts per Protein, but -25 pts if Carbs present', 'keto', 7),
   new Diet('d4', 'Hearty Comfort', '+40 pts when using Metaphorical cards', 'comfort', 6),
-  new Diet('d5', 'Zero Waste', '+50 pts when cooking exactly 5 cards at once', 'zero_waste', 8)
+  new Diet('d5', 'Zero Waste', '+50 pts when cooking exactly 5 cards at once', 'zero_waste', 8),
+  new Diet('d6', 'All-You-Can-Eat', 'Allows multiple ingredients of same category in 1 dish (+15 pts)', 'buffet', 8, true)
 ];
