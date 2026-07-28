@@ -50,13 +50,13 @@
       perspective: 1000px;
     }
 
-    /* HUD Header */
+    /* HUD Header - Reorganizado a 5 columnas para incluir la meta de platos y descartes */
     .hud {
       background: var(--panel-wood);
-      padding: 8px;
+      padding: 6px;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
       text-align: center;
       color: #fff;
       z-index: 10;
@@ -64,18 +64,18 @@
 
     .hud-box {
       background: rgba(255,255,255,0.15);
-      padding: 4px;
+      padding: 4px 2px;
       border-radius: 8px;
     }
 
     .hud-label {
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       text-transform: uppercase;
       opacity: 0.9;
     }
 
     .hud-value {
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       font-weight: 700;
       color: var(--accent-yellow);
     }
@@ -156,7 +156,7 @@
 
     .shelf-item {
       font-size: 1.8rem;
-      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     /* Kitchen Props */
@@ -169,8 +169,8 @@
     }
 
     .fridge-deck {
-      width: 60px;
-      height: 80px;
+      width: 65px;
+      height: 85px;
       background: #a8dadc;
       border: 3px solid #457b9d;
       border-radius: 10px;
@@ -181,7 +181,22 @@
       position: relative;
       box-shadow: 3px 3px 0px #1d3557;
       cursor: pointer;
-      transition: transform 0.1s;
+      transition: transform 0.1s, background-color 0.2s;
+    }
+
+    .fridge-deck.dealing {
+      animation: fridgePulse 0.4s infinite alternate;
+      background-color: #f4a261;
+      border-color: #e76f51;
+    }
+
+    .fridge-icon {
+      font-size: 1.6rem;
+      transition: transform 0.2s;
+    }
+
+    .fridge-icon.spinning {
+      animation: iconSpin 0.6s infinite linear;
     }
 
     .fridge-handle {
@@ -230,7 +245,6 @@
       overflow: visible;
     }
 
-    /* Cooking Mixing & Final Dish Animations */
     .mixing-pot {
       animation: potShake 0.15s infinite alternate;
     }
@@ -326,9 +340,9 @@
       transform: scale(0.7) !important;
     }
 
-    /* Fly Motion Keyframes */
+    /* Fly Motion Keyframes estilo Candy Crush con giro dinámico */
     .fly-draw-anim {
-      animation: flyFromFridgeToHand 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+      animation: flyFromFridgeToHand 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
     .fly-trash {
@@ -395,7 +409,7 @@
     .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
     .shop-item { flex-direction: column; justify-content: space-between; text-align: center; }
 
-    /* Candy Crush Style Pop / Text Floaters */
+    /* Floating Text Pops */
     .floating-text {
       position: absolute;
       font-size: 1.5rem;
@@ -407,11 +421,15 @@
       animation: floatUp 0.8s ease-out forwards;
     }
 
-    /* Keyframe Animations */
+    /* Keyframes Candy Crush Motion */
     @keyframes flyFromFridgeToHand {
       0% {
-        transform: translate(-140px, -240px) scale(0.3) rotate(-30deg);
+        transform: translate(-130px, -220px) scale(0.2) rotate(-120deg);
         opacity: 0;
+      }
+      70% {
+        transform: scale(1.15) rotate(10deg);
+        opacity: 1;
       }
       100% {
         opacity: 1;
@@ -441,8 +459,8 @@
     }
 
     @keyframes potShake {
-      0% { transform: rotate(-3deg) scale(1.02); }
-      100% { transform: rotate(3deg) scale(0.98); }
+      0% { transform: rotate(-4deg) scale(1.03); }
+      100% { transform: rotate(4deg) scale(0.97); }
     }
 
     @keyframes plateAppear {
@@ -456,21 +474,33 @@
       50% { opacity: 1; transform: translateY(-30px) scale(1.2); }
       100% { opacity: 0; transform: translateY(-60px) scale(1); }
     }
+
+    @keyframes fridgePulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.08); }
+    }
+
+    @keyframes iconSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
 
 <div id="app-viewport">
-  <!-- HUD Header -->
+  <!-- HUD Header con 5 casillas: Target Score, Target Dishes, Score, Hands, Discards -->
   <div class="hud">
-    <div class="hud-box"><div class="hud-label">Target</div><div class="hud-value" id="ui-target">0</div></div>
+    <div class="hud-box"><div class="hud-label">Target Pts</div><div class="hud-value" id="ui-target-score">0</div></div>
+    <div class="hud-box"><div class="hud-label">Dishes Goal</div><div class="hud-value" id="ui-target-dishes">0/0</div></div>
     <div class="hud-box"><div class="hud-label">Score</div><div class="hud-value" id="ui-score">0</div></div>
     <div class="hud-box"><div class="hud-label">Hands</div><div class="hud-value" id="ui-hands">0</div></div>
-    <div class="hud-box"><div class="hud-label">Forks</div><div class="hud-value" id="ui-forks">🍴 0</div></div>
+    <div class="hud-box"><div class="hud-label">Discards</div><div class="hud-value" id="ui-discards">0</div></div>
   </div>
 
   <div class="top-utility-bar">
     <div class="diets-bar" id="ui-diets"><span style="font-size: 0.7rem; color: #666;">Diets:</span></div>
+    <div style="font-size:0.8rem; font-weight:bold; color:var(--panel-wood);" id="ui-forks">🍴 0</div>
     <button class="btn-recipe-book" id="ui-open-recipes-btn">📖 Recipes</button>
   </div>
 
@@ -484,10 +514,10 @@
 
     <!-- Kitchen Props -->
     <div class="kitchen-props">
-      <!-- Fridge Deck with Fridge Emoji -->
+      <!-- Refrigerator Deck con animación de reloj de arena durante la repartición -->
       <div class="fridge-deck" id="ui-fridge">
         <div class="fridge-handle"></div>
-        <div style="font-size:1.5rem;">🧺</div>
+        <div class="fridge-icon" id="ui-fridge-icon">🧊</div>
         <div class="fridge-count" id="ui-deck-count">0</div>
       </div>
 
@@ -500,7 +530,7 @@
     <!-- Cutting Board Area / Mixing Pot -->
     <div class="cutting-board" id="ui-cooking-pot"></div>
 
-    <!-- Dynamic Balatro Scoring Banner -->
+    <!-- Dynamic Scoring Banner -->
     <div class="score-banner" id="ui-score-banner">
       <span id="ui-banner-dish" style="color: var(--panel-wood);">Select Cards</span>
       <span id="ui-banner-calc" style="color: var(--accent-orange);"></span>
@@ -528,9 +558,9 @@
   <!-- Supermarket Modal -->
   <div class="modal hidden" id="ui-shop">
     <div class="modal-header">🛒 Supermarket</div>
-    <p style="text-align:center; font-size:0.85rem;">Spend Forks on ingredients and diets!</p>
+    <p style="text-align:center; font-size:0.85rem;" id="ui-shop-summary">Spend Forks on ingredients and diets!</p>
     <div class="shop-grid" id="ui-shop-items"></div>
-    <button class="btn btn-cook" id="ui-next-week-btn">Next Week</button>
+    <button class="btn btn-cook" id="ui-next-week-btn">Next Level</button>
   </div>
 </div>
 
@@ -545,6 +575,7 @@
   let state = {
     week: 1,
     targetScore: 100,
+    targetDishes: 2,
     score: 0,
     handsLeft: 4,
     discardsLeft: 3,
@@ -557,43 +588,103 @@
     isAnimating: false
   };
 
-  function initGame() {
+  async function initGame() {
     const level = LevelManager.getLevel(state.week);
     state.targetScore = level.targetScore;
+    state.targetDishes = level.targetDishes;
     state.handsLeft = level.maxHands;
     state.discardsLeft = level.maxDiscards;
+    state.score = 0;
+    state.finishedDishes = [];
+    state.hand = [];
+    state.selectedIndices = [];
+    
+    // Limpiar estante de platos al iniciar nivel
+    document.getElementById('ui-dish-shelf').innerHTML = '';
+    
     state.fridgeDeck = [...BASE_INGREDIENTS, ...BASE_INGREDIENTS, ...BASE_INGREDIENTS];
     shuffle(state.fridgeDeck);
-    drawHand();
+    
     updateHUD();
+    await performInitialDeal();
   }
 
   function shuffle(arr) { arr.sort(() => Math.random() - 0.5); }
 
-  async function drawHand() {
-    const cardsNeeded = MAX_HAND_SIZE - state.hand.length;
-    if (cardsNeeded <= 0) return;
+  // Repartición inicial animada con cambio de emoji a Reloj de Arena ⏳
+  async function performInitialDeal() {
+    state.isAnimating = true;
+    const fridgeEl = document.getElementById('ui-fridge');
+    const iconEl = document.getElementById('ui-fridge-icon');
+    
+    fridgeEl.classList.add('dealing');
+    iconEl.innerText = '⏳';
+    iconEl.classList.add('spinning');
 
-    for (let i = 0; i < cardsNeeded; i++) {
+    const cardsToDraw = MAX_HAND_SIZE - state.hand.length;
+
+    for (let i = 0; i < cardsToDraw; i++) {
       if (state.fridgeDeck.length > 0) {
         state.hand.push(state.fridgeDeck.pop());
         renderHand();
-        // Animación individual desplazándose desde el refrigerador
+        
         const handEl = document.getElementById('ui-hand');
         const lastCard = handEl.lastElementChild;
         if (lastCard) {
           lastCard.classList.add('fly-draw-anim');
         }
-        await sleep(60);
+        updateHUD();
+        await sleep(90); // Ritmo fluido estilo Candy Crush
       }
     }
-    updateHUD();
+
+    fridgeEl.classList.remove('dealing');
+    iconEl.innerText = '🧊';
+    iconEl.classList.remove('spinning');
+    state.isAnimating = false;
+    evaluateDishPreview();
+  }
+
+  async function drawHand() {
+    const cardsNeeded = MAX_HAND_SIZE - state.hand.length;
+    if (cardsNeeded <= 0 || state.fridgeDeck.length === 0) return;
+
+    state.isAnimating = true;
+    const fridgeEl = document.getElementById('ui-fridge');
+    const iconEl = document.getElementById('ui-fridge-icon');
+    
+    fridgeEl.classList.add('dealing');
+    iconEl.innerText = '⏳';
+    iconEl.classList.add('spinning');
+
+    for (let i = 0; i < cardsNeeded; i++) {
+      if (state.fridgeDeck.length > 0) {
+        state.hand.push(state.fridgeDeck.pop());
+        renderHand();
+        
+        const handEl = document.getElementById('ui-hand');
+        const lastCard = handEl.lastElementChild;
+        if (lastCard) {
+          lastCard.classList.add('fly-draw-anim');
+        }
+        updateHUD();
+        await sleep(80);
+      }
+    }
+
+    fridgeEl.classList.remove('dealing');
+    iconEl.innerText = '🧊';
+    iconEl.classList.remove('spinning');
+    state.isAnimating = false;
+    evaluateDishPreview();
   }
 
   function updateHUD() {
-    document.getElementById('ui-target').innerText = state.targetScore;
+    document.getElementById('ui-target-score').innerText = state.targetScore;
+    document.getElementById('ui-target-dishes').innerText = `${state.finishedDishes.length}/${state.targetDishes}`;
     document.getElementById('ui-score').innerText = state.score;
     document.getElementById('ui-hands').innerText = state.handsLeft;
+    document.getElementById('ui-discards').innerText = state.discardsLeft;
     document.getElementById('ui-forks').innerText = `🍴 ${state.forks}`;
     document.getElementById('ui-deck-count').innerText = state.fridgeDeck.length;
   }
@@ -603,8 +694,7 @@
     handEl.innerHTML = '';
 
     const total = state.hand.length;
-    // Cálculo de carrusel en arco 3D
-    const maxAngle = 36; // grados
+    const maxAngle = 36;
     const angleStep = total > 1 ? (maxAngle * 2) / (total - 1) : 0;
     const centerOffset = (total - 1) / 2;
 
@@ -613,9 +703,9 @@
       const isSelected = state.selectedIndices.includes(idx);
       
       const offset = idx - centerOffset;
-      const angle = offset * (angleStep / (total > 1 ? 1 : 1));
-      const translateY = Math.abs(offset) * 6; // Curva en arco
-      const translateZ = -Math.abs(offset) * 8; // Efecto de profundidad 3D
+      const angle = offset * angleStep;
+      const translateY = Math.abs(offset) * 6;
+      const translateZ = -Math.abs(offset) * 8;
 
       cardEl.className = `card ${isSelected ? 'selected' : ''}`;
       cardEl.dataset.index = idx;
@@ -709,10 +799,8 @@
     if (state.handsLeft <= 0 || state.isAnimating) return;
     state.isAnimating = true;
 
-    const cookBtn = document.getElementById('ui-cook-btn');
-    const discardBtn = document.getElementById('ui-discard-btn');
-    cookBtn.disabled = true;
-    discardBtn.disabled = true;
+    document.getElementById('ui-cook-btn').disabled = true;
+    document.getElementById('ui-discard-btn').disabled = true;
 
     const selectedCards = state.selectedIndices.map(i => state.hand[i]);
     const dish = DishEvaluator.evaluate(selectedCards, state.activeDiets);
@@ -723,14 +811,13 @@
 
     let accumulatedPoints = 0;
 
-    // Paso 1: Evaluación individual e ingrediente duplicado/basura
     for (let i = 0; i < state.selectedIndices.length; i++) {
       const idx = state.selectedIndices[i];
       const card = state.hand[idx];
       const potCardEl = document.getElementById(`pot-card-${idx}`);
 
       potCardEl.classList.add('scoring-active');
-      await sleep(250);
+      await sleep(220);
 
       const isCardValid = dish.validCardIndices.includes(i);
 
@@ -740,7 +827,6 @@
         bannerCalc.className = 'score-pop';
         bannerCalc.innerText = `${accumulatedPoints} pts`;
       } else {
-        // Ingrediente excedente del mismo grupo -> +0 y a la basura
         triggerFloatingText(`+0 TRASH!`, potCardEl);
         potCardEl.classList.remove('scoring-active');
         potCardEl.classList.add('trashed-card');
@@ -749,39 +835,37 @@
         potCardEl.classList.add('fly-trash');
       }
 
-      await sleep(350);
+      await sleep(300);
       bannerCalc.className = '';
       if (isCardValid) potCardEl.classList.remove('scoring-active');
     }
 
-    // Paso 2: Mezcla de ingredientes en la olla
+    // Mezcla de ingredientes
     potEl.classList.add('mixing-pot');
     bannerDish.innerText = "Cooking & Mixing... 🍳";
-    await sleep(700);
+    await sleep(650);
     potEl.classList.remove('mixing-pot');
 
-    // Paso 3: Aparición del plato servido final
+    // Aparición del plato servido final
     potEl.innerHTML = '';
     const plateEl = document.createElement('div');
     plateEl.className = 'serving-plate';
     plateEl.innerText = dish.icon;
     potEl.appendChild(plateEl);
 
-    // Aplicar dietas sobre el acumulado base
     state.activeDiets.forEach(diet => {
       accumulatedPoints = diet.applyEffect(selectedCards, accumulatedPoints);
     });
 
-    // Paso 4: Multiplicador y explosión de puntos
     const finalScore = Math.max(0, Math.round(accumulatedPoints * dish.multiplier));
     bannerDish.innerText = `${dish.name.toUpperCase()}! 🔥`;
     bannerCalc.innerText = `${accumulatedPoints} x ${dish.multiplier} = +${finalScore} PTS!`;
     bannerCalc.className = 'score-pop';
     triggerFloatingText(`+${finalScore}!`, potEl);
 
-    await sleep(900);
+    await sleep(850);
 
-    // Agregar plato terminado al estante de exhibición
+    // Agregar plato al estante si es un plato válido
     if (dish.multiplier > 0) {
       addDishToShelf(dish.icon);
     }
@@ -789,16 +873,14 @@
     state.score += finalScore;
     state.handsLeft -= 1;
 
-    // Eliminar cartas jugadas de la mano
     state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
     state.selectedIndices = [];
 
     potEl.innerHTML = '';
     state.isAnimating = false;
 
-    await drawHand();
-    renderHand();
     updateHUD();
+    await drawHand();
     checkLevelEnd();
   }
 
@@ -820,7 +902,7 @@
       if (potCardEl) potCardEl.classList.add('fly-trash');
     });
 
-    await sleep(350);
+    await sleep(320);
 
     state.discardsLeft -= 1;
     state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
@@ -828,37 +910,38 @@
 
     state.isAnimating = false;
     document.getElementById('ui-cooking-pot').innerHTML = '';
+    updateHUD();
     await drawHand();
-    renderHand();
-    updateHUD();
-    checkLevelEnd();
   }
 
+  // Comprobar fin de nivel cuando las manos llegan a 0
   function checkLevelEnd() {
-    if (state.score >= state.targetScore) {
-      setTimeout(finishWeek, 300);
-    } else if (state.handsLeft <= 0 || (state.fridgeDeck.length === 0 && state.hand.length === 0)) {
-      alert("Out of hands! Game Over.");
-      state.week = 1;
-      state.score = 0;
-      state.forks = 0;
-      state.finishedDishes = [];
-      document.getElementById('ui-dish-shelf').innerHTML = '';
-      initGame();
-    }
-  }
+    if (state.handsLeft <= 0) {
+      const dishesCompleted = state.finishedDishes.length;
+      const reachedDishes = dishesCompleted >= state.targetDishes;
+      const reachedScore = state.score >= state.targetScore;
 
-  function finishWeek() {
-    document.getElementById('ui-shop').classList.remove('hidden');
-    const bonusForks = state.handsLeft;
-    state.forks += (5 + bonusForks);
-    updateHUD();
-    renderShopItems();
+      if (reachedDishes && reachedScore) {
+        const extraDishes = Math.max(0, dishesCompleted - state.targetDishes);
+        const bonusForks = 5 + (extraDishes * 2); // 5 Forks base + 2 Forks por plato excedente
+        state.forks += bonusForks;
+
+        document.getElementById('ui-shop-summary').innerText = 
+          `Level Clear! Goal: ${dishesCompleted}/${state.targetDishes} Dishes | Score: ${state.score}/${state.targetScore}. Bonus Forks earned: +${bonusForks} (Includes +${extraDishes * 2} for extra dishes!)`;
+
+        document.getElementById('ui-shop').classList.remove('hidden');
+        renderShopItems();
+      } else {
+        alert(`Game Over! Requirements not met.\nDishes: ${dishesCompleted}/${state.targetDishes}\nScore: ${state.score}/${state.targetScore}`);
+        state.week = 1;
+        state.forks = 0;
+        initGame();
+      }
+    }
   }
 
   function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
-  // Modales y Tienda
   function renderRecipes() {
     const listEl = document.getElementById('ui-recipe-list');
     listEl.innerHTML = '';
@@ -949,7 +1032,6 @@
   document.getElementById('ui-next-week-btn').onclick = () => {
     document.getElementById('ui-shop').classList.add('hidden');
     state.week += 1;
-    state.score = 0;
     initGame();
   };
 
