@@ -23,37 +23,53 @@
       --type-c: #f39c12; /* Carbohidratos - Amarillo */
       --type-v: #2ecc71; /* Vegetales - Verde */
       --type-p: #e74c3c; /* Proteínas - Rojo */
-      --type-s: #9b59b6; /* Spices/Condimentos - Morado */
+      --type-s: #9b59b6; /* Spices/Condimentos/Lácteos - Morado */
     }
 
-    * { box-sizing: border-box; user-select: none; margin: 0; padding: 0; }
+    * { 
+      box-sizing: border-box; 
+      user-select: none; 
+      -webkit-user-select: none;
+      margin: 0; 
+      padding: 0; 
+      touch-action: manipulation;
+    }
 
-    body {
+    html, body {
+      width: 100%;
+      height: 100%;
+      height: 100dvh;
+      overflow: hidden;
       background-color: #2b1e1a;
       color: var(--text-dark);
       font-family: var(--font-cozy);
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      overflow: hidden;
     }
 
     #app-viewport {
-      width: 100vw;
+      width: 100%;
       max-width: 440px;
-      height: 100vh;
-      max-height: 932px;
+      height: 100%;
+      height: 100dvh;
       background: var(--bg-wood);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
-      border-radius: 16px;
       overflow: hidden;
-      border: 6px solid var(--panel-wood);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       perspective: 1000px;
+    }
+
+    @media (min-width: 441px) {
+      #app-viewport {
+        height: 92vh;
+        max-height: 900px;
+        border-radius: 16px;
+        border: 6px solid var(--panel-wood);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      }
     }
 
     /* HUD Header */
@@ -303,7 +319,7 @@
     .btn-sort:active { transform: translateY(1px); }
     .btn-sort:hover { background: #9c6644; }
 
-    /* Hand Container & 3D Arc Carousel */
+    /* Hand Container & Carousel */
     .hand-container {
       padding: 4px 8px 12px 8px;
       background: var(--counter-top);
@@ -332,7 +348,7 @@
       justify-content: center;
     }
 
-    /* Card Styling con Badge de Letra/Color */
+    /* Card Styling */
     .card {
       width: 60px;
       height: 90px;
@@ -355,7 +371,7 @@
       backface-visibility: hidden;
     }
 
-    /* Corner Suit Badge (Letras C, V, P, S) */
+    /* Corner Letters (C, V, P, S) */
     .card-corner {
       position: absolute;
       top: 3px;
@@ -563,7 +579,7 @@
       <!-- Refrigerator Deck -->
       <div class="fridge-deck" id="ui-fridge">
         <div class="fridge-handle"></div>
-        <div class="fridge-icon" id="ui-fridge-icon">🧺</div>
+        <div class="fridge-icon" id="ui-fridge-icon">🧊</div>
         <div class="fridge-count" id="ui-deck-count">0</div>
       </div>
 
@@ -583,7 +599,6 @@
 
   <!-- Hand & Controls -->
   <div class="hand-container">
-    <!-- Balatro-style Reorder Buttons -->
     <div class="reorder-bar">
       <button class="btn-sort" id="ui-sort-type-btn">Sort by Type</button>
       <button class="btn-sort" id="ui-sort-score-btn">Sort by Score</button>
@@ -623,7 +638,6 @@
 
   const MAX_HAND_SIZE = 9;
 
-  // Letra identificadora de Categoría
   const TYPE_LETTER_MAP = {
     carbs: 'C',
     vegetable: 'V',
@@ -849,7 +863,6 @@
     renderHand();
   }
 
-  /* --- REORDER FUNCTIONS (Balatro Style) --- */
   function sortHandByType() {
     if (state.isAnimating || state.hand.length === 0) return;
     const selectedObjects = state.selectedIndices.map(i => state.hand[i]);
