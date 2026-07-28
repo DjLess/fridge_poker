@@ -1,37 +1,33 @@
-// ingredients.js
-export const CARD_TYPES = {
-  PROTEIN: 'protein',
-  CARB: 'carb',
-  VEGGIE: 'veggie',
-  EXTRA: 'extra'
-};
-
-export class IngredientCard {
-  constructor(id, name, type, points, icon = '🍽️', tags = []) {
-    this.id = id;
-    this.name = name;
-    this.type = type;
-    this.points = points;
-    this.icon = icon;
-    this.tags = tags;
-  }
-}
-
+// Regular ingredients (Multiple copies added to deck)
 export const BASE_INGREDIENTS = [
-  // Standard Ingredients
-  new IngredientCard('c1', 'Chicken', CARD_TYPES.PROTEIN, 15, '🍗', ['meat']),
-  new IngredientCard('c2', 'Beef', CARD_TYPES.PROTEIN, 20, '🥩', ['meat']),
-  new IngredientCard('c3', 'Tofu', CARD_TYPES.PROTEIN, 10, '🧊', ['vegan']),
-  new IngredientCard('c4', 'Rice', CARD_TYPES.CARB, 10, '🍚', []),
-  new IngredientCard('c5', 'Pasta', CARD_TYPES.CARB, 12, '🍝', []),
-  new IngredientCard('c6', 'Broccoli', CARD_TYPES.VEGGIE, 8, '🥦', ['vegan']),
-  new IngredientCard('c7', 'Carrot', CARD_TYPES.VEGGIE, 6, '🥕', ['vegan']),
-  new IngredientCard('c8', 'Grated Cheese', CARD_TYPES.EXTRA, 15, '🧀', []),
-  
-  // Metaphorical / Special Cards
-  new IngredientCard('m1', 'Love', CARD_TYPES.EXTRA, 25, '❤️', ['meta']),
-  new IngredientCard('m2', 'Patience', CARD_TYPES.EXTRA, 10, '⏳', ['meta']),
-  new IngredientCard('m3', 'Secret Sauce', CARD_TYPES.EXTRA, 30, '🏺', ['meta']),
-  new IngredientCard('m4', "Grandma's Hug", CARD_TYPES.EXTRA, 20, '👵', ['meta']),
-  new IngredientCard('m5', 'Midnight Snack', CARD_TYPES.EXTRA, 18, '🌙', ['meta'])
+  // Carbs (C)
+  { id: 'rice', name: 'Rice', type: 'carbs', points: 5, icon: '🍚' },
+  { id: 'pasta', name: 'Pasta', type: 'carbs', points: 5, icon: '🍝' },
+  { id: 'potato', name: 'Potatoes', type: 'carbs', points: 6, icon: '🥔' },
+  { id: 'bread', name: 'Bread', type: 'carbs', points: 4, icon: '🍞' },
+
+  // Vegetables (V)
+  { id: 'tomato', name: 'Tomato', type: 'vegetable', points: 4, icon: '🍅' },
+  { id: 'onion', name: 'Onion', type: 'vegetable', points: 4, icon: '🧅' },
+  { id: 'carrot', name: 'Carrot', type: 'vegetable', points: 5, icon: '🥕' },
+  { id: 'broccoli', name: 'Broccoli', type: 'vegetable', points: 6, icon: '🥦' },
+
+  // Proteins (P)
+  { id: 'beef', name: 'Beef', type: 'protein', points: 12, icon: '🥩' },
+  { id: 'chicken', name: 'Chicken', type: 'protein', points: 10, icon: '🍗' },
+  { id: 'egg', name: 'Egg', type: 'protein', points: 7, icon: '🥚' },
+  { id: 'fish', name: 'Fish', type: 'protein', points: 11, icon: '🐟' },
+
+  // Seasonings & Dairy (S)
+  { id: 'garlic', name: 'Garlic & Herbs', type: 'spice', points: 3, multiplierBonus: 1, icon: '🧄' },
+  { id: 'cheese', name: 'Cheese', type: 'dairy', points: 6, multiplierBonus: 1, icon: '🧀' },
+  { id: 'butter', name: 'Butter', type: 'dairy', points: 4, multiplierBonus: 1, icon: '🧈' },
+  { id: 'chili', name: 'Chili Pepper', type: 'spice', points: 2, multiplierBonus: 2, icon: '🌶️' }
+];
+
+// Metaphorical / Emotional Special Ingredients (Only 1 copy per deck)
+export const METAPHORICAL_INGREDIENTS = [
+  { id: 'love', name: 'Love', type: 'special', points: 15, multiplierBonus: 2, icon: '💖' },
+  { id: 'patience', name: 'Patience', type: 'special', points: 10, multiplierBonus: 3, icon: '⏳' },
+  { id: 'grandma_hug', name: "Grandma's Hug", type: 'special', points: 25, multiplierBonus: 4, icon: '👵' }
 ];

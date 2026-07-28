@@ -1,157 +1,167 @@
-// dishes.js
-import { CARD_TYPES } from './ingredients.js';
-
 export const RECIPE_BOOK = [
+  // --- NAMED CLASSIC REAL-LIFE DISHES ---
   {
-    name: "Grandma's Comfort Pot",
-    reqs: ["Grandma's Hug", 'Any Protein', 'Carrot'],
-    multiplier: 3.5,
-    icon: '🍲',
-    desc: "Grandma's Hug + Protein + Carrot"
-  },
-  {
-    name: 'Veggie Power Bowl',
-    reqs: ['Tofu', 'Broccoli', 'Carrot'],
-    multiplier: 3.0,
-    icon: '🥗',
-    desc: 'Tofu + Broccoli + Carrot'
-  },
-  {
-    name: 'Midnight Delight',
-    reqs: ['Midnight Snack', 'Grated Cheese', 'Pasta'],
-    multiplier: 2.8,
-    icon: '🍝',
-    desc: 'Midnight Snack + Cheese + Pasta'
-  },
-  {
-    name: 'Sweet & Savory Roast',
-    reqs: ['Beef', 'Carrot', 'Love'],
-    multiplier: 2.7,
-    icon: '🍖',
-    desc: 'Beef + Carrot + Love'
-  },
-  {
-    name: 'Gourmet Fusion',
-    reqs: ['Secret Sauce', '1 Protein', '1 Carb'],
-    multiplier: 2.6,
-    icon: '🍱',
-    desc: 'Secret Sauce + Any Protein + Any Carb'
-  },
-  {
-    name: 'Stir-fry Beef Rice',
-    reqs: ['Beef', 'Rice', 'Broccoli'],
-    multiplier: 2.5,
+    id: 'stir_fry_beef',
+    name: 'Sautéed Beef & Veggies',
     icon: '🥘',
-    desc: 'Beef + Rice + Broccoli'
+    multiplier: 4,
+    basePoints: 25,
+    desc: 'Beef + Rice/Potato + Onion/Tomato',
+    check: (counts, ingredients) => {
+      const hasBeef = ingredients.some(i => i.id === 'beef');
+      const hasCarb = counts.carbs > 0;
+      const hasVeg = counts.vegetable > 0;
+      return hasBeef && hasCarb && hasVeg;
+    }
   },
   {
-    name: 'Cheesy Chicken Pasta',
-    reqs: ['Chicken', 'Pasta', 'Grated Cheese'],
-    multiplier: 2.2,
-    icon: '🧆',
-    desc: 'Chicken + Pasta + Cheese'
+    id: 'chicken_rice_veggies',
+    name: 'Chicken Rice Bowl',
+    icon: '🍲',
+    multiplier: 3,
+    basePoints: 20,
+    desc: 'Chicken + Rice + Any Vegetable',
+    check: (counts, ingredients) => {
+      const hasChicken = ingredients.some(i => i.id === 'chicken');
+      const hasRice = ingredients.some(i => i.id === 'rice');
+      return hasChicken && hasRice && counts.vegetable > 0;
+    }
   },
   {
-    name: 'Balanced Meal',
-    reqs: ['1 Protein', '1 Carb', '1 Veggie'],
-    multiplier: 1.5,
-    icon: '🍽️',
-    desc: 'Any Protein + Carb + Veggie'
+    id: 'pasta_bolognese',
+    name: 'Classic Beef Pasta',
+    icon: '🍝',
+    multiplier: 3,
+    basePoints: 18,
+    desc: 'Pasta + Beef + Tomato',
+    check: (counts, ingredients) => {
+      const hasPasta = ingredients.some(i => i.id === 'pasta');
+      const hasBeef = ingredients.some(i => i.id === 'beef');
+      const hasTomato = ingredients.some(i => i.id === 'tomato');
+      return hasPasta && hasBeef && hasTomato;
+    }
   },
   {
-    name: 'Simple Plate',
-    reqs: ['Any 1-2 Categories'],
-    multiplier: 1.0,
-    icon: '🍛',
-    desc: 'Incomplete ingredient combinations'
+    id: 'veggie_omelette',
+    name: 'Cheesy Veggie Omelette',
+    icon: '🍳',
+    multiplier: 3,
+    basePoints: 15,
+    desc: 'Egg + Vegetable + Cheese/Butter',
+    check: (counts, ingredients) => {
+      const hasEgg = ingredients.some(i => i.id === 'egg');
+      const hasDairy = counts.dairy > 0;
+      return hasEgg && counts.vegetable > 0 && hasDairy;
+    }
   },
   {
-    name: 'Side Snack',
-    reqs: ['Extras Only'],
-    multiplier: 0.5,
-    icon: '🥪',
-    desc: 'Only Extras or Metaphorical items'
+    id: 'garden_soup',
+    name: 'Hearty Garden Soup',
+    icon: '🥣',
+    multiplier: 2,
+    basePoints: 12,
+    desc: 'At least 3 different vegetables',
+    check: (counts, ingredients) => {
+      const uniqueVegs = new Set(ingredients.filter(i => i.type === 'vegetable').map(i => i.id));
+      return uniqueVegs.size >= 3;
+    }
   }
 ];
 
 export class DishEvaluator {
   static evaluate(selectedCards, activeDiets = []) {
     if (!selectedCards || selectedCards.length === 0) {
-      return { name: 'Empty Plate', multiplier: 0, basePoints: 0, icon: '🍽️', validCardIndices: [] };
+      return this.invalidDish("Empty Plate");
     }
 
-    const allowDuplicates = activeDiets.some(d => d.type === 'buffet' || d.allowDuplicateCategories);
-
-    const types = selectedCards.map(c => c.type);
-    const names = selectedCards.map(c => c.name.toLowerCase());
-
-    const hasProtein = types.includes(CARD_TYPES.PROTEIN);
-    const hasCarb = types.includes(CARD_TYPES.CARB);
-    const hasVeggie = types.includes(CARD_TYPES.VEGGIE);
-
-    let matchedDish = { name: 'Side Snack', multiplier: 0.5, icon: '🥪' };
-
-    // 1. Grandma's Comfort Pot
-    if (names.includes("grandma's hug") && hasProtein && names.includes('carrot')) {
-      matchedDish = { name: "Grandma's Comfort Pot", multiplier: 3.5, icon: '🍲' };
-    }
-    // 2. Veggie Power Bowl
-    else if (names.includes('tofu') && names.includes('broccoli') && names.includes('carrot')) {
-      matchedDish = { name: 'Veggie Power Bowl', multiplier: 3.0, icon: '🥗' };
-    }
-    // 3. Midnight Delight
-    else if (names.includes('midnight snack') && names.includes('grated cheese') && names.includes('pasta')) {
-      matchedDish = { name: 'Midnight Delight', multiplier: 2.8, icon: '🍝' };
-    }
-    // 4. Sweet & Savory Roast
-    else if (names.includes('beef') && names.includes('carrot') && names.includes('love')) {
-      matchedDish = { name: 'Sweet & Savory Roast', multiplier: 2.7, icon: '🍖' };
-    }
-    // 5. Gourmet Fusion
-    else if (names.includes('secret sauce') && hasProtein && hasCarb) {
-      matchedDish = { name: 'Gourmet Fusion', multiplier: 2.6, icon: '🍱' };
-    }
-    // 6. Stir-fry Beef Rice
-    else if (names.includes('beef') && names.includes('rice') && names.includes('broccoli')) {
-      matchedDish = { name: 'Stir-fry Beef Rice', multiplier: 2.5, icon: '🥘' };
-    }
-    // 7. Cheesy Chicken Pasta
-    else if (names.includes('chicken') && names.includes('pasta') && names.includes('grated cheese')) {
-      matchedDish = { name: 'Cheesy Chicken Pasta', multiplier: 2.2, icon: '🧆' };
-    }
-    // Category Fallbacks
-    else if (hasProtein && hasCarb && hasVeggie) {
-      matchedDish = { name: 'Balanced Meal', multiplier: 1.5, icon: '🍽️' };
-    } else if (hasProtein || hasCarb || hasVeggie) {
-      matchedDish = { name: 'Simple Plate', multiplier: 1.0, icon: '🍛' };
-    }
-
-    // Filtrado de cartas válidas (regla de no duplicar categoría salvo permiso por Dieta)
-    const validCardIndices = [];
-    const usedCategories = new Set();
-
-    selectedCards.forEach((card, idx) => {
-      const isMainCategory = [CARD_TYPES.PROTEIN, CARD_TYPES.CARB, CARD_TYPES.VEGGIE].includes(card.type);
-
-      if (isMainCategory) {
-        if (!usedCategories.has(card.type) || allowDuplicates) {
-          usedCategories.add(card.type);
-          validCardIndices.push(idx);
-        }
-      } else {
-        // Extras y Meta siempre pasan salvo descartes explícitos
-        validCardIndices.push(idx);
-      }
+    // Category counters
+    const counts = { carbs: 0, vegetable: 0, protein: 0, spice: 0, dairy: 0, special: 0 };
+    selectedCards.forEach(c => {
+      if (counts[c.type] !== undefined) counts[c.type]++;
+      else counts.special++;
     });
 
-    const basePoints = validCardIndices.reduce((sum, idx) => sum + selectedCards[idx].points, 0);
+    // Check for Emotional / Metaphorical modifiers in the dish
+    let emotionalNote = "";
+    if (selectedCards.some(i => i.id === 'love')) emotionalNote = " (Made with Love)";
+    else if (selectedCards.some(i => i.id === 'patience')) emotionalNote = " (Cooked with Patience)";
+    else if (selectedCards.some(i => i.id === 'grandma_hug')) emotionalNote = " (Grandma's Style)";
 
+    // 1. Check Specific Named Recipes
+    for (const recipe of RECIPE_BOOK) {
+      if (recipe.check(counts, selectedCards)) {
+        return {
+          name: `${recipe.name}${emotionalNote}`,
+          icon: recipe.icon,
+          multiplier: recipe.multiplier,
+          basePoints: recipe.basePoints,
+          validCardIndices: selectedCards.map((_, i) => i)
+        };
+      }
+    }
+
+    // 2. Descriptive Household Plate (Full Trio: Protein + Carb + Veggie)
+    if (counts.protein > 0 && counts.carbs > 0 && counts.vegetable > 0) {
+      const mainProtein = selectedCards.find(i => i.type === 'protein')?.name || 'Protein';
+      const mainCarb = selectedCards.find(i => i.type === 'carbs')?.name || 'Carbs';
+
+      return {
+        name: `${mainProtein} with ${mainCarb} and Veggies${emotionalNote || " (Home Cooked)"}`,
+        icon: '🍽️',
+        multiplier: 2,
+        basePoints: 10,
+        validCardIndices: selectedCards.map((_, i) => i)
+      };
+    }
+
+    // 3. Basic Home Meal (Protein + Carb OR Protein + Veggie)
+    if ((counts.protein > 0 && counts.carbs > 0) || (counts.protein > 0 && counts.vegetable > 0)) {
+      const mainProtein = selectedCards.find(i => i.type === 'protein')?.name || 'Protein';
+      const side = selectedCards.find(i => i.type === 'carbs' || i.type === 'vegetable')?.name || 'Side';
+
+      return {
+        name: `${mainProtein} with ${side}${emotionalNote}`,
+        icon: '🍱',
+        multiplier: 2,
+        basePoints: 8,
+        validCardIndices: selectedCards.map((_, i) => i)
+      };
+    }
+
+    // 4. CHECK ACTIVE DIET CARDS (Validates non-standard combos)
+    const hasKeto = activeDiets.some(d => d.id === 'keto');
+    if (hasKeto && counts.protein >= 2 && counts.carbs === 0) {
+      return {
+        name: `Keto Protein Feast${emotionalNote}`,
+        icon: '🥩',
+        multiplier: 3,
+        basePoints: 15,
+        validCardIndices: selectedCards.map((_, i) => i)
+      };
+    }
+
+    const hasCarbLoad = activeDiets.some(d => d.id === 'carbs_only');
+    if (hasCarbLoad && counts.carbs >= 2 && counts.protein === 0) {
+      return {
+        name: `Carb Load Platter${emotionalNote}`,
+        icon: '🍞',
+        multiplier: 2,
+        basePoints: 12,
+        validCardIndices: selectedCards.map((_, i) => i)
+      };
+    }
+
+    // 5. DOES NOT MAKE REAL-LIFE SENSE -> INEDIBLE MIX
+    return this.invalidDish("Inedible Mix");
+  }
+
+  static invalidDish(reason) {
     return {
-      name: matchedDish.name,
-      multiplier: matchedDish.multiplier,
-      basePoints,
-      icon: matchedDish.icon,
-      validCardIndices
+      name: `${reason} (Invalid)`,
+      icon: '🤢',
+      multiplier: 0,
+      basePoints: 0,
+      validCardIndices: [] // Cards won't score
     };
   }
 }
