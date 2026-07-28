@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Culinary Crafter</title>
+  <style>
+    :root {
+      --bg-color: #1a1c23;
+      --panel-bg: #282c37;
+      --card-bg: #fff;
+      --accent-color: #ff6b6b;
+      --gold-color: #ffd166;
+      --text-color: #f8f9fa;
+      --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; user-select: none; margin: 0; padding: 0; }
+    body { background-color: var(--bg-color); color: var(--text-color); font-family: var(--font-main); display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+
+    #app-viewport { width: 100vw; max-width: 430px; height: 100vh; max-height: 932px; background: var(--panel-bg); display: flex; flex-direction: column; justify-content: space-between; position: relative; border-radius: 12px; overflow: hidden; }
+    .hud { background: rgba(0,0,0,0.3); padding: 12px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; }
+    .hud-box { background: rgba(255,255,255,0.05); padding: 6px; border-radius: 6px; }
+    .hud-label { font-size: 0.7rem; color: #aaa; text-transform: uppercase; }
+    .hud-value { font-size: 1.1rem; font-weight: bold; color: var(--gold-color); }
+
+    .diets-bar { display: flex; gap: 6px; padding: 8px 12px; background: rgba(0,0,0,0.2); min-height: 44px; align-items: center; }
+    .diet-badge { background: var(--accent-color); color: white; font-size: 0.7rem; padding: 4px 8px; border-radius: 12px; font-weight: bold; }
+
+    .board { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 12px; gap: 12px; }
+    .fridge-zone { border: 2px dashed rgba(255,255,255,0.2); width: 100%; height: 130px; border-radius: 10px; display: flex; justify-content: center; align-items: center; gap: 6px; background: rgba(0,0,0,0.15); }
+    .dish-preview { font-size: 0.9rem; color: #ddd; height: 24px; font-weight: 600; text-align: center; }
+
+    .hand-container { padding: 10px 6px 20px 6px; background: rgba(0,0,0,0.4); display: flex; flex-direction: column; gap: 12px; }
+    .hand { display: flex; justify-content: center; gap: 6px; min-height: 110px; padding: 4px; }
+
+    .card { width: 64px; height: 96px; background: var(--card-bg); color: #222; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; padding: 6px; font-size: 0.75rem; font-weight: bold; cursor: pointer; transition: transform 0.15s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    .card.selected { transform: translateY(-14px); outline: 3px solid var(--accent-color); }
+    .card-type { font-size: 0.55rem; text-transform: uppercase; padding: 2px 4px; border-radius: 4px; color: #fff; text-align: center; }
+    .type-protein { background: #e63946; } .type-carb { background: #f4a261; } .type-veggie { background: #2a9d8f; } .type-extra { background: #9b5de5; }
+    .card-title { text-align: center; margin: 4px 0; word-break: break-word; line-height: 1.1; }
+    .card-points { text-align: right; font-size: 0.7rem; color: #555; }
+
+    .actions { display: flex; gap: 10px; }
+    .btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; cursor: pointer; text-transform: uppercase; }
+    .btn-cook { background: #2a9d8f; color: white; } .btn-cook:disabled { background: #555; opacity: 0.5; }
+
+    .shop-modal { position: absolute; inset: 0; background: var(--panel-bg); z-index: 100; display: flex; flex-direction: column; padding: 16px; gap: 16px; }
+    .shop-modal.hidden { display: none; }
+    .shop-header { font-size: 1.3rem; color: var(--gold-color); text-align: center; font-weight: bold; }
+    .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; flex: 1; overflow-y: auto; }
+    .shop-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
+  </style>
+</head>
+<body>
+
+<div id="app-viewport">
+  <div class="hud">
+    <div class="hud-box"><div class="hud-label">Target</div><div class="hud-value" id="ui-target">0</div></div>
+    <div class="hud-box"><div class="hud-label">Score</div><div class="hud-value" id="ui-score">0</div></div>
+    <div class="hud-box"><div class="hud-label">Coins</div><div class="hud-value" id="ui-coins">$0</div></div>
+  </div>
+
+  <div class="diets-bar" id="ui-diets"><span style="font-size: 0.7rem; color: #888;">Diets (Max 3):</span></div>
+
+  <div class="board">
+    <div class="fridge-zone" id="ui-cooking-pot"></div>
+    <div class="dish-preview" id="ui-recipe-preview">Select 1 to 5 ingredients</div>
+  </div>
+
+  <div class="hand-container">
+    <div class="hand" id="ui-hand"></div>
+    <div class="actions">
+      <button class="btn btn-cook" id="ui-cook-btn" disabled>Cook Dish</button>
+    </div>
+  </div>
+
+  <div class="shop-modal hidden" id="ui-shop">
+    <div class="shop-header">SUPERMARKET</div>
+    <p style="text-align: center; font-size: 0.8rem; color: #ccc;">Buy new ingredients or diets!</p>
+    <div class="shop-grid" id="ui-shop-items"></div>
+    <button class="btn btn-cook" id="ui-next-week-btn">Start Next Week</button>
+  </div>
+</div>
+
+<!-- IMPORT MAIN SCRIPT AS A MODULE -->
+<script type="module">
+  import { BASE_INGREDIENTS } from './ingredients.js';
+  import { DishEvaluator } from './dishes.js';
+  import { BASE_DIETS } from './diets.js';
+  import { LevelManager } from './levels.js';
+
+  let state = {
+    week: 1,
+    targetScore: 120,
+    score: 0,
+    coins: 10,
+    fridgeDeck: [],
+    hand: [],
+    selectedIndices: [],
+    activeDiets: []
+  };
+
+  function initGame() {
+    const level = LevelManager.getLevel(state.week);
+    state.targetScore = level.targetScore;
+    state.fridgeDeck = [...BASE_INGREDIENTS, ...BASE_INGREDIENTS];
+    shuffle(state.fridgeDeck);
+    drawHand();
+    updateHUD();
+  }
+
+  function shuffle(arr) { arr.sort(() => Math.random() - 0.5); }
+
+  function drawHand() {
+    while (state.hand.length < 5 && state.fridgeDeck.length > 0) {
+      state.hand.push(state.fridgeDeck.pop());
+    }
+    renderHand();
+  }
+
+  function updateHUD() {
+    document.getElementById('ui-target').innerText = state.targetScore;
+    document.getElementById('ui-score').innerText = state.score;
+    document.getElementById('ui-coins').innerText = `$${state.coins}`;
+  }
+
+  function renderHand() {
+    const handEl = document.getElementById('ui-hand');
+    handEl.innerHTML = '';
+
+    state.hand.forEach((card, idx) => {
+      const cardEl = document.createElement('div');
+      cardEl.className = `card ${state.selectedIndices.includes(idx) ? 'selected' : ''}`;
+      cardEl.onclick = () => toggleSelectCard(idx);
+      cardEl.innerHTML = `
+        <span class="card-type type-${card.type}">${card.type}</span>
+        <div class="card-title">${card.name}</div>
+        <div class="card-points">+${card.points}</div>
+      `;
+      handEl.appendChild(cardEl);
+    });
+
+    renderSelectedZone();
+    evaluateDish();
+  }
+
+  function renderSelectedZone() {
+    const potEl = document.getElementById('ui-cooking-pot');
+    potEl.innerHTML = '';
+    state.selectedIndices.forEach(idx => {
+      const card = state.hand[idx];
+      const miniEl = document.createElement('div');
+      miniEl.className = 'card';
+      miniEl.style.transform = 'scale(0.85)';
+      miniEl.innerHTML = `
+        <span class="card-type type-${card.type}">${card.type}</span>
+        <div class="card-title">${card.name}</div>
+      `;
+      potEl.appendChild(miniEl);
+    });
+  }
+
+  function toggleSelectCard(index) {
+    const selIdx = state.selectedIndices.indexOf(index);
+    if (selIdx > -1) state.selectedIndices.splice(selIdx, 1);
+    else if (state.selectedIndices.length < 5) state.selectedIndices.push(index);
+    renderHand();
+  }
+
+  function evaluateDish() {
+    const cookBtn = document.getElementById('ui-cook-btn');
+    const previewEl = document.getElementById('ui-recipe-preview');
+
+    if (state.selectedIndices.length === 0) {
+      cookBtn.disabled = true;
+      previewEl.innerText = "Select 1 to 5 ingredients";
+      return;
+    }
+
+    cookBtn.disabled = false;
+    const selectedCards = state.selectedIndices.map(i => state.hand[i]);
+    const dish = DishEvaluator.evaluate(selectedCards);
+    previewEl.innerText = `${dish.name} (${dish.multiplier}x Multiplier)`;
+  }
+
+  function cookSelected() {
+    const selectedCards = state.selectedIndices.map(i => state.hand[i]);
+    const dish = DishEvaluator.evaluate(selectedCards);
+
+    let calculatedPoints = dish.basePoints;
+
+    // Apply active diets
+    state.activeDiets.forEach(diet => {
+      calculatedPoints = diet.applyEffect(selectedCards, calculatedPoints);
+    });
+
+    const finalDishPoints = Math.max(0, Math.round(calculatedPoints * dish.multiplier));
+    state.score += finalDishPoints;
+
+    state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
+    state.selectedIndices = [];
+
+    drawHand();
+    updateHUD();
+
+    if (state.fridgeDeck.length === 0 && state.hand.length === 0) {
+      finishWeek();
+    }
+  }
+
+  function finishWeek() {
+    document.getElementById('ui-shop').classList.remove('hidden');
+    state.coins += Math.floor(state.score / 10);
+    updateHUD();
+    renderShopItems();
+  }
+
+  function renderShopItems() {
+    const shopGrid = document.getElementById('ui-shop-items');
+    shopGrid.innerHTML = '';
+
+    const shopOptions = [
+      BASE_INGREDIENTS[Math.floor(Math.random() * BASE_INGREDIENTS.length)],
+      BASE_INGREDIENTS[Math.floor(Math.random() * BASE_INGREDIENTS.length)],
+      BASE_DIETS[Math.floor(Math.random() * BASE_DIETS.length)]
+    ];
+
+    shopOptions.forEach(item => {
+      const isDiet = 'description' in item;
+      const cost = item.cost || 8;
+      const itemEl = document.createElement('div');
+      itemEl.className = 'shop-item';
+      itemEl.innerHTML = `
+        <div style="font-weight:bold; font-size: 0.85rem; color: ${isDiet ? 'var(--accent-color)' : '#fff'};">
+          ${item.name}
+        </div>
+        <div style="font-size: 0.7rem; color: #aaa; text-align:center;">
+          ${isDiet ? item.description : `Type: ${item.type} | +${item.points} pts`}
+        </div>
+        <button class="btn btn-cook" style="padding: 4px 8px; font-size: 0.75rem;" id="buy-${item.id}">
+          Buy ($${cost})
+        </button>
+      `;
+      shopGrid.appendChild(itemEl);
+
+      document.getElementById(`buy-${item.id}`).onclick = () => buyItem(item, cost, isDiet);
+    });
+  }
+
+  function buyItem(item, cost, isDiet) {
+    if (state.coins < cost) return alert("Not enough coins!");
+    state.coins -= cost;
+
+    if (isDiet) {
+      if (state.activeDiets.length < 3) {
+        state.activeDiets.push(item);
+        renderDietsHUD();
+      } else {
+        alert("Diet slots full! Max 3 diets.");
+        state.coins += cost;
+        return;
+      }
+    } else {
+      state.fridgeDeck.push(item);
+    }
+    updateHUD();
+  }
+
+  function renderDietsHUD() {
+    const dietsEl = document.getElementById('ui-diets');
+    dietsEl.innerHTML = '<span style="font-size: 0.7rem; color: #888;">Diets:</span>';
+    state.activeDiets.forEach(d => {
+      const badge = document.createElement('span');
+      badge.className = 'diet-badge';
+      badge.innerText = d.name;
+      dietsEl.appendChild(badge);
+    });
+  }
+
+  document.getElementById('ui-cook-btn').onclick = cookSelected;
+  document.getElementById('ui-next-week-btn').onclick = () => {
+    document.getElementById('ui-shop').classList.add('hidden');
+    state.week += 1;
+    state.score = 0;
+    initGame();
+  };
+
+  initGame();
+</script>
+</body>
+</html>
