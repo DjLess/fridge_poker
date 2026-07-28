@@ -1,24 +1,45 @@
+// diets.js
 export class Diet {
-  constructor(id, name, description, type, cost = 15) {
+  constructor(id, name, description, type, costForks = 5) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.type = type;
-    this.cost = cost;
+    this.costForks = costForks;
   }
 
-  // Applies passive modifiers to score/cards
   applyEffect(selectedCards, currentBasePoints) {
     let scoreMod = 0;
 
     if (this.type === 'veg') {
       const hasMeat = selectedCards.some(c => c.tags.includes('meat'));
-      if (hasMeat) scoreMod -= 15; // Penalty for meat on vegetarian diet
+      if (hasMeat) scoreMod -= 15;
     }
 
     if (this.type === 'sweet') {
       const hasExtra = selectedCards.some(c => c.type === 'extra');
-      if (hasExtra) scoreMod += 30; // Bonus for extra/dessert ingredients
+      if (hasExtra) scoreMod += 30;
+    }
+
+    if (this.type === 'keto') {
+      const hasCarb = selectedCards.some(c => c.type === 'carb');
+      if (hasCarb) {
+        scoreMod -= 25;
+      } else {
+        const proteinCount = selectedCards.filter(c => c.type === 'protein').length;
+        scoreMod += proteinCount * 20;
+      }
+    }
+
+    if (this.type === 'comfort') {
+      const hasMeta = selectedCards.some(c => c.tags.includes('meta'));
+      if (hasMeta) scoreMod += 40;
+    }
+
+    if (this.type === 'zero_waste') {
+      if (selectedCards.length === 5) {
+        scoreMod += 50;
+      }
     }
 
     return currentBasePoints + scoreMod;
@@ -26,6 +47,9 @@ export class Diet {
 }
 
 export const BASE_DIETS = [
-  new Diet('d1', 'Vegetarian', 'Penalizes meat proteins (-15 pts)', 'veg', 15),
-  new Diet('d2', 'Sweet Tooth', '+30 pts if dish includes Extras/Dessert', 'sweet', 15)
+  new Diet('d1', 'Vegetarian', 'Penalizes meat (-15 pts)', 'veg', 5),
+  new Diet('d2', 'Sweet Tooth', '+30 pts when Extras are included', 'sweet', 5),
+  new Diet('d3', 'Keto Craze', '+20 pts per Protein, but -25 pts if Carbs present', 'keto', 7),
+  new Diet('d4', 'Hearty Comfort', '+40 pts when using Metaphorical cards', 'comfort', 6),
+  new Diet('d5', 'Zero Waste', '+50 pts when cooking exactly 5 cards at once', 'zero_waste', 8)
 ];

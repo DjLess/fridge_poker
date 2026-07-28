@@ -1,8 +1,9 @@
+// levels.js
 export const LEVEL_CONFIGS = [
-  { week: 1, targetScore: 120, maxHands: 4, maxDiscards: 3, startingCoins: 10, levelName: 'Home Kitchen' },
-  { week: 2, targetScore: 250, maxHands: 4, maxDiscards: 3, startingCoins: 15, levelName: 'Local Bistro' },
-  { week: 3, targetScore: 500, maxHands: 3, maxDiscards: 2, startingCoins: 20, levelName: 'Gourmet Restaurant' },
-  { week: 4, targetScore: 1000, maxHands: 3, maxDiscards: 2, startingCoins: 25, levelName: 'Michelin Star Kitchen' }
+  { week: 1, targetScore: 100, maxHands: 4, maxDiscards: 3, levelName: 'Cozy Cottage Kitchen' },
+  { week: 2, targetScore: 220, maxHands: 4, maxDiscards: 3, levelName: 'Family Diner' },
+  { week: 3, targetScore: 450, maxHands: 3, maxDiscards: 2, levelName: 'Downtown Bakery' },
+  { week: 4, targetScore: 900, maxHands: 3, maxDiscards: 2, levelName: 'Grand Country Inn' }
 ];
 
 export class LevelManager {
@@ -12,11 +13,10 @@ export class LevelManager {
 
     return {
       week: weekNumber,
-      targetScore: Math.round(1000 * Math.pow(1.6, weekNumber - 4)),
+      targetScore: Math.round(900 * Math.pow(1.5, weekNumber - 4)),
       maxHands: 3,
       maxDiscards: 2,
-      startingCoins: 30,
-      levelName: `Grand Kitchen W${weekNumber}`
+      levelName: `Kitchen W${weekNumber}`
     };
   }
 }

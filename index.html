@@ -3,27 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Culinary Crafter - Balatro Edition</title>
+  <title>Culinary Crafter - Kitchen Edition</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
 
     :root {
-      --bg-color: #0f2d1e; /* Emerald felt background */
-      --panel-bg: #1c2321;
-      --card-bg: #f7f4ea;
-      --accent-red: #fe5f55;
-      --accent-blue: #00a8e8;
-      --gold-color: #ffd166;
-      --text-color: #f8f9fa;
-      --font-pixel: 'VT323', monospace, sans-serif;
+      --bg-wood: #e8d8c8;
+      --panel-wood: #6b4d38;
+      --counter-top: #f4eae1;
+      --card-bg: #fffbf5;
+      --accent-orange: #e07a5f;
+      --accent-green: #81b29a;
+      --accent-yellow: #f2cc8f;
+      --forks-color: #3d405b;
+      --text-dark: #3d405b;
+      --font-cozy: 'Fredoka', cursive, sans-serif;
     }
 
     * { box-sizing: border-box; user-select: none; margin: 0; padding: 0; }
 
     body {
-      background-color: #050b08;
-      color: var(--text-color);
-      font-family: var(--font-pixel);
+      background-color: #3a2e2b;
+      color: var(--text-dark);
+      font-family: var(--font-cozy);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -31,86 +33,90 @@
       overflow: hidden;
     }
 
-    /* CRT Overlay Effect */
-    #crt-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-                  linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-      background-size: 100% 3px, 6px 100%;
-      pointer-events: none;
-      z-index: 999;
-    }
-
     #app-viewport {
       width: 100vw;
       max-width: 430px;
       height: 100vh;
       max-height: 932px;
-      background: var(--bg-color);
+      background: var(--bg-wood);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
-      border-radius: 12px;
+      border-radius: 16px;
       overflow: hidden;
-      border: 4px solid #2d3b36;
-      box-shadow: 0 0 20px rgba(0,0,0,0.8);
+      border: 6px solid var(--panel-wood);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
-    /* Balatro Style HUD */
+    /* Kitchen HUD Header */
     .hud {
-      background: rgba(0, 0, 0, 0.6);
+      background: var(--panel-wood);
       padding: 10px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 6px;
       text-align: center;
-      border-bottom: 3px solid #2d3b36;
+      color: #fff;
     }
 
     .hud-box {
-      background: #15191d;
+      background: rgba(255,255,255,0.15);
       padding: 4px;
-      border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
     }
 
     .hud-label {
-      font-size: 0.9rem;
-      color: #aaa;
+      font-size: 0.65rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
+      opacity: 0.9;
     }
 
     .hud-value {
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: var(--gold-color);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-yellow);
     }
 
-    .hud-hands .hud-value { color: var(--accent-red); }
-    .hud-discards .hud-value { color: var(--accent-blue); }
+    /* Top Bar with Diets & Recipe Book Button */
+    .top-utility-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: rgba(0,0,0,0.05);
+    }
 
     .diets-bar {
       display: flex;
       gap: 6px;
-      padding: 6px 12px;
-      background: rgba(0,0,0,0.3);
-      min-height: 40px;
       align-items: center;
     }
 
     .diet-badge {
-      background: var(--accent-red);
+      background: var(--accent-green);
       color: white;
-      font-size: 0.9rem;
-      padding: 2px 8px;
-      border-radius: 4px;
-      box-shadow: 0 2px 0 #8b0000;
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 10px;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.1);
     }
 
-    /* Cooking Zone */
+    .btn-recipe-book {
+      background: var(--accent-yellow);
+      border: 2px solid #d4a359;
+      color: var(--text-dark);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-family: var(--font-cozy);
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      box-shadow: 0 2px 0 #b38543;
+    }
+
+    /* Cutting Board / Mixing Cooking Area */
     .board {
       flex: 1;
       display: flex;
@@ -121,30 +127,47 @@
       gap: 12px;
     }
 
-    .fridge-zone {
-      border: 3px dashed rgba(255,255,255,0.2);
+    .cutting-board {
+      background: #d4a373;
+      border: 4px solid #bc8a5f;
       width: 100%;
-      height: 120px;
-      border-radius: 10px;
+      height: 140px;
+      border-radius: 16px;
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 6px;
-      background: rgba(0,0,0,0.25);
+      position: relative;
+      box-shadow: inset 0 4px 8px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+
+    .mixing-dish {
+      position: absolute;
+      font-size: 3.5rem;
+      opacity: 0;
+      transform: scale(0.2);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .mixing-dish.active {
+      opacity: 1;
+      transform: scale(1.1);
     }
 
     .dish-preview {
-      font-size: 1.3rem;
-      color: var(--gold-color);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-dark);
       height: 28px;
       text-align: center;
-      text-shadow: 2px 2px 0 #000;
     }
 
-    /* Hand Area */
+    /* Hand & Kitchen Counter Area */
     .hand-container {
-      padding: 10px 6px 16px 6px;
-      background: rgba(0,0,0,0.5);
+      padding: 10px 8px 18px 8px;
+      background: var(--counter-top);
+      border-top: 4px solid #e0d0c0;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -154,153 +177,124 @@
       display: flex;
       justify-content: center;
       gap: 6px;
-      min-height: 105px;
+      min-height: 110px;
       padding: 4px;
-      perspective: 1000px;
     }
 
-    /* Card Component & Animations */
+    /* Cozy Kitchen Cards */
     .card {
-      width: 62px;
-      height: 94px;
+      width: 64px;
+      height: 98px;
       background: var(--card-bg);
-      color: #111;
-      border-radius: 6px;
+      color: var(--text-dark);
+      border-radius: 10px;
+      border: 2px solid #e6d7c3;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 5px;
-      font-size: 0.9rem;
+      padding: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 4px 0 #bbb, 0 8px 10px rgba(0,0,0,0.5);
-      animation: drawIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    @keyframes drawIn {
-      from { transform: translateY(80px) scale(0.5); opacity: 0; }
-      to { transform: translateY(0) scale(1); opacity: 1; }
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.08);
     }
 
     .card.selected {
-      transform: translateY(-18px) scale(1.05) !important;
-      box-shadow: 0 4px 0 var(--accent-red), 0 12px 15px rgba(254, 95, 85, 0.4);
-      outline: 2px solid var(--accent-red);
+      transform: translateY(-16px) scale(1.05) !important;
+      border-color: var(--accent-orange);
+      box-shadow: 0 8px 12px rgba(224, 122, 95, 0.3);
     }
 
-    .card.discarding {
-      animation: discardOut 0.3s forwards ease-in;
+    .card.merging {
+      transform: scale(0) rotate(180deg) !important;
+      opacity: 0;
+      transition: transform 0.4s ease-in, opacity 0.3s ease-in;
     }
 
-    @keyframes discardOut {
-      to { transform: translateY(120px) rotate(20deg) scale(0.2); opacity: 0; }
-    }
+    .card-icon { font-size: 1.4rem; text-align: center; margin: 2px 0; }
+    .card-title { text-align: center; font-size: 0.7rem; line-height: 1; }
+    .card-points { text-align: right; font-size: 0.75rem; color: #888; }
 
-    .card-type {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      padding: 2px;
-      border-radius: 3px;
-      color: #fff;
-      text-align: center;
-    }
-
-    .type-protein { background: #e63946; }
-    .type-carb { background: #f4a261; }
-    .type-veggie { background: #2a9d8f; }
-    .type-extra { background: #9b5de5; }
-
-    .card-title {
-      text-align: center;
-      font-weight: bold;
-      line-height: 1;
-      margin: 2px 0;
-    }
-
-    .card-points {
-      text-align: right;
-      font-size: 0.85rem;
-      color: #333;
-    }
-
-    /* Actions Bar */
-    .actions {
-      display: flex;
-      gap: 10px;
-    }
-
+    /* Action Buttons */
+    .actions { display: flex; gap: 10px; }
     .btn {
       flex: 1;
       padding: 10px;
       border: none;
-      border-radius: 6px;
-      font-family: var(--font-pixel);
-      font-size: 1.3rem;
+      border-radius: 12px;
+      font-family: var(--font-cozy);
+      font-size: 1.1rem;
+      font-weight: 700;
       cursor: pointer;
-      text-transform: uppercase;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.4);
+      box-shadow: 0 4px 0 rgba(0,0,0,0.15);
       transition: transform 0.1s, box-shadow 0.1s;
     }
 
-    .btn:active {
-      transform: translateY(2px);
-      box-shadow: 0 2px 0 rgba(0,0,0,0.4);
-    }
+    .btn:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.15); }
+    .btn-cook { background: var(--accent-orange); color: white; }
+    .btn-discard { background: var(--accent-green); color: white; }
+    .btn:disabled { background: #ccc !important; opacity: 0.6; box-shadow: none; cursor: not-allowed; }
 
-    .btn-cook {
-      background: var(--accent-red);
-      color: white;
-    }
-
-    .btn-discard {
-      background: var(--accent-blue);
-      color: white;
-    }
-
-    .btn:disabled {
-      background: #555 !important;
-      opacity: 0.5;
-      box-shadow: none;
-      cursor: not-allowed;
-    }
-
-    /* Supermarket Modal */
-    .shop-modal {
+    /* Modals (Recipes & Supermarket) */
+    .modal {
       position: absolute;
       inset: 0;
-      background: var(--panel-bg);
+      background: var(--bg-wood);
       z-index: 100;
       display: flex;
       flex-direction: column;
       padding: 16px;
-      gap: 16px;
+      gap: 14px;
     }
 
-    .shop-modal.hidden { display: none; }
-    .shop-header { font-size: 2rem; color: var(--gold-color); text-align: center; }
-    .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; flex: 1; overflow-y: auto; }
-    .shop-item { background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
+    .modal.hidden { display: none; }
+    .modal-header { font-size: 1.6rem; font-weight: 700; color: var(--panel-wood); text-align: center; }
+
+    .recipe-list, .shop-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .recipe-card, .shop-item {
+      background: #fff;
+      border: 2px solid #e0d0c0;
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+    .shop-item { flex-direction: column; justify-content: space-between; text-align: center; }
   </style>
 </head>
 <body>
-
-<div id="crt-overlay"></div>
 
 <div id="app-viewport">
   <!-- HUD Header -->
   <div class="hud">
     <div class="hud-box"><div class="hud-label">Target</div><div class="hud-value" id="ui-target">0</div></div>
     <div class="hud-box"><div class="hud-label">Score</div><div class="hud-value" id="ui-score">0</div></div>
-    <div class="hud-box hud-hands"><div class="hud-label">Hands</div><div class="hud-value" id="ui-hands">0</div></div>
-    <div class="hud-box hud-discards"><div class="hud-label">Discards</div><div class="hud-value" id="ui-discards">0</div></div>
+    <div class="hud-box"><div class="hud-label">Hands</div><div class="hud-value" id="ui-hands">0</div></div>
+    <div class="hud-box"><div class="hud-label">Forks</div><div class="hud-value" id="ui-forks">🍴 0</div></div>
   </div>
 
-  <div class="diets-bar" id="ui-diets"><span style="font-size: 0.9rem; color: #888;">Diets:</span></div>
+  <div class="top-utility-bar">
+    <div class="diets-bar" id="ui-diets"><span style="font-size: 0.8rem; color: #666;">Diets:</span></div>
+    <button class="btn-recipe-book" id="ui-open-recipes-btn">📖 Recipes</button>
+  </div>
 
   <!-- Cooking Board -->
   <div class="board">
-    <div class="fridge-zone" id="ui-cooking-pot"></div>
-    <div class="dish-preview" id="ui-recipe-preview">Select 1 to 5 cards</div>
+    <div class="cutting-board" id="ui-cooking-pot">
+      <div class="mixing-dish" id="ui-dish-animation">🍲</div>
+    </div>
+    <div class="dish-preview" id="ui-recipe-preview">Select ingredients</div>
   </div>
 
   <!-- Controls & Hand -->
@@ -312,9 +306,17 @@
     </div>
   </div>
 
-  <!-- Shop Modal -->
-  <div class="shop-modal hidden" id="ui-shop">
-    <div class="shop-header">SUPERMARKET</div>
+  <!-- Recipe Book Modal -->
+  <div class="modal hidden" id="ui-recipes-modal">
+    <div class="modal-header">📖 Recipe Book</div>
+    <div class="recipe-list" id="ui-recipe-list"></div>
+    <button class="btn btn-cook" id="ui-close-recipes-btn">Close</button>
+  </div>
+
+  <!-- Supermarket Modal -->
+  <div class="modal hidden" id="ui-shop">
+    <div class="modal-header">🛒 Supermarket</div>
+    <p style="text-align:center; font-size:0.9rem;">Spend your Forks on new ingredients and diets!</p>
     <div class="shop-grid" id="ui-shop-items"></div>
     <button class="btn btn-cook" id="ui-next-week-btn">Next Week</button>
   </div>
@@ -322,17 +324,17 @@
 
 <script type="module">
   import { BASE_INGREDIENTS } from './ingredients.js';
-  import { DishEvaluator } from './dishes.js';
+  import { DishEvaluator, RECIPE_BOOK } from './dishes.js';
   import { BASE_DIETS } from './diets.js';
   import { LevelManager } from './levels.js';
 
   let state = {
     week: 1,
-    targetScore: 120,
+    targetScore: 100,
     score: 0,
     handsLeft: 4,
     discardsLeft: 3,
-    coins: 10,
+    forks: 0,
     fridgeDeck: [],
     hand: [],
     selectedIndices: [],
@@ -363,7 +365,7 @@
     document.getElementById('ui-target').innerText = state.targetScore;
     document.getElementById('ui-score').innerText = state.score;
     document.getElementById('ui-hands').innerText = state.handsLeft;
-    document.getElementById('ui-discards').innerText = state.discardsLeft;
+    document.getElementById('ui-forks').innerText = `🍴 ${state.forks}`;
   }
 
   function renderHand() {
@@ -375,7 +377,7 @@
       cardEl.className = `card ${state.selectedIndices.includes(idx) ? 'selected' : ''}`;
       cardEl.onclick = () => toggleSelectCard(idx);
       cardEl.innerHTML = `
-        <span class="card-type type-${card.type}">${card.type}</span>
+        <div class="card-icon">${card.icon}</div>
         <div class="card-title">${card.name}</div>
         <div class="card-points">+${card.points}</div>
       `;
@@ -388,14 +390,16 @@
 
   function renderSelectedZone() {
     const potEl = document.getElementById('ui-cooking-pot');
-    potEl.innerHTML = '';
+    const existingCards = potEl.querySelectorAll('.card');
+    existingCards.forEach(c => c.remove());
+
     state.selectedIndices.forEach(idx => {
       const card = state.hand[idx];
       const miniEl = document.createElement('div');
       miniEl.className = 'card';
       miniEl.style.transform = 'scale(0.85)';
       miniEl.innerHTML = `
-        <span class="card-type type-${card.type}">${card.type}</span>
+        <div class="card-icon">${card.icon}</div>
         <div class="card-title">${card.name}</div>
       `;
       potEl.appendChild(miniEl);
@@ -419,7 +423,7 @@
     discardBtn.disabled = !hasSelection || state.discardsLeft <= 0;
 
     if (!hasSelection) {
-      previewEl.innerText = "Select 1 to 5 cards";
+      previewEl.innerText = "Select ingredients";
       return;
     }
 
@@ -431,44 +435,49 @@
   function cookSelected() {
     if (state.handsLeft <= 0) return;
 
+    const potEl = document.getElementById('ui-cooking-pot');
     const selectedCards = state.selectedIndices.map(i => state.hand[i]);
     const dish = DishEvaluator.evaluate(selectedCards);
 
-    let calculatedPoints = dish.basePoints;
-    state.activeDiets.forEach(diet => {
-      calculatedPoints = diet.applyEffect(selectedCards, calculatedPoints);
-    });
+    // Trigger card mixing visual effect
+    const potCards = potEl.querySelectorAll('.card');
+    potCards.forEach(c => c.classList.add('merging'));
 
-    state.score += Math.max(0, Math.round(calculatedPoints * dish.multiplier));
-    state.handsLeft -= 1;
+    const dishAnim = document.getElementById('ui-dish-animation');
+    dishAnim.innerText = dish.icon;
 
-    state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
-    state.selectedIndices = [];
+    setTimeout(() => {
+      dishAnim.classList.add('active');
+    }, 200);
 
-    drawHand();
-    updateHUD();
-    checkLevelEnd();
+    setTimeout(() => {
+      dishAnim.classList.remove('active');
+
+      let calculatedPoints = dish.basePoints;
+      state.activeDiets.forEach(diet => {
+        calculatedPoints = diet.applyEffect(selectedCards, calculatedPoints);
+      });
+
+      state.score += Math.max(0, Math.round(calculatedPoints * dish.multiplier));
+      state.handsLeft -= 1;
+
+      state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
+      state.selectedIndices = [];
+
+      drawHand();
+      updateHUD();
+      checkLevelEnd();
+    }, 700);
   }
 
   function discardSelected() {
     if (state.discardsLeft <= 0) return;
-
-    const handEl = document.getElementById('ui-hand');
-    const cards = handEl.children;
-
-    // Apply Discard animation
-    state.selectedIndices.forEach(idx => {
-      if (cards[idx]) cards[idx].classList.add('discarding');
-    });
-
-    setTimeout(() => {
-      state.discardsLeft -= 1;
-      state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
-      state.selectedIndices = [];
-      drawHand();
-      updateHUD();
-      checkLevelEnd();
-    }, 250);
+    state.discardsLeft -= 1;
+    state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
+    state.selectedIndices = [];
+    drawHand();
+    updateHUD();
+    checkLevelEnd();
   }
 
   function checkLevelEnd() {
@@ -478,16 +487,39 @@
       alert("Out of hands! Game Over.");
       state.week = 1;
       state.score = 0;
+      state.forks = 0;
       initGame();
     }
   }
 
   function finishWeek() {
     document.getElementById('ui-shop').classList.remove('hidden');
-    state.coins += Math.floor(state.score / 10);
+    // Currency System: 5 Forks for level completion + 1 bonus per remaining hand
+    const bonusForks = state.handsLeft;
+    state.forks += (5 + bonusForks);
+    updateHUD();
     renderShopItems();
   }
 
+  // --- RECIPE POPUP LOGIC ---
+  function renderRecipes() {
+    const listEl = document.getElementById('ui-recipe-list');
+    listEl.innerHTML = '';
+    RECIPE_BOOK.forEach(r => {
+      const item = document.createElement('div');
+      item.className = 'recipe-card';
+      item.innerHTML = `
+        <div style="font-size:2rem;">${r.icon}</div>
+        <div>
+          <div style="font-weight:bold;">${r.name} (${r.multiplier}x)</div>
+          <div style="font-size:0.8rem; color:#666;">${r.desc}</div>
+        </div>
+      `;
+      listEl.appendChild(item);
+    });
+  }
+
+  // --- SHOP LOGIC ---
   function renderShopItems() {
     const shopGrid = document.getElementById('ui-shop-items');
     shopGrid.innerHTML = '';
@@ -500,13 +532,14 @@
 
     shopOptions.forEach(item => {
       const isDiet = 'description' in item;
-      const cost = item.cost || 8;
+      const cost = item.costForks || 3;
       const itemEl = document.createElement('div');
       itemEl.className = 'shop-item';
       itemEl.innerHTML = `
-        <div style="font-size:1.1rem; color: ${isDiet ? 'var(--accent-red)' : '#fff'};">${item.name}</div>
-        <div style="font-size: 0.8rem; color: #aaa;">${isDiet ? item.description : `+${item.points} pts`}</div>
-        <button class="btn btn-cook" style="padding: 4px; font-size: 1rem;" id="buy-${item.id}">Buy ($${cost})</button>
+        <div style="font-size:1.5rem;">${item.icon || '📜'}</div>
+        <div style="font-weight:bold; font-size:0.9rem;">${item.name}</div>
+        <div style="font-size: 0.75rem; color: #666;">${isDiet ? item.description : `+${item.points} pts`}</div>
+        <button class="btn btn-cook" style="padding: 4px; font-size: 0.9rem;" id="buy-${item.id}">Buy (🍴${cost})</button>
       `;
       shopGrid.appendChild(itemEl);
 
@@ -515,19 +548,45 @@
   }
 
   function buyItem(item, cost, isDiet) {
-    if (state.coins < cost) return alert("Not enough coins!");
-    state.coins -= cost;
+    if (state.forks < cost) return alert("Not enough Forks!");
+    state.forks -= cost;
 
     if (isDiet) {
-      if (state.activeDiets.length < 3) state.activeDiets.push(item);
+      if (state.activeDiets.length < 3) {
+        state.activeDiets.push(item);
+        renderDietsHUD();
+      } else {
+        alert("Diet slots full!");
+        state.forks += cost;
+        return;
+      }
     } else {
       state.fridgeDeck.push(item);
     }
     updateHUD();
   }
 
+  function renderDietsHUD() {
+    const dietsEl = document.getElementById('ui-diets');
+    dietsEl.innerHTML = '<span style="font-size: 0.8rem; color: #666;">Diets:</span>';
+    state.activeDiets.forEach(d => {
+      const badge = document.createElement('span');
+      badge.className = 'diet-badge';
+      badge.innerText = d.name;
+      dietsEl.appendChild(badge);
+    });
+  }
+
+  // Bindings
   document.getElementById('ui-cook-btn').onclick = cookSelected;
   document.getElementById('ui-discard-btn').onclick = discardSelected;
+  document.getElementById('ui-open-recipes-btn').onclick = () => {
+    renderRecipes();
+    document.getElementById('ui-recipes-modal').classList.remove('hidden');
+  };
+  document.getElementById('ui-close-recipes-btn').onclick = () => {
+    document.getElementById('ui-recipes-modal').classList.add('hidden');
+  };
   document.getElementById('ui-next-week-btn').onclick = () => {
     document.getElementById('ui-shop').classList.add('hidden');
     state.week += 1;
