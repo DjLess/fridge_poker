@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Culinary Crafter - Kitchen Edition</title>
+  <title>Culinary Crafter - Balatro Kitchen Edition</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
 
     :root {
       --bg-wood: #e8d8c8;
-      --panel-wood: #6b4d38;
+      --panel-wood: #5a3e2b;
       --counter-top: #f4eae1;
       --card-bg: #fffbf5;
       --accent-orange: #e07a5f;
       --accent-green: #81b29a;
       --accent-yellow: #f2cc8f;
-      --forks-color: #3d405b;
+      --accent-red: #d90429;
       --text-dark: #3d405b;
       --font-cozy: 'Fredoka', cursive, sans-serif;
     }
@@ -23,7 +23,7 @@
     * { box-sizing: border-box; user-select: none; margin: 0; padding: 0; }
 
     body {
-      background-color: #3a2e2b;
+      background-color: #2b1e1a;
       color: var(--text-dark);
       font-family: var(--font-cozy);
       display: flex;
@@ -35,7 +35,7 @@
 
     #app-viewport {
       width: 100vw;
-      max-width: 430px;
+      max-width: 440px;
       height: 100vh;
       max-height: 932px;
       background: var(--bg-wood);
@@ -49,15 +49,16 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
-    /* Kitchen HUD Header */
+    /* HUD Header */
     .hud {
       background: var(--panel-wood);
-      padding: 10px;
+      padding: 8px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 6px;
       text-align: center;
       color: #fff;
+      z-index: 10;
     }
 
     .hud-box {
@@ -67,40 +68,34 @@
     }
 
     .hud-label {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
       opacity: 0.9;
     }
 
     .hud-value {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: var(--accent-yellow);
     }
 
-    /* Top Bar with Diets & Recipe Book Button */
+    /* Top Bar with Diets & Recipe Book */
     .top-utility-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 12px;
+      padding: 6px 12px;
       background: rgba(0,0,0,0.05);
+      z-index: 10;
     }
 
-    .diets-bar {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-
+    .diets-bar { display: flex; gap: 4px; align-items: center; }
     .diet-badge {
       background: var(--accent-green);
       color: white;
-      font-size: 0.75rem;
-      padding: 3px 8px;
-      border-radius: 10px;
-      box-shadow: 0 2px 0 rgba(0,0,0,0.1);
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 8px;
     }
 
     .btn-recipe-book {
@@ -108,30 +103,123 @@
       border: 2px solid #d4a359;
       color: var(--text-dark);
       padding: 4px 10px;
-      border-radius: 12px;
+      border-radius: 10px;
       font-family: var(--font-cozy);
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       cursor: pointer;
-      box-shadow: 0 2px 0 #b38543;
     }
 
-    /* Cutting Board / Mixing Cooking Area */
-    .board {
+    /* Cooking Stage & Interactive Elements */
+    .stage {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+      position: relative;
+    }
+
+    /* Finished Dishes Shelf */
+    .dish-shelf-container {
+      width: 100%;
+      height: 48px;
+      background: #8c6239;
+      border-bottom: 4px solid #5a3e2b;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      gap: 8px;
+      box-shadow: inset 0 -4px 6px rgba(0,0,0,0.2);
+    }
+
+    .shelf-label {
+      font-size: 0.65rem;
+      color: #f4eae1;
+      font-weight: 700;
+      text-transform: uppercase;
+      writing-mode: vertical-lr;
+      transform: rotate(180deg);
+    }
+
+    .shelf-dishes {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      flex: 1;
+      height: 100%;
+      align-items: center;
+    }
+
+    .shelf-item {
+      font-size: 1.8rem;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Fridge & Trash Container Bar */
+    .kitchen-props {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 4px 0;
+    }
+
+    /* Refrigerator (Deck) */
+    .fridge-deck {
+      width: 60px;
+      height: 80px;
+      background: #a8dadc;
+      border: 3px solid #457b9d;
+      border-radius: 10px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 12px;
-      gap: 12px;
+      position: relative;
+      box-shadow: 3px 3px 0px #1d3557;
+      cursor: pointer;
+      transition: transform 0.1s;
     }
 
+    .fridge-handle {
+      position: absolute;
+      right: 6px;
+      top: 24px;
+      width: 5px;
+      height: 25px;
+      background: #1d3557;
+      border-radius: 2px;
+    }
+
+    .fridge-count {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #1d3557;
+    }
+
+    /* Trash Bin */
+    .trash-bin {
+      width: 55px;
+      height: 65px;
+      background: #e63946;
+      border: 3px solid #9bf6ff;
+      border-color: #a81825;
+      border-radius: 6px 6px 12px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.4rem;
+      box-shadow: -2px 3px 0px #780000;
+    }
+
+    /* Cutting Board Area */
     .cutting-board {
       background: #d4a373;
       border: 4px solid #bc8a5f;
-      width: 100%;
-      height: 140px;
+      height: 120px;
       border-radius: 16px;
       display: flex;
       justify-content: center;
@@ -139,64 +227,58 @@
       gap: 6px;
       position: relative;
       box-shadow: inset 0 4px 8px rgba(0,0,0,0.15);
-      overflow: hidden;
     }
 
-    .mixing-dish {
-      position: absolute;
-      font-size: 3.5rem;
-      opacity: 0;
-      transform: scale(0.2);
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .mixing-dish.active {
-      opacity: 1;
-      transform: scale(1.1);
-    }
-
-    .dish-preview {
+    /* Dynamic Scoring Banner */
+    .score-banner {
+      height: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
       font-size: 1.1rem;
       font-weight: 700;
-      color: var(--text-dark);
-      height: 28px;
-      text-align: center;
     }
 
-    /* Hand & Kitchen Counter Area */
+    .score-pop {
+      animation: scorePulse 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Hand & Countertop */
     .hand-container {
-      padding: 10px 8px 18px 8px;
+      padding: 10px 8px 16px 8px;
       background: var(--counter-top);
       border-top: 4px solid #e0d0c0;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
+      position: relative;
     }
 
     .hand {
       display: flex;
       justify-content: center;
       gap: 6px;
-      min-height: 110px;
-      padding: 4px;
+      min-height: 100px;
     }
 
-    /* Cozy Kitchen Cards */
+    /* Flying Balatro Cards */
     .card {
-      width: 64px;
-      height: 98px;
+      width: 62px;
+      height: 94px;
       background: var(--card-bg);
       color: var(--text-dark);
-      border-radius: 10px;
+      border-radius: 8px;
       border: 2px solid #e6d7c3;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 6px;
-      font-size: 0.75rem;
+      padding: 5px;
+      font-size: 0.7rem;
       font-weight: 600;
       cursor: pointer;
-      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease;
+      position: relative;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, top 0.25s ease, left 0.25s ease;
       box-shadow: 0 4px 6px rgba(0,0,0,0.08);
     }
 
@@ -206,29 +288,42 @@
       box-shadow: 0 8px 12px rgba(224, 122, 95, 0.3);
     }
 
-    .card.merging {
-      transform: scale(0) rotate(180deg) !important;
-      opacity: 0;
-      transition: transform 0.4s ease-in, opacity 0.3s ease-in;
+    .card.scoring-active {
+      animation: cardHighlight 0.4s ease-in-out infinite alternate;
+      border-color: var(--accent-yellow) !important;
     }
 
-    .card-icon { font-size: 1.4rem; text-align: center; margin: 2px 0; }
-    .card-title { text-align: center; font-size: 0.7rem; line-height: 1; }
-    .card-points { text-align: right; font-size: 0.75rem; color: #888; }
+    .card.trashed-card {
+      opacity: 0.5;
+      border-color: var(--accent-red) !important;
+      transform: scale(0.8) !important;
+    }
+
+    /* Fly Motion Classes */
+    .fly-draw {
+      animation: flyFromFridge 0.25s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    .fly-trash {
+      animation: flyToTrash 0.35s ease-in forwards !important;
+    }
+
+    .card-icon { font-size: 1.3rem; text-align: center; }
+    .card-title { text-align: center; font-size: 0.65rem; line-height: 1; }
+    .card-points { text-align: right; font-size: 0.7rem; color: #777; }
 
     /* Action Buttons */
-    .actions { display: flex; gap: 10px; }
+    .actions { display: flex; gap: 8px; }
     .btn {
       flex: 1;
       padding: 10px;
       border: none;
       border-radius: 12px;
       font-family: var(--font-cozy);
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
       box-shadow: 0 4px 0 rgba(0,0,0,0.15);
-      transition: transform 0.1s, box-shadow 0.1s;
     }
 
     .btn:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.15); }
@@ -236,7 +331,7 @@
     .btn-discard { background: var(--accent-green); color: white; }
     .btn:disabled { background: #ccc !important; opacity: 0.6; box-shadow: none; cursor: not-allowed; }
 
-    /* Modals (Recipes & Supermarket) */
+    /* Modals */
     .modal {
       position: absolute;
       inset: 0;
@@ -245,16 +340,16 @@
       display: flex;
       flex-direction: column;
       padding: 16px;
-      gap: 14px;
+      gap: 12px;
     }
 
     .modal.hidden { display: none; }
-    .modal-header { font-size: 1.6rem; font-weight: 700; color: var(--panel-wood); text-align: center; }
+    .modal-header { font-size: 1.5rem; font-weight: 700; color: var(--panel-wood); text-align: center; }
 
     .recipe-list, .shop-grid {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       flex: 1;
       overflow-y: auto;
     }
@@ -262,15 +357,43 @@
     .recipe-card, .shop-item {
       background: #fff;
       border: 2px solid #e0d0c0;
-      border-radius: 12px;
-      padding: 10px;
+      border-radius: 10px;
+      padding: 8px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
     .shop-item { flex-direction: column; justify-content: space-between; text-align: center; }
+
+    /* Keyframe Animations */
+    @keyframes flyFromFridge {
+      0% { transform: translate(-150px, -200px) scale(0.3) rotate(-20deg); opacity: 0; }
+      100% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    @keyframes flyToTrash {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: translate(140px, -100px) scale(0.1) rotate(45deg); opacity: 0; }
+    }
+
+    @keyframes cardHighlight {
+      0% { transform: translateY(-10px) scale(1.1); box-shadow: 0 0 10px var(--accent-yellow); }
+      100% { transform: translateY(-18px) scale(1.15); box-shadow: 0 0 20px var(--accent-orange); }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0); }
+      80% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes scorePulse {
+      0% { transform: scale(0.8); }
+      50% { transform: scale(1.25); color: var(--accent-orange); }
+      100% { transform: scale(1); }
+    }
   </style>
 </head>
 <body>
@@ -285,19 +408,44 @@
   </div>
 
   <div class="top-utility-bar">
-    <div class="diets-bar" id="ui-diets"><span style="font-size: 0.8rem; color: #666;">Diets:</span></div>
+    <div class="diets-bar" id="ui-diets"><span style="font-size: 0.7rem; color: #666;">Diets:</span></div>
     <button class="btn-recipe-book" id="ui-open-recipes-btn">📖 Recipes</button>
   </div>
 
-  <!-- Cooking Board -->
-  <div class="board">
-    <div class="cutting-board" id="ui-cooking-pot">
-      <div class="mixing-dish" id="ui-dish-animation">🍲</div>
+  <!-- Stage Area -->
+  <div class="stage">
+    <!-- Finished Dishes Shelf -->
+    <div class="dish-shelf-container">
+      <div class="shelf-label">Shelf</div>
+      <div class="shelf-dishes" id="ui-dish-shelf"></div>
     </div>
-    <div class="dish-preview" id="ui-recipe-preview">Select ingredients</div>
+
+    <!-- Fridge & Trash Bin Row -->
+    <div class="kitchen-props">
+      <!-- Refrigerator (Deck/Dealer) -->
+      <div class="fridge-deck" id="ui-fridge">
+        <div class="fridge-handle"></div>
+        <div style="font-size:1.2rem;">🧊</div>
+        <div class="fridge-count" id="ui-deck-count">0</div>
+      </div>
+
+      <!-- Trash Bin -->
+      <div class="trash-bin" id="ui-trash">
+        🗑️
+      </div>
+    </div>
+
+    <!-- Cutting Board Area -->
+    <div class="cutting-board" id="ui-cooking-pot"></div>
+
+    <!-- Dynamic Balatro Scoring Banner -->
+    <div class="score-banner" id="ui-score-banner">
+      <span id="ui-banner-dish" style="color: var(--panel-wood);">Select Cards</span>
+      <span id="ui-banner-calc" style="color: var(--accent-orange);"></span>
+    </div>
   </div>
 
-  <!-- Controls & Hand -->
+  <!-- Hand & Controls -->
   <div class="hand-container">
     <div class="hand" id="ui-hand"></div>
     <div class="actions">
@@ -316,7 +464,7 @@
   <!-- Supermarket Modal -->
   <div class="modal hidden" id="ui-shop">
     <div class="modal-header">🛒 Supermarket</div>
-    <p style="text-align:center; font-size:0.9rem;">Spend your Forks on new ingredients and diets!</p>
+    <p style="text-align:center; font-size:0.85rem;">Spend Forks on ingredients and diets!</p>
     <div class="shop-grid" id="ui-shop-items"></div>
     <button class="btn btn-cook" id="ui-next-week-btn">Next Week</button>
   </div>
@@ -338,7 +486,9 @@
     fridgeDeck: [],
     hand: [],
     selectedIndices: [],
-    activeDiets: []
+    activeDiets: [],
+    finishedDishes: [],
+    isAnimating: false
   };
 
   function initGame() {
@@ -355,10 +505,13 @@
   function shuffle(arr) { arr.sort(() => Math.random() - 0.5); }
 
   function drawHand() {
-    while (state.hand.length < 5 && state.fridgeDeck.length > 0) {
-      state.hand.push(state.fridgeDeck.pop());
+    const cardsToDraw = 5 - state.hand.length;
+    for (let i = 0; i < cardsToDraw; i++) {
+      if (state.fridgeDeck.length > 0) {
+        state.hand.push(state.fridgeDeck.pop());
+      }
     }
-    renderHand();
+    renderHand(true);
   }
 
   function updateHUD() {
@@ -366,16 +519,22 @@
     document.getElementById('ui-score').innerText = state.score;
     document.getElementById('ui-hands').innerText = state.handsLeft;
     document.getElementById('ui-forks').innerText = `🍴 ${state.forks}`;
+    document.getElementById('ui-deck-count').innerText = state.fridgeDeck.length;
   }
 
-  function renderHand() {
+  function renderHand(triggerFly = false) {
     const handEl = document.getElementById('ui-hand');
     handEl.innerHTML = '';
 
     state.hand.forEach((card, idx) => {
       const cardEl = document.createElement('div');
-      cardEl.className = `card ${state.selectedIndices.includes(idx) ? 'selected' : ''}`;
-      cardEl.onclick = () => toggleSelectCard(idx);
+      const isSelected = state.selectedIndices.includes(idx);
+      cardEl.className = `card ${isSelected ? 'selected' : ''} ${triggerFly ? 'fly-draw' : ''}`;
+      cardEl.dataset.index = idx;
+      cardEl.onclick = () => {
+        if (state.isAnimating) return;
+        toggleSelectCard(idx);
+      };
       cardEl.innerHTML = `
         <div class="card-icon">${card.icon}</div>
         <div class="card-title">${card.name}</div>
@@ -385,22 +544,23 @@
     });
 
     renderSelectedZone();
-    evaluateDish();
+    evaluateDishPreview();
   }
 
   function renderSelectedZone() {
     const potEl = document.getElementById('ui-cooking-pot');
-    const existingCards = potEl.querySelectorAll('.card');
-    existingCards.forEach(c => c.remove());
+    potEl.innerHTML = '';
 
     state.selectedIndices.forEach(idx => {
       const card = state.hand[idx];
       const miniEl = document.createElement('div');
       miniEl.className = 'card';
+      miniEl.id = `pot-card-${idx}`;
       miniEl.style.transform = 'scale(0.85)';
       miniEl.innerHTML = `
         <div class="card-icon">${card.icon}</div>
         <div class="card-title">${card.name}</div>
+        <div class="card-points">+${card.points}</div>
       `;
       potEl.appendChild(miniEl);
     });
@@ -410,71 +570,156 @@
     const selIdx = state.selectedIndices.indexOf(index);
     if (selIdx > -1) state.selectedIndices.splice(selIdx, 1);
     else if (state.selectedIndices.length < 5) state.selectedIndices.push(index);
-    renderHand();
+    renderHand(false);
   }
 
-  function evaluateDish() {
+  function evaluateDishPreview() {
     const cookBtn = document.getElementById('ui-cook-btn');
     const discardBtn = document.getElementById('ui-discard-btn');
-    const previewEl = document.getElementById('ui-recipe-preview');
+    const bannerDish = document.getElementById('ui-banner-dish');
+    const bannerCalc = document.getElementById('ui-banner-calc');
 
     const hasSelection = state.selectedIndices.length > 0;
-    cookBtn.disabled = !hasSelection || state.handsLeft <= 0;
-    discardBtn.disabled = !hasSelection || state.discardsLeft <= 0;
+    cookBtn.disabled = !hasSelection || state.handsLeft <= 0 || state.isAnimating;
+    discardBtn.disabled = !hasSelection || state.discardsLeft <= 0 || state.isAnimating;
 
     if (!hasSelection) {
-      previewEl.innerText = "Select ingredients";
+      bannerDish.innerText = "Select Cards";
+      bannerCalc.innerText = "";
       return;
     }
 
     const selectedCards = state.selectedIndices.map(i => state.hand[i]);
     const dish = DishEvaluator.evaluate(selectedCards);
-    previewEl.innerText = `${dish.name} (${dish.multiplier}x Multiplier)`;
+    
+    bannerDish.innerText = dish.name;
+    bannerCalc.innerText = `(${dish.basePoints} pts x ${dish.multiplier})`;
   }
 
-  function cookSelected() {
-    if (state.handsLeft <= 0) return;
+  // --- BALATRO STEP-BY-STEP SCORING & ANIMATION ---
+  async function cookSelected() {
+    if (state.handsLeft <= 0 || state.isAnimating) return;
+    state.isAnimating = true;
 
-    const potEl = document.getElementById('ui-cooking-pot');
+    const cookBtn = document.getElementById('ui-cook-btn');
+    const discardBtn = document.getElementById('ui-discard-btn');
+    cookBtn.disabled = true;
+    discardBtn.disabled = true;
+
     const selectedCards = state.selectedIndices.map(i => state.hand[i]);
     const dish = DishEvaluator.evaluate(selectedCards);
 
-    // Trigger card mixing visual effect
-    const potCards = potEl.querySelectorAll('.card');
-    potCards.forEach(c => c.classList.add('merging'));
+    const bannerDish = document.getElementById('ui-banner-dish');
+    const bannerCalc = document.getElementById('ui-banner-calc');
 
-    const dishAnim = document.getElementById('ui-dish-animation');
-    dishAnim.innerText = dish.icon;
+    let accumulatedPoints = 0;
+    const usedIndices = [];
+    const trashedIndices = [];
 
-    setTimeout(() => {
-      dishAnim.classList.add('active');
-    }, 200);
+    // Step 1: Sequential Card Scoring
+    for (let i = 0; i < state.selectedIndices.length; i++) {
+      const idx = state.selectedIndices[i];
+      const card = state.hand[idx];
+      const potCardEl = document.getElementById(`pot-card-${idx}`);
 
-    setTimeout(() => {
-      dishAnim.classList.remove('active');
+      potCardEl.classList.add('scoring-active');
+      await sleep(250);
 
-      let calculatedPoints = dish.basePoints;
-      state.activeDiets.forEach(diet => {
-        calculatedPoints = diet.applyEffect(selectedCards, calculatedPoints);
-      });
+      // Check if card is part of valid recipe requirement, or default score logic
+      const isUsedInDish = isIngredientUsedInRecipe(card, dish, selectedCards);
 
-      state.score += Math.max(0, Math.round(calculatedPoints * dish.multiplier));
-      state.handsLeft -= 1;
+      if (isUsedInDish) {
+        accumulatedPoints += card.points;
+        usedIndices.push(idx);
+        bannerCalc.className = 'score-pop';
+        bannerCalc.innerText = `${accumulatedPoints} pts`;
+      } else {
+        // Ingredient not used -> scored 0 & flagged for trash!
+        trashedIndices.push(idx);
+        potCardEl.classList.remove('scoring-active');
+        potCardEl.classList.add('trashed-card');
+        
+        bannerCalc.className = 'score-pop';
+        bannerCalc.innerText = `${accumulatedPoints} pts (+0 TRASHED)`;
+        
+        // Fly directly to Trash Bin
+        potCardEl.classList.add('fly-trash');
+      }
 
-      state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
-      state.selectedIndices = [];
+      await sleep(350);
+      bannerCalc.className = '';
+      if (isUsedInDish) potCardEl.classList.remove('scoring-active');
+    }
 
-      drawHand();
-      updateHUD();
-      checkLevelEnd();
-    }, 700);
+    // Apply Diets modifier
+    state.activeDiets.forEach(diet => {
+      accumulatedPoints = diet.applyEffect(selectedCards, accumulatedPoints);
+    });
+
+    // Step 2: Show Multiplier Blast
+    const finalScore = Math.max(0, Math.round(accumulatedPoints * dish.multiplier));
+    bannerDish.innerText = `${dish.name} MULTIPLIER!`;
+    bannerCalc.innerText = `${accumulatedPoints} x ${dish.multiplier} = +${finalScore} PTS!`;
+    bannerCalc.className = 'score-pop';
+
+    await sleep(600);
+
+    // Step 3: Add finished dish to shelf
+    if (dish.multiplier > 0) {
+      addDishToShelf(dish.icon);
+    }
+
+    state.score += finalScore;
+    state.handsLeft -= 1;
+
+    // Filter out used/trashed hand cards
+    state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
+    state.selectedIndices = [];
+
+    state.isAnimating = false;
+    drawHand();
+    updateHUD();
+    checkLevelEnd();
   }
 
-  function discardSelected() {
-    if (state.discardsLeft <= 0) return;
+  function isIngredientUsedInRecipe(card, dish, allSelected) {
+    // If it's a specific recipe match, all cards are used
+    if (dish.name !== 'Simple Plate' && dish.name !== 'Side Snack' && dish.name !== 'Empty Plate') {
+      return true;
+    }
+    // If simple plate, extras without protein/carb/veggie match go to trash
+    if (dish.name === 'Simple Plate' && card.type === 'extra' && !card.tags.includes('meta')) {
+      return false;
+    }
+    return true;
+  }
+
+  function addDishToShelf(icon) {
+    const shelf = document.getElementById('ui-dish-shelf');
+    const dishEl = document.createElement('div');
+    dishEl.className = 'shelf-item';
+    dishEl.innerText = icon;
+    shelf.appendChild(dishEl);
+    state.finishedDishes.push(icon);
+  }
+
+  async function discardSelected() {
+    if (state.discardsLeft <= 0 || state.isAnimating) return;
+    state.isAnimating = true;
+
+    // Fly selected cards to trash bin
+    state.selectedIndices.forEach(idx => {
+      const potCardEl = document.getElementById(`pot-card-${idx}`);
+      if (potCardEl) potCardEl.classList.add('fly-trash');
+    });
+
+    await sleep(300);
+
     state.discardsLeft -= 1;
     state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
     state.selectedIndices = [];
+
+    state.isAnimating = false;
     drawHand();
     updateHUD();
     checkLevelEnd();
@@ -482,24 +727,27 @@
 
   function checkLevelEnd() {
     if (state.score >= state.targetScore) {
-      setTimeout(finishWeek, 400);
+      setTimeout(finishWeek, 300);
     } else if (state.handsLeft <= 0 || (state.fridgeDeck.length === 0 && state.hand.length === 0)) {
       alert("Out of hands! Game Over.");
       state.week = 1;
       state.score = 0;
       state.forks = 0;
+      state.finishedDishes = [];
+      document.getElementById('ui-dish-shelf').innerHTML = '';
       initGame();
     }
   }
 
   function finishWeek() {
     document.getElementById('ui-shop').classList.remove('hidden');
-    // Currency System: 5 Forks for level completion + 1 bonus per remaining hand
     const bonusForks = state.handsLeft;
     state.forks += (5 + bonusForks);
     updateHUD();
     renderShopItems();
   }
+
+  function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
   // --- RECIPE POPUP LOGIC ---
   function renderRecipes() {
@@ -509,10 +757,10 @@
       const item = document.createElement('div');
       item.className = 'recipe-card';
       item.innerHTML = `
-        <div style="font-size:2rem;">${r.icon}</div>
+        <div style="font-size:1.8rem;">${r.icon}</div>
         <div>
           <div style="font-weight:bold;">${r.name} (${r.multiplier}x)</div>
-          <div style="font-size:0.8rem; color:#666;">${r.desc}</div>
+          <div style="font-size:0.75rem; color:#666;">${r.desc}</div>
         </div>
       `;
       listEl.appendChild(item);
@@ -536,10 +784,10 @@
       const itemEl = document.createElement('div');
       itemEl.className = 'shop-item';
       itemEl.innerHTML = `
-        <div style="font-size:1.5rem;">${item.icon || '📜'}</div>
-        <div style="font-weight:bold; font-size:0.9rem;">${item.name}</div>
-        <div style="font-size: 0.75rem; color: #666;">${isDiet ? item.description : `+${item.points} pts`}</div>
-        <button class="btn btn-cook" style="padding: 4px; font-size: 0.9rem;" id="buy-${item.id}">Buy (🍴${cost})</button>
+        <div style="font-size:1.4rem;">${item.icon || '📜'}</div>
+        <div style="font-weight:bold; font-size:0.85rem;">${item.name}</div>
+        <div style="font-size: 0.7rem; color: #666;">${isDiet ? item.description : `+${item.points} pts`}</div>
+        <button class="btn btn-cook" style="padding: 4px; font-size: 0.85rem;" id="buy-${item.id}">Buy (🍴${cost})</button>
       `;
       shopGrid.appendChild(itemEl);
 
@@ -568,7 +816,7 @@
 
   function renderDietsHUD() {
     const dietsEl = document.getElementById('ui-diets');
-    dietsEl.innerHTML = '<span style="font-size: 0.8rem; color: #666;">Diets:</span>';
+    dietsEl.innerHTML = '<span style="font-size: 0.7rem; color: #666;">Diets:</span>';
     state.activeDiets.forEach(d => {
       const badge = document.createElement('span');
       badge.className = 'diet-badge';
@@ -577,9 +825,12 @@
     });
   }
 
-  // Bindings
+  // Event Bindings
   document.getElementById('ui-cook-btn').onclick = cookSelected;
   document.getElementById('ui-discard-btn').onclick = discardSelected;
+  document.getElementById('ui-fridge').onclick = () => {
+    if (!state.isAnimating && state.hand.length < 5) drawHand();
+  };
   document.getElementById('ui-open-recipes-btn').onclick = () => {
     renderRecipes();
     document.getElementById('ui-recipes-modal').classList.remove('hidden');
