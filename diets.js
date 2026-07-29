@@ -1,4 +1,3 @@
-// diets.js
 export class Diet {
   constructor(id, name, description, type, costForks = 5, allowDuplicateCategories = false) {
     this.id = id;
@@ -15,7 +14,7 @@ export class Diet {
     const validCards = selectedCards.filter(c => c.state !== 'frozen' && c.state !== 'rotten');
 
     if (this.type === 'veg') {
-      const hasMeat = validCards.some(c => c.tags && c.tags.includes('meat'));
+      const hasMeat = validCards.some(c => c.tags && (c.tags.includes('meat') || c.tags.includes('fish')));
       if (hasMeat) scoreMod -= 15;
     }
 
@@ -54,7 +53,7 @@ export class Diet {
 }
 
 export const BASE_DIETS = [
-  new Diet('d1', 'Vegetarian', 'Penalizes meat (-15 pts)', 'veg', 5),
+  new Diet('d1', 'Vegetarian', 'Penalizes meat/fish (-15 pts)', 'veg', 5),
   new Diet('d2', 'Sweet Tooth', '+30 pts when Extras are included', 'sweet', 5),
   new Diet('d3', 'Keto Craze', '+20 pts per Protein, but -25 pts if Carbs present', 'keto', 7),
   new Diet('d4', 'Hearty Comfort', '+40 pts when using Metaphorical cards', 'comfort', 6),

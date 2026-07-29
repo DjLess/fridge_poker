@@ -1067,7 +1067,7 @@
 </div>
 
 <script type="module">
-  import { BASE_INGREDIENTS } from './ingredients.js';
+  import { BASE_INGREDIENTS, VEGETARIAN_PROTEINS } from './ingredients.js';
   import { DishEvaluator, RECIPE_BOOK } from './dishes.js';
   import { BASE_DIETS } from './diets.js';
   import { LevelManager } from './levels.js';
@@ -1099,21 +1099,6 @@
     { id: 'clean', name: 'Deep Clean', icon: '🧹', costForks: 2, desc: 'Remove all low-point cards from hand' },
     { id: 'duplicate', name: 'Duplication', icon: '👯', costForks: 4, desc: 'Duplicate 1 selected card' }
   ];
-
-  // Vegetarian replacement map for standard proteins
-  const vegetarianProteinMap = {
-    "Chicken": "Tofu",
-    "Beef": "Seitan",
-    "Fish": "Veggie Burger",
-    "Egg": "Tempeh"
-  };
-
-  function getProteinCard(originalName, isVegetarianDeck) {
-    if (isVegetarianDeck && vegetarianProteinMap[originalName]) {
-      return vegetarianProteinMap[originalName];
-    }
-    return originalName;
-  }
 
   function getCategoryLetter(type) {
     if (type === 'carbs') return 'C';
@@ -1147,13 +1132,20 @@
   function applyDeckType(deckType) {
     let sourceIngredients = [...BASE_INGREDIENTS];
 
+    if (deckType === 'vegetarian') {
+      sourceIngredients = sourceIngredients.map(card => {
+        if (card.type === 'protein') {
+          if (card.id === 'beef') return { ...VEGETARIAN_PROTEINS.find(p => p.id === 'seitan') };
+          if (card.id === 'chicken') return { ...VEGETARIAN_PROTEINS.find(p => p.id === 'tofu') };
+          if (card.id === 'egg') return { ...VEGETARIAN_PROTEINS.find(p => p.id === 'tempeh') };
+          if (card.id === 'fish') return { ...VEGETARIAN_PROTEINS.find(p => p.id === 'veggie_burger') };
+        }
+        return { ...card };
+      });
+    }
+
     let deck = [...sourceIngredients, ...sourceIngredients, ...sourceIngredients].map(card => {
       let c = { ...card };
-      
-      // Apply vegetarian protein replacements if running the vegetarian deck
-      if (deckType === 'vegetarian' && c.type === 'protein') {
-        c.name = getProteinCard(c.name, true);
-      }
 
       if (deckType === 'special') {
         const rand = Math.random();
@@ -1337,7 +1329,6 @@
     });
   }
 
-  // Draw 1 random card of each type at the start of the game
   function initializeStartingHand(deck, deckType) {
     const cardTypes = ["protein", "vegetable", "carbs", "special"];
     let startingHand = [];
@@ -1347,16 +1338,10 @@
       if (pool.length > 0) {
         let randomIndex = Math.floor(Math.random() * pool.length);
         let selectedCard = { ...pool[randomIndex] };
-        
-        if (deckType === 'vegetarian' && selectedCard.type === 'protein') {
-          selectedCard.name = getProteinCard(selectedCard.name, true);
-        }
-        
         startingHand.push(selectedCard);
       }
     });
 
-    // Fill up remaining hand slots up to standard size if needed
     while (startingHand.length < MAX_HAND_SIZE && deck.length > 0) {
       let randomIndex = Math.floor(Math.random() * deck.length);
       startingHand.push({ ...deck[randomIndex] });
@@ -1375,7 +1360,6 @@
     iconEl.innerText = '⏳';
     iconEl.classList.add('spinning');
 
-    // Use custom starting handler to ensure 1 random card of each type is present
     state.hand = initializeStartingHand(state.fridgeDeck, state.selectedDeckType);
     renderHand();
 
@@ -1453,9 +1437,8 @@
     return '';
   }
 
-  // Hold Card Description Popup Implementation
   let holdTimer = null;
-  const HOLD_DURATION = 600; // 600ms hold requirement
+  const HOLD_DURATION = 600;
 
   function setupCardHoldListener(cardElement, cardData) {
     const startHold = (e) => {
@@ -1532,7 +1515,6 @@
         toggleSelectCard(idx);
       };
 
-      // Attach hold listener for description popup modal
       setupCardHoldListener(cardEl, card);
 
       const categoryLetter = getCategoryLetter(card.type);
@@ -1920,10 +1902,6 @@
   function generateShopCard() {
     const randomBase = BASE_INGREDIENTS[Math.floor(Math.random() * BASE_INGREDIENTS.length)];
     const card = { ...randomBase };
-
-    if (state.selectedDeckType === 'vegetarian' && card.type === 'protein') {
-      card.name = getProteinCard(card.name, true);
-    }
 
     const randState = Math.random();
     if (randState < 0.25) {
