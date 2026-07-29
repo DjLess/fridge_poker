@@ -1,42 +1,44 @@
-{
+export const RECIPE_BOOK = [
+  // --- NAMED CLASSIC REAL-LIFE DISHES ---
+  {
     id: 'stir_fry_beef',
-    name: 'Sautéed Protein & Veggies',
+    name: 'Sautéed Beef & Veggies',
     icon: '🥘',
     multiplier: 4,
     basePoints: 25,
-    desc: 'Protein (Beef/Seitan) + Rice/Potato + Onion/Tomato',
+    desc: 'Beef + Rice/Potato + Onion/Tomato',
     check: (counts, ingredients) => {
-      const hasProtein = ingredients.some(i => i.id === 'beef' || i.id === 'seitan' || i.id === 'tofu' || i.id === 'chicken');
+      const hasBeef = ingredients.some(i => i.id === 'beef');
       const hasCarb = counts.carbs > 0;
       const hasVeg = counts.vegetable > 0;
-      return hasProtein && hasCarb && hasVeg;
+      return hasBeef && hasCarb && hasVeg;
     }
   },
   {
     id: 'chicken_rice_veggies',
-    name: 'Protein Rice Bowl',
+    name: 'Chicken Rice Bowl',
     icon: '🍲',
     multiplier: 3,
     basePoints: 20,
-    desc: 'Chicken/Tofu + Rice + Any Vegetable',
+    desc: 'Chicken + Rice + Any Vegetable',
     check: (counts, ingredients) => {
-      const hasProtein = ingredients.some(i => i.id === 'chicken' || i.id === 'tofu' || i.id === 'beef' || i.id === 'seitan');
+      const hasChicken = ingredients.some(i => i.id === 'chicken');
       const hasRice = ingredients.some(i => i.id === 'rice');
-      return hasProtein && hasRice && counts.vegetable > 0;
+      return hasChicken && hasRice && counts.vegetable > 0;
     }
   },
   {
     id: 'pasta_bolognese',
-    name: 'Classic Protein Pasta',
+    name: 'Classic Beef Pasta',
     icon: '🍝',
     multiplier: 3,
     basePoints: 18,
-    desc: 'Pasta + Beef/Seitan + Tomato',
+    desc: 'Pasta + Beef + Tomato',
     check: (counts, ingredients) => {
       const hasPasta = ingredients.some(i => i.id === 'pasta');
-      const hasProtein = ingredients.some(i => i.id === 'beef' || i.id === 'seitan');
+      const hasBeef = ingredients.some(i => i.id === 'beef');
       const hasTomato = ingredients.some(i => i.id === 'tomato');
-      return hasPasta && hasProtein && hasTomato;
+      return hasPasta && hasBeef && hasTomato;
     }
   },
   {
@@ -45,11 +47,11 @@
     icon: '🍳',
     multiplier: 3,
     basePoints: 15,
-    desc: 'Egg/Tempeh + Vegetable + Cheese/Butter',
+    desc: 'Egg + Vegetable + Cheese/Butter',
     check: (counts, ingredients) => {
-      const hasEggOrTempeh = ingredients.some(i => i.id === 'egg' || i.id === 'tempeh');
+      const hasEgg = ingredients.some(i => i.id === 'egg');
       const hasDairy = counts.dairy > 0;
-      return hasEggOrTempeh && counts.vegetable > 0 && hasDairy;
+      return hasEgg && counts.vegetable > 0 && hasDairy;
     }
   },
   {
