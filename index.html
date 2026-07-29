@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>WAWE? Where are we eating?</title>
+  <title>What are we eating?</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
 
@@ -104,6 +104,7 @@
       color: var(--panel-wood);
       text-shadow: 2px 2px 0px rgba(255,255,255,0.6);
       line-height: 1.1;
+      text-align: center;
     }
 
     .sub-title {
@@ -889,8 +890,7 @@
   <!-- Start Screen & Deck Selection -->
   <div class="screen-overlay" id="ui-start-screen">
     <div class="title-banner">
-      <h1 class="main-title">WAWE?</h1>
-      <div class="sub-title">Where are we eating?</div>
+      <h1 class="main-title">What are we eating?</h1>
     </div>
 
     <!-- Animation Showcase -->
@@ -1102,11 +1102,10 @@
 
   // Vegetarian replacement map for standard proteins
   const vegetarianProteinMap = {
-    "Chicken Breast": "Tofu Block",
-    "Beef Steak": "Seitan Cutlet",
-    "Pork Chop": "Tempeh Medallion",
-    "Salmon Fillet": "Mushroom Steak",
-    "Bacon": "Smoked Mushroom Strips"
+    "Chicken": "Tofu",
+    "Beef": "Seitan",
+    "Fish": "Veggie Burger",
+    "Egg": "Tempeh"
   };
 
   function getProteinCard(originalName, isVegetarianDeck) {
@@ -1168,6 +1167,25 @@
         } else {
           c.state = 'expiring';
           c.name = `Fresh ${c.name} (Expiring)`;
+        }
+      } else if (deckType === 'regular' || deckType === 'vegetarian') {
+        const isSpecialChance = Math.random();
+        if (isSpecialChance < 0.10) {
+          const randState = Math.random();
+          if (randState < 0.33) {
+            c.state = 'gourmet';
+            c.name = `Gourmet ${c.name}`;
+          } else if (randState < 0.66) {
+            c.state = 'frozen';
+            c.frozenTimer = 1;
+            c.name = `Frozen ${c.name}`;
+          } else {
+            c.state = 'expiring';
+            c.name = `Fresh ${c.name} (Expiring)`;
+          }
+        } else {
+          c.state = c.state || 'normal';
+          c.frozenTimer = c.state === 'frozen' ? 1 : 0;
         }
       } else {
         c.state = c.state || 'normal';
