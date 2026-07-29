@@ -60,7 +60,6 @@
       justify-content: space-between;
       position: relative;
       overflow: hidden;
-      perspective: 1000px;
     }
 
     @media (min-width: 441px) {
@@ -73,13 +72,13 @@
       }
     }
 
-    /* HUD Header */
+    /* HUD Header - Bigger text for better phone readability */
     .hud {
       background: var(--panel-wood);
-      padding: 6px;
+      padding: 8px 6px;
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 4px;
+      gap: 5px;
       text-align: center;
       color: #fff;
       z-index: 10;
@@ -87,18 +86,18 @@
 
     .hud-box {
       background: rgba(255,255,255,0.15);
-      padding: 4px 2px;
+      padding: 6px 2px;
       border-radius: 8px;
     }
 
     .hud-label {
-      font-size: 0.55rem;
+      font-size: 0.62rem;
       text-transform: uppercase;
       opacity: 0.9;
     }
 
     .hud-value {
-      font-size: 0.95rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--accent-yellow);
     }
@@ -108,7 +107,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 10px;
+      padding: 8px 12px;
       background: rgba(0,0,0,0.12);
       border-bottom: 2px solid rgba(0,0,0,0.1);
       z-index: 10;
@@ -123,33 +122,32 @@
     }
 
     .slot-group-title {
-      font-size: 0.52rem;
+      font-size: 0.6rem;
       text-transform: uppercase;
       color: var(--panel-wood);
       font-weight: 800;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
 
     .slots-row {
       display: flex;
-      gap: 4px;
+      gap: 5px;
       width: 100%;
       justify-content: center;
     }
 
     .slot-item {
-      width: 32px;
-      height: 38px;
+      width: 36px;
+      height: 42px;
       border: 2px dashed rgba(90, 62, 43, 0.4);
       border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
+      font-size: 1.25rem;
       background: rgba(255,255,255,0.3);
       cursor: pointer;
       position: relative;
-      transition: transform 0.15s, border-color 0.15s, background-color 0.15s;
     }
 
     .slot-item.filled {
@@ -178,7 +176,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 4px 12px;
+      padding: 6px 14px;
       background: rgba(0,0,0,0.05);
       z-index: 10;
     }
@@ -187,11 +185,11 @@
       background: var(--accent-yellow);
       border: 2px solid #d4a359;
       color: var(--text-dark);
-      padding: 4px 10px;
+      padding: 6px 12px;
       border-radius: 10px;
       font-family: var(--font-cozy);
       font-weight: 700;
-      font-size: 0.75rem;
+      font-size: 0.85rem;
       cursor: pointer;
     }
 
@@ -201,7 +199,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 8px 10px;
+      padding: 8px 12px;
       position: relative;
       z-index: 1;
     }
@@ -209,7 +207,7 @@
     /* Shelf */
     .dish-shelf-container {
       width: 100%;
-      height: 44px;
+      height: 52px;
       background: #8c6239;
       border-bottom: 4px solid #5a3e2b;
       border-radius: 8px;
@@ -221,7 +219,7 @@
     }
 
     .shelf-label {
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       color: #f4eae1;
       font-weight: 700;
       text-transform: uppercase;
@@ -239,7 +237,7 @@
     }
 
     .shelf-item {
-      font-size: 1.8rem;
+      font-size: 2rem;
       position: relative;
       animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
@@ -248,12 +246,11 @@
       position: absolute;
       bottom: -2px;
       left: -2px;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       line-height: 1;
       background: rgba(0,0,0,0.6);
       border-radius: 50%;
       padding: 1px;
-      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
     }
 
     /* Kitchen Props */
@@ -266,8 +263,8 @@
     }
 
     .fridge-deck {
-      width: 65px;
-      height: 85px;
+      width: 75px;
+      height: 95px;
       background: #a8dadc;
       border: 3px solid #457b9d;
       border-radius: 10px;
@@ -278,7 +275,6 @@
       position: relative;
       box-shadow: 3px 3px 0px #1d3557;
       cursor: pointer;
-      transition: transform 0.1s, background-color 0.2s;
     }
 
     .fridge-deck.dealing {
@@ -288,8 +284,7 @@
     }
 
     .fridge-icon {
-      font-size: 1.6rem;
-      transition: transform 0.2s;
+      font-size: 1.8rem;
     }
 
     .fridge-icon.spinning {
@@ -299,22 +294,22 @@
     .fridge-handle {
       position: absolute;
       right: 6px;
-      top: 24px;
+      top: 28px;
       width: 5px;
-      height: 25px;
+      height: 30px;
       background: #1d3557;
       border-radius: 2px;
     }
 
     .fridge-count {
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       color: #1d3557;
     }
 
     .trash-bin {
-      width: 55px;
-      height: 65px;
+      width: 65px;
+      height: 75px;
       background: #e63946;
       border: 3px solid #a81825;
       border-radius: 6px 6px 12px 12px;
@@ -323,7 +318,7 @@
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       box-shadow: -2px 3px 0px #780000;
     }
 
@@ -331,7 +326,7 @@
     .cutting-board {
       background: #d4a373;
       border: 4px solid #bc8a5f;
-      height: 105px;
+      height: 120px;
       border-radius: 16px;
       display: flex;
       justify-content: center;
@@ -339,7 +334,6 @@
       gap: 6px;
       position: relative;
       box-shadow: inset 0 4px 8px rgba(0,0,0,0.15);
-      overflow: visible;
       z-index: 1;
     }
 
@@ -349,7 +343,7 @@
 
     .serving-plate {
       position: absolute;
-      font-size: 3.8rem;
+      font-size: 4.2rem;
       z-index: 5;
       animation: plateAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
       filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
@@ -357,25 +351,32 @@
 
     /* Dynamic Banner */
     .score-banner {
-      height: 30px;
+      height: 34px;
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 10px;
-      font-size: 0.95rem;
+      font-size: 1.05rem;
       font-weight: 700;
     }
 
-    .score-pop {
-      animation: juicyPulse 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Hand & Controls Container - Clean separation from buttons */
+    .hand-container {
+      padding: 6px 10px 10px 10px;
+      background: var(--counter-top);
+      border-top: 4px solid #e0d0c0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      z-index: 20;
     }
 
-    /* Hand Controls Bar */
     .reorder-bar {
       display: flex;
       justify-content: flex-end;
-      gap: 6px;
-      padding: 0 12px;
+      gap: 8px;
+      padding: 0 4px;
     }
 
     .btn-sort {
@@ -383,39 +384,22 @@
       color: #fff;
       border: none;
       border-radius: 6px;
-      padding: 3px 8px;
+      padding: 5px 10px;
       font-family: var(--font-cozy);
-      font-size: 0.65rem;
+      font-size: 0.75rem;
       font-weight: 600;
       cursor: pointer;
       box-shadow: 0 2px 0 rgba(0,0,0,0.2);
-      transition: background 0.15s, transform 0.05s;
     }
 
-    .btn-sort:active { transform: translateY(1px); }
-
-    /* Hand Container & Carousel */
-    .hand-container {
-      padding: 4px 8px 12px 8px;
-      background: var(--counter-top);
-      border-top: 4px solid #e0d0c0;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      position: relative;
-      z-index: 20;
-    }
-
+    /* Hand Carousel with bigger cards and proper spacing */
     .hand-arc-wrapper {
       position: relative;
-      height: 105px;
-      margin-bottom: 8px;
+      height: 115px;
       width: 100%;
       display: flex;
       justify-content: center;
       align-items: flex-end;
-      perspective: 800px;
-      z-index: 25;
     }
 
     .hand {
@@ -426,10 +410,10 @@
       justify-content: center;
     }
 
-    /* Card Styling */
+    /* Card Styling - Larger for Motorola G35 phone screen */
     .card {
-      width: 58px;
-      height: 88px;
+      width: 66px;
+      height: 100px;
       background: var(--card-bg);
       color: var(--text-dark);
       border-radius: 8px;
@@ -437,17 +421,15 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 4px;
-      font-size: 0.65rem;
+      padding: 5px;
+      font-size: 0.72rem;
       font-weight: 600;
       cursor: pointer;
       position: absolute;
       bottom: 0;
       transform-origin: bottom center;
-      transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), left 0.35s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s, border-color 0.2s, opacity 0.2s;
+      transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), left 0.3s cubic-bezier(0.25, 1, 0.5, 1);
       box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-      backface-visibility: hidden;
-      z-index: 30;
     }
 
     /* Card States Styling */
@@ -466,7 +448,6 @@
     .card.state-expiring {
       background: #fff3e0 !important;
       border-color: #ff9800 !important;
-      animation: pulseExpiring 0.8s infinite alternate;
     }
 
     .card.state-rotten {
@@ -476,16 +457,11 @@
       opacity: 0.75;
     }
 
-    @keyframes pulseExpiring {
-      0% { box-shadow: 0 0 4px #ff9800; }
-      100% { box-shadow: 0 0 12px #e65100; }
-    }
-
     .card-state-badge {
       position: absolute;
       top: 2px;
       right: 3px;
-      font-size: 0.55rem;
+      font-size: 0.6rem;
       font-weight: 800;
       padding: 1px 3px;
       border-radius: 4px;
@@ -501,7 +477,7 @@
       position: absolute;
       top: 3px;
       left: 4px;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       font-weight: 800;
       line-height: 1;
     }
@@ -511,10 +487,10 @@
     .card-corner.type-protein { color: var(--type-p); }
     .card-corner.type-special { color: var(--type-s); }
 
+    /* Selected state: maintains natural z-index ordering without popping to front */
     .card.selected {
       border-color: var(--accent-orange) !important;
-      box-shadow: 0 0 15px rgba(224, 122, 95, 0.8), 0 8px 12px rgba(0,0,0,0.2) !important;
-      z-index: 40 !important;
+      box-shadow: 0 0 12px rgba(224, 122, 95, 0.8) !important;
     }
 
     .card.scoring-active {
@@ -528,9 +504,9 @@
       transform: scale(0.7) !important;
     }
 
-    .card-icon { font-size: 1.2rem; text-align: center; margin-top: 6px; }
-    .card-title { text-align: center; font-size: 0.55rem; line-height: 1; font-weight: 700; }
-    .card-points { text-align: right; font-size: 0.65rem; color: #777; font-weight: bold; }
+    .card-icon { font-size: 1.4rem; text-align: center; margin-top: 8px; }
+    .card-title { text-align: center; font-size: 0.62rem; line-height: 1; font-weight: 700; }
+    .card-points { text-align: right; font-size: 0.72rem; color: #777; font-weight: bold; }
 
     /* Fly Motion Keyframes */
     .fly-draw-anim {
@@ -542,25 +518,24 @@
       animation: flyToTrash 0.4s ease-in forwards !important;
     }
 
-    /* Action Buttons */
+    /* Action Buttons - Distinctly separated from the hand */
     .actions { 
       display: flex; 
-      gap: 8px; 
-      position: relative; 
+      gap: 10px; 
+      margin-top: 4px;
       z-index: 10;
     }
     
     .btn {
       flex: 1;
-      padding: 10px;
+      padding: 12px;
       border: none;
       border-radius: 12px;
       font-family: var(--font-cozy);
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 700;
       cursor: pointer;
       box-shadow: 0 4px 0 rgba(0,0,0,0.15);
-      transition: transform 0.05s;
     }
 
     .btn:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.15); }
@@ -569,7 +544,7 @@
     .btn-secondary { background: #5a3e2b; color: white; }
     .btn:disabled { background: #ccc !important; opacity: 0.6; box-shadow: none; cursor: not-allowed; }
 
-    /* Modals & Popups */
+    /* Modals */
     .modal {
       position: absolute;
       inset: 0;
@@ -577,12 +552,12 @@
       z-index: 100;
       display: flex;
       flex-direction: column;
-      padding: 16px;
+      padding: 18px;
       gap: 12px;
     }
 
     .modal.hidden { display: none; }
-    .modal-header { font-size: 1.4rem; font-weight: 700; color: var(--panel-wood); text-align: center; }
+    .modal-header { font-size: 1.5rem; font-weight: 700; color: var(--panel-wood); text-align: center; }
 
     .recipe-list, .shop-grid, .review-list {
       display: flex;
@@ -596,7 +571,7 @@
       background: #fff;
       border: 2px solid #e0d0c0;
       border-radius: 10px;
-      padding: 8px;
+      padding: 10px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -608,7 +583,7 @@
     /* Floating Text Pops */
     .floating-text {
       position: absolute;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 800;
       color: #ffd166;
       text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
@@ -617,7 +592,6 @@
       animation: floatUp 0.8s ease-out forwards;
     }
 
-    /* Keyframes */
     @keyframes flyFromFridgeToHand {
       0% {
         transform: translate(var(--start-x, -130px), var(--start-y, -220px)) scale(0.2) rotate(-120deg);
@@ -627,9 +601,7 @@
         transform: scale(1.15) rotate(10deg);
         opacity: 1;
       }
-      100% {
-        opacity: 1;
-      }
+      100% { opacity: 1; }
     }
 
     @keyframes flyToTrash {
@@ -638,19 +610,13 @@
     }
 
     @keyframes cardHighlight {
-      0% { transform: scale(1.05) translateY(-5px); box-shadow: 0 0 10px var(--accent-yellow); }
-      100% { transform: scale(1.15) translateY(-12px); box-shadow: 0 0 20px var(--accent-orange); }
+      0% { transform: scale(1.05) translateY(-5px); }
+      100% { transform: scale(1.15) translateY(-12px); }
     }
 
     @keyframes popIn {
       0% { transform: scale(0); }
       80% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-
-    @keyframes juicyPulse {
-      0% { transform: scale(0.7); }
-      50% { transform: scale(1.35); color: #ffd166; }
       100% { transform: scale(1); }
     }
 
@@ -711,7 +677,7 @@
   </div>
 
   <div class="top-utility-bar">
-    <div style="font-size:0.85rem; font-weight:bold; color:var(--panel-wood);" id="ui-forks">🍴 0</div>
+    <div style="font-size:0.95rem; font-weight:bold; color:var(--panel-wood);" id="ui-forks">🍴 0</div>
     <button class="btn-recipe-book" id="ui-open-recipes-btn">📖 Recipes</button>
   </div>
 
@@ -773,8 +739,8 @@
   <!-- Level Complete Popup Modal -->
   <div class="modal hidden" id="ui-level-complete-modal">
     <div class="modal-header">🎉 Level Complete!</div>
-    <p style="text-align:center; font-size:0.9rem;" id="ui-complete-summary">You reached all level requirements!</p>
-    <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
+    <p style="text-align:center; font-size:1rem;" id="ui-complete-summary">You reached all level requirements!</p>
+    <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px;">
       <button class="btn btn-secondary" id="ui-btn-review-dishes">📜 Review Dishes</button>
       <button class="btn btn-cook" id="ui-btn-go-shop">🛒 Go to Supermarket</button>
     </div>
@@ -791,7 +757,7 @@
   <!-- Supermarket Modal -->
   <div class="modal hidden" id="ui-shop">
     <div class="modal-header">🛒 Supermarket</div>
-    <p style="text-align:center; font-size:0.85rem;" id="ui-shop-summary">Spend Forks on kitchenware, skills, diets & ingredients!</p>
+    <p style="text-align:center; font-size:0.95rem;" id="ui-shop-summary">Spend Forks on kitchenware, skills, diets & ingredients!</p>
     <div class="shop-grid" id="ui-shop-items"></div>
     <button class="btn btn-cook" id="ui-next-week-btn">Next Level</button>
   </div>
@@ -805,7 +771,6 @@
 
   const MAX_HAND_SIZE = 9;
 
-  // --- 10 KITCHENWARE ITEMS (Joker Equivalents) ---
   export const KITCHENWARE_DB = [
     { id: 'skillet', name: 'Cast Iron Skillet', icon: '🍳', costForks: 4, desc: '+3 Mult if dish has Protein' },
     { id: 'blender', name: 'High-Speed Blender', icon: '🌪️', costForks: 4, desc: '+15 Pts for every Vegetable' },
@@ -819,7 +784,6 @@
     { id: 'wok', name: 'Golden Wok', icon: '🥘', costForks: 5, desc: '+$2 Forks on valid Rice/Carb dishes' }
   ];
 
-  // --- 10 CHEF SKILL CARDS (Tarot Equivalents) ---
   export const CHEF_SKILLS_DB = [
     { id: 'flash_freeze', name: 'Flash Freeze', icon: '❄️', costForks: 2, desc: 'Freeze 1 card (1 turn timer)' },
     { id: 'gourmet_touch', name: 'Gourmet Touch', icon: '✨', costForks: 3, desc: 'Make 1 selected card Gourmet (+0.5 Mult)' },
@@ -833,7 +797,6 @@
     { id: 'duplicate', name: 'Duplication', icon: '👯', costForks: 4, desc: 'Duplicate 1 selected card' }
   ];
 
-  // Clasificación de cartas: Carbohidratos (C), Vegetal (V), Proteína (P), Todo lo demás es S (Especial)
   function getCategoryLetter(type) {
     if (type === 'carbs') return 'C';
     if (type === 'vegetable') return 'V';
@@ -854,9 +817,9 @@
     fridgeDeck: [],
     hand: [],
     selectedIndices: [],
-    kitchenware: [], // Max 3
-    activeDiets: [],  // Max 2
-    chefSkills: [],   // Max 2
+    kitchenware: [],
+    activeDiets: [],
+    chefSkills: [],
     finishedDishes: [],
     isAnimating: false,
     sortScoreAscending: false
@@ -875,7 +838,6 @@
 
     document.getElementById('ui-dish-shelf').innerHTML = '';
 
-    // Clone base ingredients and ensure standard state fields
     state.fridgeDeck = [...BASE_INGREDIENTS, ...BASE_INGREDIENTS, ...BASE_INGREDIENTS].map(card => ({
       ...card,
       state: card.state || 'normal',
@@ -906,7 +868,6 @@
   }
 
   function renderSlots() {
-    // Kitchenware Slots (3)
     const kwContainer = document.getElementById('ui-kitchenware-slots');
     kwContainer.innerHTML = '';
     for (let i = 0; i < 3; i++) {
@@ -918,7 +879,6 @@
       kwContainer.appendChild(slot);
     }
 
-    // Diet Slots (2)
     const dietContainer = document.getElementById('ui-diet-slots');
     dietContainer.innerHTML = '';
     for (let i = 0; i < 2; i++) {
@@ -930,7 +890,6 @@
       dietContainer.appendChild(slot);
     }
 
-    // Chef Skill Slots (2)
     const skillContainer = document.getElementById('ui-skill-slots');
     skillContainer.innerHTML = '';
     for (let i = 0; i < 2; i++) {
@@ -994,7 +953,6 @@
     evaluateDishPreview();
   }
 
-  // Update card states at the start/end of turns (Expiring -> Rotten, Frozen timer -> Defrost)
   function processTurnCardStateUpdates() {
     state.hand.forEach(card => {
       if (card.state === 'expiring' && !card.usedThisTurn) {
@@ -1005,7 +963,6 @@
         if (card.frozenTimer > 0) {
           card.frozenTimer -= 1;
         } else {
-          // Defrost card, granting bonus points!
           card.state = 'normal';
           card.points = (card.points || 0) + 50;
         }
@@ -1124,7 +1081,7 @@
     handEl.innerHTML = '';
 
     const total = state.hand.length;
-    const maxAngle = 36;
+    const maxAngle = 30;
     const angleStep = total > 1 ? (maxAngle * 2) / (total - 1) : 0;
     const centerOffset = (total - 1) / 2;
 
@@ -1134,20 +1091,22 @@
 
       const offset = idx - centerOffset;
       const angle = offset * angleStep;
-      const translateY = Math.abs(offset) * 6;
-      const translateZ = -Math.abs(offset) * 8;
+      const translateY = Math.abs(offset) * 4;
 
       const cardStateClass = card.state ? `state-${card.state}` : '';
       cardEl.className = `card ${cardStateClass} ${isSelected ? 'selected' : ''}`;
       cardEl.dataset.index = idx;
 
-      let transformStr = `rotate(${angle}deg) translateY(${translateY}px) translateZ(${translateZ}px)`;
+      // Keep natural z-index ordering based on array position (no popping to the front)
+      cardEl.style.zIndex = idx + 1;
+
+      let transformStr = `rotate(${angle}deg) translateY(${translateY}px)`;
       if (isSelected) {
-        transformStr = `rotate(${angle}deg) translateY(${translateY - 22}px) translateZ(${translateZ + 20}px) scale(1.1)`;
+        transformStr = `rotate(${angle}deg) translateY(${translateY - 14}px) scale(1.05)`;
       }
 
       cardEl.style.transform = transformStr;
-      cardEl.style.left = `calc(50% - 29px + ${(offset) * 34}px)`;
+      cardEl.style.left = `calc(50% - 33px + ${(offset) * 36}px)`;
 
       cardEl.onclick = () => {
         if (state.isAnimating) return;
@@ -1187,6 +1146,7 @@
       miniEl.style.position = 'relative';
       miniEl.style.transform = 'scale(0.85)';
       miniEl.style.left = '0';
+      miniEl.style.zIndex = '5';
       miniEl.innerHTML = `
         <div class="card-corner ${isSpecialCat ? 'type-special' : `type-${card.type}`}">${categoryLetter}</div>
         ${getCardStateBadgeHTML(card)}
@@ -1261,7 +1221,6 @@
       }
     });
 
-    // Kitchenware bonuses
     const validCards = selectedCards.filter(c => c.state !== 'frozen' && c.state !== 'rotten');
     state.kitchenware.forEach(kw => {
       if (kw.id === 'skillet' && validCards.some(c => c.type === 'protein')) totalMult += 3;
@@ -1300,7 +1259,6 @@
     let accumulatedMult = dish.multiplier;
     let hasSpecialIngredient = false;
 
-    // Apply Kitchenware Passives for valid cards
     const validCards = selectedCards.filter(c => c.state !== 'frozen' && c.state !== 'rotten');
     state.kitchenware.forEach(kw => {
       if (kw.id === 'skillet' && validCards.some(c => c.type === 'protein')) accumulatedMult += 3;
@@ -1330,7 +1288,6 @@
       if (isCardValid) {
         let cardPts = card.points || 0;
 
-        // Expiring card used on draw turn gives extra points
         if (card.state === 'expiring' && card.drawnThisTurn) {
           cardPts += 25;
           triggerFloatingText(`+25 FRESH BONUS!`, potCardEl);
@@ -1482,10 +1439,10 @@
       const item = document.createElement('div');
       item.className = 'recipe-card';
       item.innerHTML = `
-        <div style="font-size:1.8rem;">${r.icon}</div>
+        <div style="font-size:2rem;">${r.icon}</div>
         <div>
-          <div style="font-weight:bold;">${r.name} (${r.multiplier}x)</div>
-          <div style="font-size:0.75rem; color:#666;">${r.desc}</div>
+          <div style="font-weight:bold; font-size:1rem;">${r.name} (${r.multiplier}x)</div>
+          <div style="font-size:0.85rem; color:#666;">${r.desc}</div>
         </div>
       `;
       listEl.appendChild(item);
@@ -1505,13 +1462,13 @@
       const item = document.createElement('div');
       item.className = 'review-item';
       item.innerHTML = `
-        <div style="font-size:1.8rem; position:relative;">
+        <div style="font-size:2rem; position:relative;">
           ${d.icon}
           ${d.isSpecial ? '<span style="font-size:0.7rem; position:absolute; bottom:0; left:0;">⭐</span>' : ''}
         </div>
         <div>
-          <div style="font-weight:bold;">#${idx + 1} - ${d.name}</div>
-          <div style="font-size:0.75rem; color:#666;">${d.isSpecial ? 'Special Edition Dish' : 'Standard Recipe'}</div>
+          <div style="font-weight:bold; font-size:1rem;">#${idx + 1} - ${d.name}</div>
+          <div style="font-size:0.85rem; color:#666;">${d.isSpecial ? 'Special Edition Dish' : 'Standard Recipe'}</div>
         </div>
       `;
       reviewList.appendChild(item);
@@ -1542,7 +1499,6 @@
     const randomBase = BASE_INGREDIENTS[Math.floor(Math.random() * BASE_INGREDIENTS.length)];
     const card = { ...randomBase };
 
-    // 50% chance to have a special card state in shop
     const randState = Math.random();
     if (randState < 0.25) {
       card.state = 'gourmet';
@@ -1589,10 +1545,10 @@
       const itemEl = document.createElement('div');
       itemEl.className = 'shop-item';
       itemEl.innerHTML = `
-        <div style="font-size:1.4rem;">${item.icon || '📜'}</div>
-        <div style="font-weight:bold; font-size:0.82rem;">${item.name}${stateBadge}</div>
-        <div style="font-size: 0.68rem; color: #666;">${item.desc || item.description || (item.multiplierBonus ? `+${item.multiplierBonus}x Mult` : `+${item.points} pts`)}</div>
-        <button class="btn btn-cook" style="padding: 4px; font-size: 0.8rem;" id="buy-${idx}">Buy (🍴${cost})</button>
+        <div style="font-size:1.6rem;">${item.icon || '📜'}</div>
+        <div style="font-weight:bold; font-size:0.9rem;">${item.name}${stateBadge}</div>
+        <div style="font-size: 0.75rem; color: #666;">${item.desc || item.description || (item.multiplierBonus ? `+${item.multiplierBonus}x Mult` : `+${item.points} pts`)}</div>
+        <button class="btn btn-cook" style="padding: 6px; font-size: 0.85rem;" id="buy-${idx}">Buy (🍴${cost})</button>
       `;
       shopGrid.appendChild(itemEl);
 
@@ -1621,7 +1577,6 @@
     updateHUD();
   }
 
-  // Event Listeners
   document.getElementById('ui-cook-btn').onclick = cookSelected;
   document.getElementById('ui-discard-btn').onclick = discardSelected;
   document.getElementById('ui-sort-type-btn').onclick = sortHandByType;
