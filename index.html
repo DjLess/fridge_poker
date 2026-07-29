@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Culinary Crafter - Balatro Kitchen Edition</title>
+  <title>WAWE? Where are we eating?</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
 
@@ -70,6 +70,159 @@
         border: 6px solid var(--panel-wood);
         box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       }
+    }
+
+    /* Start Screen & Screens Overlay */
+    .screen-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-wood);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .screen-overlay.hidden {
+      display: none !important;
+    }
+
+    .title-banner {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .main-title {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--panel-wood);
+      text-shadow: 2px 2px 0px rgba(255,255,255,0.6);
+      line-height: 1.1;
+    }
+
+    .sub-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--accent-orange);
+    }
+
+    /* Start Screen Animation Showcase */
+    .start-animation-stage {
+      width: 100%;
+      height: 220px;
+      position: relative;
+      background: rgba(0,0,0,0.05);
+      border-radius: 16px;
+      border: 3px dashed rgba(90, 62, 43, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .mini-fridge {
+      width: 80px;
+      height: 100px;
+      background: #a8dadc;
+      border: 3px solid #457b9d;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 15px;
+      box-shadow: 3px 3px 0px #1d3557;
+    }
+
+    .floating-preview-card {
+      width: 60px;
+      height: 85px;
+      background: var(--card-bg);
+      border: 2px solid #e6d7c3;
+      border-radius: 8px;
+      position: absolute;
+      bottom: 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      animation: previewCardFly 2.5s infinite ease-in-out;
+    }
+
+    @keyframes previewCardFly {
+      0% {
+        transform: translateY(-120px) scale(0.4) rotate(-15deg);
+        opacity: 0;
+      }
+      30% {
+        transform: translateY(0px) scale(1) rotate(5deg);
+        opacity: 1;
+      }
+      70% {
+        transform: translateY(0px) scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(30px) scale(0.6) rotate(10deg);
+        opacity: 0;
+      }
+    }
+
+    /* Deck Selection Options */
+    .deck-selection-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .deck-option-card {
+      background: #fff;
+      border: 3px solid #e0d0c0;
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      text-align: left;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.06);
+    }
+
+    .deck-option-card:hover, .deck-option-card:active {
+      transform: translateY(-2px);
+      border-color: var(--accent-orange);
+      box-shadow: 0 6px 12px rgba(224, 122, 95, 0.2);
+    }
+
+    .deck-icon {
+      font-size: 2.4rem;
+      background: rgba(0,0,0,0.04);
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .deck-info h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--panel-wood);
+      margin-bottom: 2px;
+    }
+
+    .deck-info p {
+      font-size: 0.8rem;
+      color: #666;
+      line-height: 1.2;
     }
 
     /* HUD Header - Bigger text for better phone readability */
@@ -651,6 +804,65 @@
 <body>
 
 <div id="app-viewport">
+  <!-- Start Screen & Deck Selection -->
+  <div class="screen-overlay" id="ui-start-screen">
+    <div class="title-banner">
+      <h1 class="main-title">WAWE?</h1>
+      <div class="sub-title">Where are we eating?</div>
+    </div>
+
+    <!-- Animation Showcase -->
+    <div class="start-animation-stage">
+      <div class="mini-fridge">
+        <div class="fridge-handle" style="top:22px; height:24px;"></div>
+        <div style="font-size:1.6rem;">🧊</div>
+      </div>
+      <div class="floating-preview-card">
+        <div style="font-size:0.6rem; color:#f39c12; font-weight:800;">C</div>
+        <div>🧀</div>
+        <div style="font-size:0.65rem; color:#777;">+15</div>
+      </div>
+    </div>
+
+    <button class="btn btn-cook" id="ui-btn-goto-deck-select" style="font-size: 1.25rem; padding: 14px;">Play Game</button>
+  </div>
+
+  <!-- Deck Selection Screen Overlay -->
+  <div class="screen-overlay hidden" id="ui-deck-screen">
+    <div class="title-banner" style="margin-top: 10px;">
+      <h2 class="main-title" style="font-size: 2rem;">Choose Your Deck</h2>
+      <div class="sub-title" style="font-size: 0.95rem;">Select your culinary style for this run</div>
+    </div>
+
+    <div class="deck-selection-container">
+      <div class="deck-option-card" id="deck-regular">
+        <div class="deck-icon">🃏</div>
+        <div class="deck-info">
+          <h3>Regular Deck</h3>
+          <p>The standard culinary mix featuring balanced carbs, vegetables, proteins, and spices.</p>
+        </div>
+      </div>
+
+      <div class="deck-option-card" id="deck-vegetarian">
+        <div class="deck-icon">🥗</div>
+        <div class="deck-info">
+          <h3>Vegetarian Deck</h3>
+          <p>Pure plant-based energy! Contains only vegetables, grains, fruits, and special herb cards.</p>
+        </div>
+      </div>
+
+      <div class="deck-option-card" id="deck-special">
+        <div class="deck-icon">✨</div>
+        <div class="deck-info">
+          <h3>Specialty Deck</h3>
+          <p>High risk, high reward! All ingredients start with special modifiers (Frozen, Gourmet, Expiring).</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-secondary" id="ui-btn-back-start" style="font-size: 0.95rem; padding: 10px; flex: unset; width: 100%;">Back</button>
+  </div>
+
   <!-- HUD Header -->
   <div class="hud">
     <div class="hud-box"><div class="hud-label">Target Pts</div><div class="hud-value" id="ui-target-score">0</div></div>
@@ -822,8 +1034,42 @@
     chefSkills: [],
     finishedDishes: [],
     isAnimating: false,
-    sortScoreAscending: false
+    sortScoreAscending: false,
+    selectedDeckType: 'regular'
   };
+
+  function applyDeckType(deckType) {
+    let sourceIngredients = [...BASE_INGREDIENTS];
+
+    if (deckType === 'vegetarian') {
+      sourceIngredients = BASE_INGREDIENTS.filter(i => i.type !== 'protein' && i.type !== 'dairy');
+    }
+
+    let deck = [...sourceIngredients, ...sourceIngredients, ...sourceIngredients].map(card => {
+      let c = { ...card };
+      if (deckType === 'special') {
+        const rand = Math.random();
+        if (rand < 0.35) {
+          c.state = 'gourmet';
+          c.name = `Gourmet ${c.name}`;
+        } else if (rand < 0.70) {
+          c.state = 'frozen';
+          c.frozenTimer = 1;
+          c.name = `Frozen ${c.name}`;
+        } else {
+          c.state = 'expiring';
+          c.name = `Fresh ${c.name} (Expiring)`;
+        }
+      } else {
+        c.state = c.state || 'normal';
+        c.frozenTimer = c.state === 'frozen' ? 1 : 0;
+      }
+      return c;
+    });
+
+    shuffle(deck);
+    return deck;
+  }
 
   async function initGame() {
     const level = LevelManager.getLevel(state.week);
@@ -837,14 +1083,7 @@
     state.selectedIndices = [];
 
     document.getElementById('ui-dish-shelf').innerHTML = '';
-
-    state.fridgeDeck = [...BASE_INGREDIENTS, ...BASE_INGREDIENTS, ...BASE_INGREDIENTS].map(card => ({
-      ...card,
-      state: card.state || 'normal',
-      frozenTimer: card.state === 'frozen' ? 1 : 0
-    }));
-
-    shuffle(state.fridgeDeck);
+    state.fridgeDeck = applyDeckType(state.selectedDeckType);
 
     renderSlots();
     updateHUD();
@@ -1097,7 +1336,6 @@
       cardEl.className = `card ${cardStateClass} ${isSelected ? 'selected' : ''}`;
       cardEl.dataset.index = idx;
 
-      // Keep natural z-index ordering based on array position (no popping to the front)
       cardEl.style.zIndex = idx + 1;
 
       let transformStr = `rotate(${angle}deg) translateY(${translateY}px)`;
@@ -1577,6 +1815,35 @@
     updateHUD();
   }
 
+  // Start Screen & Deck Selection Menu Bindings
+  document.getElementById('ui-btn-goto-deck-select').onclick = () => {
+    document.getElementById('ui-start-screen').classList.add('hidden');
+    document.getElementById('ui-deck-screen').classList.remove('hidden');
+  };
+
+  document.getElementById('ui-btn-back-start').onclick = () => {
+    document.getElementById('ui-deck-screen').classList.add('hidden');
+    document.getElementById('ui-start-screen').classList.remove('hidden');
+  };
+
+  document.getElementById('deck-regular').onclick = () => {
+    state.selectedDeckType = 'regular';
+    document.getElementById('ui-deck-screen').classList.add('hidden');
+    initGame();
+  };
+
+  document.getElementById('deck-vegetarian').onclick = () => {
+    state.selectedDeckType = 'vegetarian';
+    document.getElementById('ui-deck-screen').classList.add('hidden');
+    initGame();
+  };
+
+  document.getElementById('deck-special').onclick = () => {
+    state.selectedDeckType = 'special';
+    document.getElementById('ui-deck-screen').classList.add('hidden');
+    initGame();
+  };
+
   document.getElementById('ui-cook-btn').onclick = cookSelected;
   document.getElementById('ui-discard-btn').onclick = discardSelected;
   document.getElementById('ui-sort-type-btn').onclick = sortHandByType;
@@ -1620,8 +1887,6 @@
     state.week += 1;
     initGame();
   };
-
-  initGame();
 </script>
 </body>
 </html>
