@@ -11,34 +11,36 @@ export class Diet {
 
   applyEffect(selectedCards, currentBasePoints) {
     let scoreMod = 0;
+    // Exclude frozen or rotten cards from diet calculations as they are inedible
+    const validCards = selectedCards.filter(c => c.state !== 'frozen' && c.state !== 'rotten');
 
     if (this.type === 'veg') {
-      const hasMeat = selectedCards.some(c => c.tags.includes('meat'));
+      const hasMeat = validCards.some(c => c.tags && c.tags.includes('meat'));
       if (hasMeat) scoreMod -= 15;
     }
 
     if (this.type === 'sweet') {
-      const hasExtra = selectedCards.some(c => c.type === 'extra');
+      const hasExtra = validCards.some(c => c.type === 'extra');
       if (hasExtra) scoreMod += 30;
     }
 
     if (this.type === 'keto') {
-      const hasCarb = selectedCards.some(c => c.type === 'carb');
+      const hasCarb = validCards.some(c => c.type === 'carb' || c.type === 'carbs');
       if (hasCarb) {
         scoreMod -= 25;
       } else {
-        const proteinCount = selectedCards.filter(c => c.type === 'protein').length;
+        const proteinCount = validCards.filter(c => c.type === 'protein').length;
         scoreMod += proteinCount * 20;
       }
     }
 
     if (this.type === 'comfort') {
-      const hasMeta = selectedCards.some(c => c.tags.includes('meta'));
+      const hasMeta = validCards.some(c => c.tags && c.tags.includes('meta'));
       if (hasMeta) scoreMod += 40;
     }
 
     if (this.type === 'zero_waste') {
-      if (selectedCards.length === 5) {
+      if (validCards.length === 5) {
         scoreMod += 50;
       }
     }

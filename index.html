@@ -450,6 +450,53 @@
       z-index: 30;
     }
 
+    /* Card States Styling */
+    .card.state-frozen {
+      background: #e0f7fa !important;
+      border-color: #00bcd4 !important;
+      box-shadow: 0 0 8px rgba(0, 188, 212, 0.6);
+    }
+
+    .card.state-gourmet {
+      background: #fff8e1 !important;
+      border-color: #ffd700 !important;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    }
+
+    .card.state-expiring {
+      background: #fff3e0 !important;
+      border-color: #ff9800 !important;
+      animation: pulseExpiring 0.8s infinite alternate;
+    }
+
+    .card.state-rotten {
+      background: #efebe9 !important;
+      border-color: #5d4037 !important;
+      color: #795548 !important;
+      opacity: 0.75;
+    }
+
+    @keyframes pulseExpiring {
+      0% { box-shadow: 0 0 4px #ff9800; }
+      100% { box-shadow: 0 0 12px #e65100; }
+    }
+
+    .card-state-badge {
+      position: absolute;
+      top: 2px;
+      right: 3px;
+      font-size: 0.55rem;
+      font-weight: 800;
+      padding: 1px 3px;
+      border-radius: 4px;
+      line-height: 1;
+    }
+
+    .badge-frozen { background: #00bcd4; color: #fff; }
+    .badge-gourmet { background: #ffd700; color: #3e2723; }
+    .badge-expiring { background: #ff9800; color: #fff; }
+    .badge-rotten { background: #5d4037; color: #fff; }
+
     .card-corner {
       position: absolute;
       top: 3px;
@@ -774,7 +821,7 @@
 
   // --- 10 CHEF SKILL CARDS (Tarot Equivalents) ---
   export const CHEF_SKILLS_DB = [
-    { id: 'flash_freeze', name: 'Flash Freeze', icon: '❄️', costForks: 2, desc: 'Freeze 1 selected card' },
+    { id: 'flash_freeze', name: 'Flash Freeze', icon: '❄️', costForks: 2, desc: 'Freeze 1 card (1 turn timer)' },
     { id: 'gourmet_touch', name: 'Gourmet Touch', icon: '✨', costForks: 3, desc: 'Make 1 selected card Gourmet (+0.5 Mult)' },
     { id: 'tenderize', name: 'Tenderize', icon: '🔨', costForks: 2, desc: '+15 Base Points to 1 selected card' },
     { id: 'restock', name: 'Pantry Restock', icon: '🔄', costForks: 2, desc: 'Redraw selected cards instantly' },
@@ -828,7 +875,13 @@
 
     document.getElementById('ui-dish-shelf').innerHTML = '';
 
-    state.fridgeDeck = [...BASE_INGREDIENTS, ...BASE_INGREDIENTS, ...BASE_INGREDIENTS];
+    // Clone base ingredients and ensure standard state fields
+    state.fridgeDeck = [...BASE_INGREDIENTS, ...BASE_INGREDIENTS, ...BASE_INGREDIENTS].map(card => ({
+      ...card,
+      state: card.state || 'normal',
+      frozenTimer: card.state === 'frozen' ? 1 : 0
+    }));
+
     shuffle(state.fridgeDeck);
 
     renderSlots();
@@ -899,11 +952,13 @@
 
     if (skill.id === 'flash_freeze') {
       if (state.selectedIndices.length !== 1) return alert("Select 1 card to freeze!");
-      state.hand[state.selectedIndices[0]].frozen = true;
+      const card = state.hand[state.selectedIndices[0]];
+      card.state = 'frozen';
+      card.frozenTimer = 1;
     } else if (skill.id === 'gourmet_touch') {
       if (state.selectedIndices.length !== 1) return alert("Select 1 card!");
       const card = state.hand[state.selectedIndices[0]];
-      card.multiplierBonus = (card.multiplierBonus || 0) + 0.5;
+      card.state = 'gourmet';
     } else if (skill.id === 'tenderize') {
       if (state.selectedIndices.length !== 1) return alert("Select 1 card!");
       const card = state.hand[state.selectedIndices[0]];
@@ -920,13 +975,13 @@
       if (state.selectedIndices.length !== 1) return alert("Select 1 card!");
       state.hand[state.selectedIndices[0]].type = 'vegetable';
     } else if (skill.id === 'grandma_secret') {
-      state.hand.push({ id: 'grandma_hug', name: "Grandma's Hug", type: 'special', points: 25, multiplierBonus: 3, icon: '👵' });
+      state.hand.push({ id: 'grandma_hug', name: "Grandma's Hug", type: 'special', points: 25, multiplierBonus: 3, icon: '👵', state: 'normal' });
     } else if (skill.id === 'duplicate') {
       if (state.selectedIndices.length !== 1) return alert("Select 1 card to duplicate!");
       const card = state.hand[state.selectedIndices[0]];
       state.hand.push({ ...card });
     } else if (skill.id === 'clean') {
-      state.hand = state.hand.filter(c => (c.points || 0) > 5);
+      state.hand = state.hand.filter(c => (c.points || 0) > 5 && c.state !== 'rotten');
     } else if (skill.id === 'ferment') {
       if (state.selectedIndices.length !== 1) return alert("Select 1 card!");
       const card = state.hand[state.selectedIndices[0]];
@@ -937,6 +992,26 @@
     renderSlots();
     renderHand();
     evaluateDishPreview();
+  }
+
+  // Update card states at the start/end of turns (Expiring -> Rotten, Frozen timer -> Defrost)
+  function processTurnCardStateUpdates() {
+    state.hand.forEach(card => {
+      if (card.state === 'expiring' && !card.usedThisTurn) {
+        card.state = 'rotten';
+      }
+
+      if (card.state === 'frozen') {
+        if (card.frozenTimer > 0) {
+          card.frozenTimer -= 1;
+        } else {
+          // Defrost card, granting bonus points!
+          card.state = 'normal';
+          card.points = (card.points || 0) + 50;
+        }
+      }
+      card.usedThisTurn = false;
+    });
   }
 
   async function performInitialDeal() {
@@ -953,7 +1028,9 @@
 
     for (let i = 0; i < cardsToDraw; i++) {
       if (state.fridgeDeck.length > 0) {
-        state.hand.push(state.fridgeDeck.pop());
+        const drawnCard = { ...state.fridgeDeck.pop() };
+        drawnCard.drawnThisTurn = true;
+        state.hand.push(drawnCard);
         renderHand();
 
         const handEl = document.getElementById('ui-hand');
@@ -991,7 +1068,9 @@
 
     for (let i = 0; i < cardsNeeded; i++) {
       if (state.fridgeDeck.length > 0) {
-        state.hand.push(state.fridgeDeck.pop());
+        const drawnCard = { ...state.fridgeDeck.pop() };
+        drawnCard.drawnThisTurn = true;
+        state.hand.push(drawnCard);
         renderHand();
 
         const handEl = document.getElementById('ui-hand');
@@ -1024,6 +1103,22 @@
     document.getElementById('ui-deck-count').innerText = state.fridgeDeck.length;
   }
 
+  function getCardStateBadgeHTML(card) {
+    if (card.state === 'frozen') {
+      return `<div class="card-state-badge badge-frozen">🧊 ${card.frozenTimer ?? 1}t</div>`;
+    }
+    if (card.state === 'gourmet') {
+      return `<div class="card-state-badge badge-gourmet">✨ +0.5x</div>`;
+    }
+    if (card.state === 'expiring') {
+      return `<div class="card-state-badge badge-expiring">🔥 Now!</div>`;
+    }
+    if (card.state === 'rotten') {
+      return `<div class="card-state-badge badge-rotten">💀 Rot</div>`;
+    }
+    return '';
+  }
+
   function renderHand() {
     const handEl = document.getElementById('ui-hand');
     handEl.innerHTML = '';
@@ -1042,7 +1137,8 @@
       const translateY = Math.abs(offset) * 6;
       const translateZ = -Math.abs(offset) * 8;
 
-      cardEl.className = `card ${isSelected ? 'selected' : ''}`;
+      const cardStateClass = card.state ? `state-${card.state}` : '';
+      cardEl.className = `card ${cardStateClass} ${isSelected ? 'selected' : ''}`;
       cardEl.dataset.index = idx;
 
       let transformStr = `rotate(${angle}deg) translateY(${translateY}px) translateZ(${translateZ}px)`;
@@ -1063,7 +1159,8 @@
 
       cardEl.innerHTML = `
         <div class="card-corner ${isSpecialCat ? 'type-special' : `type-${card.type}`}">${categoryLetter}</div>
-        <div class="card-icon">${card.frozen ? '❄️' : card.icon}</div>
+        ${getCardStateBadgeHTML(card)}
+        <div class="card-icon">${card.state === 'rotten' ? '🤢' : card.icon}</div>
         <div class="card-title">${card.name}</div>
         <div class="card-points">${card.multiplierBonus ? `${card.multiplierBonus}x` : `+${card.points}`}</div>
       `;
@@ -1083,15 +1180,17 @@
       const miniEl = document.createElement('div');
       const categoryLetter = getCategoryLetter(card.type);
       const isSpecialCat = categoryLetter === 'S';
+      const cardStateClass = card.state ? `state-${card.state}` : '';
 
-      miniEl.className = 'card';
+      miniEl.className = `card ${cardStateClass}`;
       miniEl.id = `pot-card-${idx}`;
       miniEl.style.position = 'relative';
       miniEl.style.transform = 'scale(0.85)';
       miniEl.style.left = '0';
       miniEl.innerHTML = `
         <div class="card-corner ${isSpecialCat ? 'type-special' : `type-${card.type}`}">${categoryLetter}</div>
-        <div class="card-icon">${card.icon}</div>
+        ${getCardStateBadgeHTML(card)}
+        <div class="card-icon">${card.state === 'rotten' ? '🤢' : card.icon}</div>
         <div class="card-title">${card.name}</div>
         <div class="card-points">${card.multiplierBonus ? `${card.multiplierBonus}x` : `+${card.points}`}</div>
       `;
@@ -1156,14 +1255,18 @@
 
     let totalMult = dish.multiplier;
     selectedCards.forEach(c => {
-      if (c.multiplierBonus) totalMult += c.multiplierBonus;
+      if (c.state !== 'frozen' && c.state !== 'rotten') {
+        if (c.multiplierBonus) totalMult += c.multiplierBonus;
+        if (c.state === 'gourmet') totalMult += 0.5;
+      }
     });
 
     // Kitchenware bonuses
+    const validCards = selectedCards.filter(c => c.state !== 'frozen' && c.state !== 'rotten');
     state.kitchenware.forEach(kw => {
-      if (kw.id === 'skillet' && selectedCards.some(c => c.type === 'protein')) totalMult += 3;
-      if (kw.id === 'knife' && selectedCards.filter(c => c.type === 'protein').length === 1) totalMult += 2;
-      if (kw.id === 'spicerack') totalMult += selectedCards.filter(c => c.type === 'spice').length * 0.5;
+      if (kw.id === 'skillet' && validCards.some(c => c.type === 'protein')) totalMult += 3;
+      if (kw.id === 'knife' && validCards.filter(c => c.type === 'protein').length === 1) totalMult += 2;
+      if (kw.id === 'spicerack') totalMult += validCards.filter(c => c.type === 'spice').length * 0.5;
       if (kw.id === 'deepfryer') totalMult *= 1.5;
     });
 
@@ -1197,21 +1300,23 @@
     let accumulatedMult = dish.multiplier;
     let hasSpecialIngredient = false;
 
-    // Apply Kitchenware Passives
+    // Apply Kitchenware Passives for valid cards
+    const validCards = selectedCards.filter(c => c.state !== 'frozen' && c.state !== 'rotten');
     state.kitchenware.forEach(kw => {
-      if (kw.id === 'skillet' && selectedCards.some(c => c.type === 'protein')) accumulatedMult += 3;
-      if (kw.id === 'blender') accumulatedPoints += selectedCards.filter(c => c.type === 'vegetable').length * 15;
-      if (kw.id === 'knife' && selectedCards.filter(c => c.type === 'protein').length === 1) accumulatedMult += 2;
-      if (kw.id === 'airfryer' && !selectedCards.some(c => c.type === 'dairy')) accumulatedPoints += 50;
-      if (kw.id === 'spicerack') accumulatedMult += selectedCards.filter(c => c.type === 'spice').length * 0.5;
+      if (kw.id === 'skillet' && validCards.some(c => c.type === 'protein')) accumulatedMult += 3;
+      if (kw.id === 'blender') accumulatedPoints += validCards.filter(c => c.type === 'vegetable').length * 15;
+      if (kw.id === 'knife' && validCards.filter(c => c.type === 'protein').length === 1) accumulatedMult += 2;
+      if (kw.id === 'airfryer' && !validCards.some(c => c.type === 'dairy')) accumulatedPoints += 50;
+      if (kw.id === 'spicerack') accumulatedMult += validCards.filter(c => c.type === 'spice').length * 0.5;
       if (kw.id === 'deepfryer') accumulatedMult *= 1.5;
-      if (kw.id === 'wok' && selectedCards.some(c => c.type === 'carbs')) state.forks += 2;
+      if (kw.id === 'wok' && validCards.some(c => c.type === 'carbs')) state.forks += 2;
     });
 
     for (let i = 0; i < state.selectedIndices.length; i++) {
       const idx = state.selectedIndices[i];
       const card = state.hand[idx];
       const potCardEl = document.getElementById(`pot-card-${idx}`);
+      card.usedThisTurn = true;
 
       if (getCategoryLetter(card.type) === 'S') {
         hasSpecialIngredient = true;
@@ -1220,12 +1325,24 @@
       potCardEl.classList.add('scoring-active');
       await sleep(220);
 
-      const isCardValid = dish.validCardIndices.includes(i);
+      const isCardValid = dish.validCardIndices.includes(i) && card.state !== 'frozen' && card.state !== 'rotten';
 
       if (isCardValid) {
         let cardPts = card.points || 0;
+
+        // Expiring card used on draw turn gives extra points
+        if (card.state === 'expiring' && card.drawnThisTurn) {
+          cardPts += 25;
+          triggerFloatingText(`+25 FRESH BONUS!`, potCardEl);
+        }
+
         if (state.kitchenware.some(k => k.id === 'sousvide') && card.type === 'protein') {
           cardPts += 20;
+        }
+
+        if (card.state === 'gourmet') {
+          accumulatedMult += 0.5;
+          triggerFloatingText(`+0.5x GOURMET!`, potCardEl);
         }
 
         if (card.multiplierBonus) {
@@ -1238,11 +1355,12 @@
         bannerCalc.className = 'score-pop';
         bannerCalc.innerText = `${accumulatedPoints} pts x ${accumulatedMult.toFixed(1)}`;
       } else {
-        triggerFloatingText(`+0 TRASH!`, potCardEl);
+        const failReason = card.state === 'frozen' ? 'FROZEN!' : (card.state === 'rotten' ? 'ROTTEN!' : 'TRASH!');
+        triggerFloatingText(`+0 ${failReason}`, potCardEl);
         potCardEl.classList.remove('scoring-active');
         potCardEl.classList.add('trashed-card');
         bannerCalc.className = 'score-pop';
-        bannerCalc.innerText = `${accumulatedPoints} pts (+0 TRASHED)`;
+        bannerCalc.innerText = `${accumulatedPoints} pts (+0 ${failReason})`;
         potCardEl.classList.add('fly-trash');
       }
 
@@ -1289,6 +1407,7 @@
     potEl.innerHTML = '';
     state.isAnimating = false;
 
+    processTurnCardStateUpdates();
     updateHUD();
     await drawHand();
     checkLevelEnd();
@@ -1321,6 +1440,8 @@
 
     state.isAnimating = false;
     document.getElementById('ui-cooking-pot').innerHTML = '';
+    
+    processTurnCardStateUpdates();
     updateHUD();
     await drawHand();
   }
@@ -1417,6 +1538,32 @@
     });
   }
 
+  function generateShopCard() {
+    const randomBase = BASE_INGREDIENTS[Math.floor(Math.random() * BASE_INGREDIENTS.length)];
+    const card = { ...randomBase };
+
+    // 50% chance to have a special card state in shop
+    const randState = Math.random();
+    if (randState < 0.25) {
+      card.state = 'gourmet';
+      card.name = `Gourmet ${card.name}`;
+      card.costForks = (card.costForks || 3) + 2;
+    } else if (randState < 0.45) {
+      card.state = 'frozen';
+      card.frozenTimer = 1;
+      card.name = `Frozen ${card.name}`;
+      card.costForks = (card.costForks || 3) + 1;
+    } else if (randState < 0.60) {
+      card.state = 'expiring';
+      card.name = `Fresh ${card.name} (Expiring)`;
+      card.costForks = (card.costForks || 3) + 1;
+    } else {
+      card.state = 'normal';
+    }
+
+    return card;
+  }
+
   function renderShopItems() {
     const shopGrid = document.getElementById('ui-shop-items');
     shopGrid.innerHTML = '';
@@ -1425,20 +1572,25 @@
       KITCHENWARE_DB[Math.floor(Math.random() * KITCHENWARE_DB.length)],
       CHEF_SKILLS_DB[Math.floor(Math.random() * CHEF_SKILLS_DB.length)],
       BASE_DIETS[Math.floor(Math.random() * BASE_DIETS.length)],
-      BASE_INGREDIENTS[Math.floor(Math.random() * BASE_INGREDIENTS.length)]
+      generateShopCard()
     ];
 
     shopOptions.forEach((item, idx) => {
       const isKitchenware = KITCHENWARE_DB.some(k => k.id === item.id);
       const isSkill = CHEF_SKILLS_DB.some(s => s.id === item.id);
       const isDiet = 'description' in item || BASE_DIETS.some(d => d.name === item.name);
-      
+
+      let stateBadge = '';
+      if (item.state === 'frozen') stateBadge = ' 🧊 [Frozen]';
+      if (item.state === 'gourmet') stateBadge = ' ✨ [Gourmet]';
+      if (item.state === 'expiring') stateBadge = ' 🔥 [Expiring]';
+
       const cost = item.costForks || 3;
       const itemEl = document.createElement('div');
       itemEl.className = 'shop-item';
       itemEl.innerHTML = `
         <div style="font-size:1.4rem;">${item.icon || '📜'}</div>
-        <div style="font-weight:bold; font-size:0.82rem;">${item.name}</div>
+        <div style="font-weight:bold; font-size:0.82rem;">${item.name}${stateBadge}</div>
         <div style="font-size: 0.68rem; color: #666;">${item.desc || item.description || (item.multiplierBonus ? `+${item.multiplierBonus}x Mult` : `+${item.points} pts`)}</div>
         <button class="btn btn-cook" style="padding: 4px; font-size: 0.8rem;" id="buy-${idx}">Buy (🍴${cost})</button>
       `;
@@ -1461,7 +1613,7 @@
       if (state.activeDiets.length >= 2) return alert("Diet slots full (2/2)!");
       state.activeDiets.push(item);
     } else {
-      state.fridgeDeck.push(item);
+      state.fridgeDeck.push({ ...item });
     }
 
     state.forks -= cost;

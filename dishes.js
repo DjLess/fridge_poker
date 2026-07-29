@@ -74,57 +74,64 @@ export class DishEvaluator {
       return this.invalidDish("Empty Plate");
     }
 
-    // Category counters
+    // Filter out invalid ingredients (Frozen or Rotten cards fail ingredient checks)
+    const validCards = selectedCards.filter(c => c.state !== 'frozen' && c.state !== 'rotten');
+
+    // Category counters for valid cards only
     const counts = { carbs: 0, vegetable: 0, protein: 0, spice: 0, dairy: 0, special: 0 };
-    selectedCards.forEach(c => {
+    validCards.forEach(c => {
       if (counts[c.type] !== undefined) counts[c.type]++;
       else counts.special++;
     });
 
     // Check for Emotional / Metaphorical modifiers in the dish
     let emotionalNote = "";
-    if (selectedCards.some(i => i.id === 'love')) emotionalNote = " (Made with Love)";
-    else if (selectedCards.some(i => i.id === 'patience')) emotionalNote = " (Cooked with Patience)";
-    else if (selectedCards.some(i => i.id === 'grandma_hug')) emotionalNote = " (Grandma's Style)";
+    if (validCards.some(i => i.id === 'love')) emotionalNote = " (Made with Love)";
+    else if (validCards.some(i => i.id === 'patience')) emotionalNote = " (Cooked with Patience)";
+    else if (validCards.some(i => i.id === 'grandma_hug')) emotionalNote = " (Grandma's Style)";
+
+    const validIndices = selectedCards
+      .map((c, i) => (c.state !== 'frozen' && c.state !== 'rotten' ? i : -1))
+      .filter(i => i !== -1);
 
     // 1. Check Specific Named Recipes
     for (const recipe of RECIPE_BOOK) {
-      if (recipe.check(counts, selectedCards)) {
+      if (recipe.check(counts, validCards)) {
         return {
           name: `${recipe.name}${emotionalNote}`,
           icon: recipe.icon,
           multiplier: recipe.multiplier,
           basePoints: recipe.basePoints,
-          validCardIndices: selectedCards.map((_, i) => i)
+          validCardIndices: validIndices
         };
       }
     }
 
     // 2. Descriptive Household Plate (Full Trio: Protein + Carb + Veggie)
     if (counts.protein > 0 && counts.carbs > 0 && counts.vegetable > 0) {
-      const mainProtein = selectedCards.find(i => i.type === 'protein')?.name || 'Protein';
-      const mainCarb = selectedCards.find(i => i.type === 'carbs')?.name || 'Carbs';
+      const mainProtein = validCards.find(i => i.type === 'protein')?.name || 'Protein';
+      const mainCarb = validCards.find(i => i.type === 'carbs')?.name || 'Carbs';
 
       return {
         name: `${mainProtein} with ${mainCarb} and Veggies${emotionalNote || " (Home Cooked)"}`,
         icon: '🍽️',
         multiplier: 2,
         basePoints: 10,
-        validCardIndices: selectedCards.map((_, i) => i)
+        validCardIndices: validIndices
       };
     }
 
     // 3. Basic Home Meal (Protein + Carb OR Protein + Veggie)
     if ((counts.protein > 0 && counts.carbs > 0) || (counts.protein > 0 && counts.vegetable > 0)) {
-      const mainProtein = selectedCards.find(i => i.type === 'protein')?.name || 'Protein';
-      const side = selectedCards.find(i => i.type === 'carbs' || i.type === 'vegetable')?.name || 'Side';
+      const mainProtein = validCards.find(i => i.type === 'protein')?.name || 'Protein';
+      const side = validCards.find(i => i.type === 'carbs' || i.type === 'vegetable')?.name || 'Side';
 
       return {
         name: `${mainProtein} with ${side}${emotionalNote}`,
         icon: '🍱',
         multiplier: 2,
         basePoints: 8,
-        validCardIndices: selectedCards.map((_, i) => i)
+        validCardIndices: validIndices
       };
     }
 
@@ -136,7 +143,7 @@ export class DishEvaluator {
         icon: '🥩',
         multiplier: 3,
         basePoints: 15,
-        validCardIndices: selectedCards.map((_, i) => i)
+        validCardIndices: validIndices
       };
     }
 
@@ -147,7 +154,7 @@ export class DishEvaluator {
         icon: '🍞',
         multiplier: 2,
         basePoints: 12,
-        validCardIndices: selectedCards.map((_, i) => i)
+        validCardIndices: validIndices
       };
     }
 
