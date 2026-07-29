@@ -16,6 +16,7 @@
       --accent-green: #81b29a;
       --accent-yellow: #f2cc8f;
       --accent-red: #d90429;
+      --accent-purple: #9b59b6;
       --text-dark: #3d405b;
       --font-cozy: 'Fredoka', cursive, sans-serif;
 
@@ -102,24 +103,84 @@
       color: var(--accent-yellow);
     }
 
+    /* Slots Area (Kitchenware, Diets, Chef Skills) */
+    .slots-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 10px;
+      background: rgba(0,0,0,0.12);
+      border-bottom: 2px solid rgba(0,0,0,0.1);
+      z-index: 10;
+      gap: 6px;
+    }
+
+    .slot-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+    }
+
+    .slot-group-title {
+      font-size: 0.52rem;
+      text-transform: uppercase;
+      color: var(--panel-wood);
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+
+    .slots-row {
+      display: flex;
+      gap: 4px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .slot-item {
+      width: 32px;
+      height: 38px;
+      border: 2px dashed rgba(90, 62, 43, 0.4);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.15s, border-color 0.15s, background-color 0.15s;
+    }
+
+    .slot-item.filled {
+      border-style: solid;
+      border-color: var(--accent-orange);
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+    .slot-item.diet-slot.filled {
+      border-color: var(--accent-green);
+    }
+
+    .slot-item.skill-slot.filled {
+      border-color: var(--accent-purple);
+      animation: pulseSkill 1.5s infinite alternate;
+    }
+
+    @keyframes pulseSkill {
+      0% { box-shadow: 0 0 2px var(--accent-purple); }
+      100% { box-shadow: 0 0 8px var(--accent-purple); }
+    }
+
     /* Top Bar */
     .top-utility-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 12px;
+      padding: 4px 12px;
       background: rgba(0,0,0,0.05);
       z-index: 10;
-    }
-
-    .diets-bar { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
-    .diet-badge {
-      background: var(--accent-green);
-      color: white;
-      font-size: 0.65rem;
-      padding: 2px 6px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 
     .btn-recipe-book {
@@ -140,15 +201,15 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 10px;
+      padding: 8px 10px;
       position: relative;
-      z-index: 1; /* Nivel inferior para que las cartas repartidas pasen por encima */
+      z-index: 1;
     }
 
     /* Shelf */
     .dish-shelf-container {
       width: 100%;
-      height: 48px;
+      height: 44px;
       background: #8c6239;
       border-bottom: 4px solid #5a3e2b;
       border-radius: 8px;
@@ -183,7 +244,6 @@
       animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    /* Badge especial en esquina de plato */
     .special-badge {
       position: absolute;
       bottom: -2px;
@@ -271,7 +331,7 @@
     .cutting-board {
       background: #d4a373;
       border: 4px solid #bc8a5f;
-      height: 110px;
+      height: 105px;
       border-radius: 16px;
       display: flex;
       justify-content: center;
@@ -280,7 +340,7 @@
       position: relative;
       box-shadow: inset 0 4px 8px rgba(0,0,0,0.15);
       overflow: visible;
-      z-index: 1; /* Área inferior a las cartas en vuelo */
+      z-index: 1;
     }
 
     .mixing-pot {
@@ -297,12 +357,12 @@
 
     /* Dynamic Banner */
     .score-banner {
-      height: 32px;
+      height: 30px;
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 10px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
     }
 
@@ -343,13 +403,13 @@
       flex-direction: column;
       gap: 6px;
       position: relative;
-      z-index: 20; /* Garantiza prioridad visual por encima de la cocina */
+      z-index: 20;
     }
 
     .hand-arc-wrapper {
       position: relative;
-      height: 110px; /* Reducido para evitar superposición con botones inferiores */
-      margin-bottom: 10px;
+      height: 105px;
+      margin-bottom: 8px;
       width: 100%;
       display: flex;
       justify-content: center;
@@ -390,7 +450,6 @@
       z-index: 30;
     }
 
-    /* Corner Letters (C, V, P, S) */
     .card-corner {
       position: absolute;
       top: 3px;
@@ -496,7 +555,7 @@
       gap: 10px;
     }
 
-    .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+    .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
     .shop-item { flex-direction: column; justify-content: space-between; text-align: center; }
 
     /* Floating Text Pops */
@@ -588,9 +647,24 @@
     <div class="hud-box"><div class="hud-label">Discards</div><div class="hud-value" id="ui-discards">0</div></div>
   </div>
 
+  <!-- Slots Bar for Kitchenware (3), Diets (2), and Skills (2) -->
+  <div class="slots-bar">
+    <div class="slot-group">
+      <div class="slot-group-title">Kitchenware (3)</div>
+      <div class="slots-row" id="ui-kitchenware-slots"></div>
+    </div>
+    <div class="slot-group">
+      <div class="slot-group-title">Diets (2)</div>
+      <div class="slots-row" id="ui-diet-slots"></div>
+    </div>
+    <div class="slot-group">
+      <div class="slot-group-title">Chef Skills (2)</div>
+      <div class="slots-row" id="ui-skill-slots"></div>
+    </div>
+  </div>
+
   <div class="top-utility-bar">
-    <div class="diets-bar" id="ui-diets"><span style="font-size: 0.7rem; color: #666;">Diets:</span></div>
-    <div style="font-size:0.8rem; font-weight:bold; color:var(--panel-wood);" id="ui-forks">🍴 0</div>
+    <div style="font-size:0.85rem; font-weight:bold; color:var(--panel-wood);" id="ui-forks">🍴 0</div>
     <button class="btn-recipe-book" id="ui-open-recipes-btn">📖 Recipes</button>
   </div>
 
@@ -670,7 +744,7 @@
   <!-- Supermarket Modal -->
   <div class="modal hidden" id="ui-shop">
     <div class="modal-header">🛒 Supermarket</div>
-    <p style="text-align:center; font-size:0.85rem;" id="ui-shop-summary">Spend Forks on ingredients and diets!</p>
+    <p style="text-align:center; font-size:0.85rem;" id="ui-shop-summary">Spend Forks on kitchenware, skills, diets & ingredients!</p>
     <div class="shop-grid" id="ui-shop-items"></div>
     <button class="btn btn-cook" id="ui-next-week-btn">Next Level</button>
   </div>
@@ -683,6 +757,34 @@
   import { LevelManager } from './levels.js';
 
   const MAX_HAND_SIZE = 9;
+
+  // --- 10 KITCHENWARE ITEMS (Joker Equivalents) ---
+  export const KITCHENWARE_DB = [
+    { id: 'skillet', name: 'Cast Iron Skillet', icon: '🍳', costForks: 4, desc: '+3 Mult if dish has Protein' },
+    { id: 'blender', name: 'High-Speed Blender', icon: '🌪️', costForks: 4, desc: '+15 Pts for every Vegetable' },
+    { id: 'knife', name: "Chef's Knife", icon: '🔪', costForks: 3, desc: '+2 Mult if dish has exactly 1 Protein' },
+    { id: 'airfryer', name: 'Air Fryer', icon: '🍟', costForks: 5, desc: '+50 Pts if no Dairy in dish' },
+    { id: 'garlic_press', name: 'Garlic Press', icon: '🧄', costForks: 3, desc: '+1 Mult on Spice/Herb dishes' },
+    { id: 'spicerack', name: 'Spice Rack', icon: '🌶️', costForks: 4, desc: 'Spice cards give +0.5 Mult' },
+    { id: 'containers', name: 'Prep Containers', icon: '🍱', costForks: 6, desc: '+1 Hand Size bonus' },
+    { id: 'deepfryer', name: 'Deep Fryer', icon: '🍤', costForks: 5, desc: 'x1.5 Mult bonus on all dishes' },
+    { id: 'sousvide', name: 'Sous Vide', icon: '🌡️', costForks: 4, desc: '+20 Pts bonus on Protein cards' },
+    { id: 'wok', name: 'Golden Wok', icon: '🥘', costForks: 5, desc: '+$2 Forks on valid Rice/Carb dishes' }
+  ];
+
+  // --- 10 CHEF SKILL CARDS (Tarot Equivalents) ---
+  export const CHEF_SKILLS_DB = [
+    { id: 'flash_freeze', name: 'Flash Freeze', icon: '❄️', costForks: 2, desc: 'Freeze 1 selected card' },
+    { id: 'gourmet_touch', name: 'Gourmet Touch', icon: '✨', costForks: 3, desc: 'Make 1 selected card Gourmet (+0.5 Mult)' },
+    { id: 'tenderize', name: 'Tenderize', icon: '🔨', costForks: 2, desc: '+15 Base Points to 1 selected card' },
+    { id: 'restock', name: 'Pantry Restock', icon: '🔄', costForks: 2, desc: 'Redraw selected cards instantly' },
+    { id: 'ferment', name: 'Quick Ferment', icon: '🧪', costForks: 2, desc: 'Add +2 Mult bonus to 1 card' },
+    { id: 'marinate', name: 'Marinate', icon: '🥩', costForks: 3, desc: 'Convert 1 card into Protein' },
+    { id: 'julienne', name: 'Julienne', icon: '🥕', costForks: 2, desc: 'Convert 1 card into Vegetable' },
+    { id: 'grandma_secret', name: 'Grandma Secret', icon: '👵', costForks: 4, desc: "Spawn a Grandma's Hug card" },
+    { id: 'clean', name: 'Deep Clean', icon: '🧹', costForks: 2, desc: 'Remove all low-point cards from hand' },
+    { id: 'duplicate', name: 'Duplication', icon: '👯', costForks: 4, desc: 'Duplicate 1 selected card' }
+  ];
 
   // Clasificación de cartas: Carbohidratos (C), Vegetal (V), Proteína (P), Todo lo demás es S (Especial)
   function getCategoryLetter(type) {
@@ -705,8 +807,10 @@
     fridgeDeck: [],
     hand: [],
     selectedIndices: [],
-    activeDiets: [],
-    finishedDishes: [], // Guarda objetos { icon, name, isSpecial }
+    kitchenware: [], // Max 3
+    activeDiets: [],  // Max 2
+    chefSkills: [],   // Max 2
+    finishedDishes: [],
     isAnimating: false,
     sortScoreAscending: false
   };
@@ -727,6 +831,7 @@
     state.fridgeDeck = [...BASE_INGREDIENTS, ...BASE_INGREDIENTS, ...BASE_INGREDIENTS];
     shuffle(state.fridgeDeck);
 
+    renderSlots();
     updateHUD();
     await performInitialDeal();
   }
@@ -747,6 +852,93 @@
     return { x: startX, y: startY };
   }
 
+  function renderSlots() {
+    // Kitchenware Slots (3)
+    const kwContainer = document.getElementById('ui-kitchenware-slots');
+    kwContainer.innerHTML = '';
+    for (let i = 0; i < 3; i++) {
+      const item = state.kitchenware[i];
+      const slot = document.createElement('div');
+      slot.className = `slot-item ${item ? 'filled' : ''}`;
+      slot.title = item ? `${item.name}: ${item.desc}` : 'Empty Kitchenware Slot';
+      slot.innerHTML = item ? item.icon : '🍳';
+      kwContainer.appendChild(slot);
+    }
+
+    // Diet Slots (2)
+    const dietContainer = document.getElementById('ui-diet-slots');
+    dietContainer.innerHTML = '';
+    for (let i = 0; i < 2; i++) {
+      const item = state.activeDiets[i];
+      const slot = document.createElement('div');
+      slot.className = `slot-item diet-slot ${item ? 'filled' : ''}`;
+      slot.title = item ? `${item.name}: ${item.description || item.desc}` : 'Empty Diet Slot';
+      slot.innerHTML = item ? (item.icon || '🥗') : '🥗';
+      dietContainer.appendChild(slot);
+    }
+
+    // Chef Skill Slots (2)
+    const skillContainer = document.getElementById('ui-skill-slots');
+    skillContainer.innerHTML = '';
+    for (let i = 0; i < 2; i++) {
+      const item = state.chefSkills[i];
+      const slot = document.createElement('div');
+      slot.className = `slot-item skill-slot ${item ? 'filled' : ''}`;
+      slot.title = item ? `${item.name}: ${item.desc} (Click to Use)` : 'Empty Skill Slot';
+      slot.innerHTML = item ? item.icon : '📜';
+      if (item) {
+        slot.onclick = () => useSkill(i);
+      }
+      skillContainer.appendChild(slot);
+    }
+  }
+
+  function useSkill(slotIndex) {
+    const skill = state.chefSkills[slotIndex];
+    if (!skill || state.isAnimating) return;
+
+    if (skill.id === 'flash_freeze') {
+      if (state.selectedIndices.length !== 1) return alert("Select 1 card to freeze!");
+      state.hand[state.selectedIndices[0]].frozen = true;
+    } else if (skill.id === 'gourmet_touch') {
+      if (state.selectedIndices.length !== 1) return alert("Select 1 card!");
+      const card = state.hand[state.selectedIndices[0]];
+      card.multiplierBonus = (card.multiplierBonus || 0) + 0.5;
+    } else if (skill.id === 'tenderize') {
+      if (state.selectedIndices.length !== 1) return alert("Select 1 card!");
+      const card = state.hand[state.selectedIndices[0]];
+      card.points = (card.points || 0) + 15;
+    } else if (skill.id === 'restock') {
+      if (state.selectedIndices.length === 0) return alert("Select card(s) to restock!");
+      state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
+      state.selectedIndices = [];
+      drawHand();
+    } else if (skill.id === 'marinate') {
+      if (state.selectedIndices.length !== 1) return alert("Select 1 card!");
+      state.hand[state.selectedIndices[0]].type = 'protein';
+    } else if (skill.id === 'julienne') {
+      if (state.selectedIndices.length !== 1) return alert("Select 1 card!");
+      state.hand[state.selectedIndices[0]].type = 'vegetable';
+    } else if (skill.id === 'grandma_secret') {
+      state.hand.push({ id: 'grandma_hug', name: "Grandma's Hug", type: 'special', points: 25, multiplierBonus: 3, icon: '👵' });
+    } else if (skill.id === 'duplicate') {
+      if (state.selectedIndices.length !== 1) return alert("Select 1 card to duplicate!");
+      const card = state.hand[state.selectedIndices[0]];
+      state.hand.push({ ...card });
+    } else if (skill.id === 'clean') {
+      state.hand = state.hand.filter(c => (c.points || 0) > 5);
+    } else if (skill.id === 'ferment') {
+      if (state.selectedIndices.length !== 1) return alert("Select 1 card!");
+      const card = state.hand[state.selectedIndices[0]];
+      card.multiplierBonus = (card.multiplierBonus || 0) + 2;
+    }
+
+    state.chefSkills.splice(slotIndex, 1);
+    renderSlots();
+    renderHand();
+    evaluateDishPreview();
+  }
+
   async function performInitialDeal() {
     state.isAnimating = true;
     const fridgeEl = document.getElementById('ui-fridge');
@@ -756,7 +948,8 @@
     iconEl.innerText = '⏳';
     iconEl.classList.add('spinning');
 
-    const cardsToDraw = MAX_HAND_SIZE - state.hand.length;
+    const effectiveHandSize = MAX_HAND_SIZE + (state.kitchenware.some(k => k.id === 'containers') ? 1 : 0);
+    const cardsToDraw = effectiveHandSize - state.hand.length;
 
     for (let i = 0; i < cardsToDraw; i++) {
       if (state.fridgeDeck.length > 0) {
@@ -784,7 +977,8 @@
   }
 
   async function drawHand() {
-    const cardsNeeded = MAX_HAND_SIZE - state.hand.length;
+    const effectiveHandSize = MAX_HAND_SIZE + (state.kitchenware.some(k => k.id === 'containers') ? 1 : 0);
+    const cardsNeeded = effectiveHandSize - state.hand.length;
     if (cardsNeeded <= 0 || state.fridgeDeck.length === 0) return;
 
     state.isAnimating = true;
@@ -869,7 +1063,7 @@
 
       cardEl.innerHTML = `
         <div class="card-corner ${isSpecialCat ? 'type-special' : `type-${card.type}`}">${categoryLetter}</div>
-        <div class="card-icon">${card.icon}</div>
+        <div class="card-icon">${card.frozen ? '❄️' : card.icon}</div>
         <div class="card-title">${card.name}</div>
         <div class="card-points">${card.multiplierBonus ? `${card.multiplierBonus}x` : `+${card.points}`}</div>
       `;
@@ -960,14 +1154,21 @@
     const selectedCards = state.selectedIndices.map(i => state.hand[i]);
     const dish = DishEvaluator.evaluate(selectedCards, state.activeDiets);
 
-    // Multiplicadores adicionales desde cartas S
     let totalMult = dish.multiplier;
     selectedCards.forEach(c => {
       if (c.multiplierBonus) totalMult += c.multiplierBonus;
     });
 
+    // Kitchenware bonuses
+    state.kitchenware.forEach(kw => {
+      if (kw.id === 'skillet' && selectedCards.some(c => c.type === 'protein')) totalMult += 3;
+      if (kw.id === 'knife' && selectedCards.filter(c => c.type === 'protein').length === 1) totalMult += 2;
+      if (kw.id === 'spicerack') totalMult += selectedCards.filter(c => c.type === 'spice').length * 0.5;
+      if (kw.id === 'deepfryer') totalMult *= 1.5;
+    });
+
     bannerDish.innerText = dish.name;
-    bannerCalc.innerText = `(${dish.basePoints} pts x ${totalMult})`;
+    bannerCalc.innerText = `(${dish.basePoints} pts x ${totalMult.toFixed(1)})`;
   }
 
   function triggerFloatingText(text, containerEl) {
@@ -992,9 +1193,20 @@
     const bannerDish = document.getElementById('ui-banner-dish');
     const bannerCalc = document.getElementById('ui-banner-calc');
 
-    let accumulatedPoints = 0;
+    let accumulatedPoints = dish.basePoints;
     let accumulatedMult = dish.multiplier;
     let hasSpecialIngredient = false;
+
+    // Apply Kitchenware Passives
+    state.kitchenware.forEach(kw => {
+      if (kw.id === 'skillet' && selectedCards.some(c => c.type === 'protein')) accumulatedMult += 3;
+      if (kw.id === 'blender') accumulatedPoints += selectedCards.filter(c => c.type === 'vegetable').length * 15;
+      if (kw.id === 'knife' && selectedCards.filter(c => c.type === 'protein').length === 1) accumulatedMult += 2;
+      if (kw.id === 'airfryer' && !selectedCards.some(c => c.type === 'dairy')) accumulatedPoints += 50;
+      if (kw.id === 'spicerack') accumulatedMult += selectedCards.filter(c => c.type === 'spice').length * 0.5;
+      if (kw.id === 'deepfryer') accumulatedMult *= 1.5;
+      if (kw.id === 'wok' && selectedCards.some(c => c.type === 'carbs')) state.forks += 2;
+    });
 
     for (let i = 0; i < state.selectedIndices.length; i++) {
       const idx = state.selectedIndices[i];
@@ -1011,15 +1223,20 @@
       const isCardValid = dish.validCardIndices.includes(i);
 
       if (isCardValid) {
+        let cardPts = card.points || 0;
+        if (state.kitchenware.some(k => k.id === 'sousvide') && card.type === 'protein') {
+          cardPts += 20;
+        }
+
         if (card.multiplierBonus) {
           accumulatedMult += card.multiplierBonus;
           triggerFloatingText(`+${card.multiplierBonus}x MULT!`, potCardEl);
         } else {
-          accumulatedPoints += card.points;
-          triggerFloatingText(`+${card.points}`, potCardEl);
+          accumulatedPoints += cardPts;
+          triggerFloatingText(`+${cardPts}`, potCardEl);
         }
         bannerCalc.className = 'score-pop';
-        bannerCalc.innerText = `${accumulatedPoints} pts x ${accumulatedMult}`;
+        bannerCalc.innerText = `${accumulatedPoints} pts x ${accumulatedMult.toFixed(1)}`;
       } else {
         triggerFloatingText(`+0 TRASH!`, potCardEl);
         potCardEl.classList.remove('scoring-active');
@@ -1046,12 +1263,14 @@
     potEl.appendChild(plateEl);
 
     state.activeDiets.forEach(diet => {
-      accumulatedPoints = diet.applyEffect(selectedCards, accumulatedPoints);
+      if (diet.applyEffect) {
+        accumulatedPoints = diet.applyEffect(selectedCards, accumulatedPoints);
+      }
     });
 
     const finalScore = Math.max(0, Math.round(accumulatedPoints * accumulatedMult));
     bannerDish.innerText = `${dish.name.toUpperCase()}! 🔥`;
-    bannerCalc.innerText = `${accumulatedPoints} x ${accumulatedMult} = +${finalScore} PTS!`;
+    bannerCalc.innerText = `${accumulatedPoints} x ${accumulatedMult.toFixed(1)} = +${finalScore} PTS!`;
     bannerCalc.className = 'score-pop';
     triggerFloatingText(`+${finalScore}!`, potEl);
 
@@ -1120,12 +1339,14 @@
         document.getElementById('ui-complete-summary').innerText = 
           `Goals Reached: ${dishesCompleted}/${state.targetDishes} Dishes & ${state.score}/${state.targetScore} Pts. Bonus Forks earned: +${bonusForks}`;
 
-        // Mostrar el emergente intermedio al finalizar el nivel
         document.getElementById('ui-level-complete-modal').classList.remove('hidden');
       } else {
         alert(`Game Over! Both goals were not met.\nDishes: ${dishesCompleted}/${state.targetDishes} ${reachedDishes ? '✅' : '❌'}\nScore: ${state.score}/${state.targetScore} ${reachedScore ? '✅' : '❌'}`);
         state.week = 1;
         state.forks = 0;
+        state.kitchenware = [];
+        state.activeDiets = [];
+        state.chefSkills = [];
         initGame();
       }
     }
@@ -1201,56 +1422,51 @@
     shopGrid.innerHTML = '';
 
     const shopOptions = [
-      BASE_INGREDIENTS[Math.floor(Math.random() * BASE_INGREDIENTS.length)],
-      BASE_INGREDIENTS[Math.floor(Math.random() * BASE_INGREDIENTS.length)],
-      BASE_DIETS[Math.floor(Math.random() * BASE_DIETS.length)]
+      KITCHENWARE_DB[Math.floor(Math.random() * KITCHENWARE_DB.length)],
+      CHEF_SKILLS_DB[Math.floor(Math.random() * CHEF_SKILLS_DB.length)],
+      BASE_DIETS[Math.floor(Math.random() * BASE_DIETS.length)],
+      BASE_INGREDIENTS[Math.floor(Math.random() * BASE_INGREDIENTS.length)]
     ];
 
     shopOptions.forEach((item, idx) => {
-      const isDiet = 'description' in item;
+      const isKitchenware = KITCHENWARE_DB.some(k => k.id === item.id);
+      const isSkill = CHEF_SKILLS_DB.some(s => s.id === item.id);
+      const isDiet = 'description' in item || BASE_DIETS.some(d => d.name === item.name);
+      
       const cost = item.costForks || 3;
       const itemEl = document.createElement('div');
       itemEl.className = 'shop-item';
       itemEl.innerHTML = `
         <div style="font-size:1.4rem;">${item.icon || '📜'}</div>
-        <div style="font-weight:bold; font-size:0.85rem;">${item.name}</div>
-        <div style="font-size: 0.7rem; color: #666;">${isDiet ? item.description : (item.multiplierBonus ? `+${item.multiplierBonus}x Mult` : `+${item.points} pts`)}</div>
-        <button class="btn btn-cook" style="padding: 4px; font-size: 0.85rem;" id="buy-${idx}">Buy (🍴${cost})</button>
+        <div style="font-weight:bold; font-size:0.82rem;">${item.name}</div>
+        <div style="font-size: 0.68rem; color: #666;">${item.desc || item.description || (item.multiplierBonus ? `+${item.multiplierBonus}x Mult` : `+${item.points} pts`)}</div>
+        <button class="btn btn-cook" style="padding: 4px; font-size: 0.8rem;" id="buy-${idx}">Buy (🍴${cost})</button>
       `;
       shopGrid.appendChild(itemEl);
 
-      document.getElementById(`buy-${idx}`).onclick = () => buyItem(item, cost, isDiet);
+      document.getElementById(`buy-${idx}`).onclick = () => buyItem(item, cost, isKitchenware, isSkill, isDiet);
     });
   }
 
-  function buyItem(item, cost, isDiet) {
+  function buyItem(item, cost, isKitchenware, isSkill, isDiet) {
     if (state.forks < cost) return alert("Not enough Forks!");
-    state.forks -= cost;
 
-    if (isDiet) {
-      if (state.activeDiets.length < 3) {
-        state.activeDiets.push(item);
-        renderDietsHUD();
-      } else {
-        alert("Diet slots full!");
-        state.forks += cost;
-        return;
-      }
+    if (isKitchenware) {
+      if (state.kitchenware.length >= 3) return alert("Kitchenware slots full (3/3)!");
+      state.kitchenware.push(item);
+    } else if (isSkill) {
+      if (state.chefSkills.length >= 2) return alert("Chef Skill slots full (2/2)!");
+      state.chefSkills.push(item);
+    } else if (isDiet) {
+      if (state.activeDiets.length >= 2) return alert("Diet slots full (2/2)!");
+      state.activeDiets.push(item);
     } else {
       state.fridgeDeck.push(item);
     }
-    updateHUD();
-  }
 
-  function renderDietsHUD() {
-    const dietsEl = document.getElementById('ui-diets');
-    dietsEl.innerHTML = '<span style="font-size: 0.7rem; color: #666;">Diets:</span>';
-    state.activeDiets.forEach(d => {
-      const badge = document.createElement('span');
-      badge.className = 'diet-badge';
-      badge.innerText = d.name;
-      dietsEl.appendChild(badge);
-    });
+    state.forks -= cost;
+    renderSlots();
+    updateHUD();
   }
 
   // Event Listeners
@@ -1272,7 +1488,6 @@
     document.getElementById('ui-recipes-modal').classList.add('hidden');
   };
 
-  /* Interacciones del Pop-up de Fin de Nivel */
   document.getElementById('ui-btn-review-dishes').onclick = () => {
     document.getElementById('ui-level-complete-modal').classList.add('hidden');
     renderDishesReview();
