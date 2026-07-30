@@ -5,26 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>What are we eating?</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&display=swap');
 
     :root {
+      /* Palette based on original assets & mockup */
       --bg-wood: #e8d8c8;
       --panel-wood: #5a3e2b;
+      --panel-dark: #3b2c26;
+      --hud-dark: #2a1f1b;
       --counter-top: #f4eae1;
       --card-bg: #fffbf5;
       --accent-orange: #e07a5f;
-      --accent-green: #81b29a;
+      --accent-green: #2a9d8f;
+      --accent-blue: #2196f3;
       --accent-yellow: #f2cc8f;
-      --accent-red: #d90429;
+      --accent-red: #e63946;
       --accent-purple: #9b59b6;
       --text-dark: #3d405b;
       --font-cozy: 'Fredoka', cursive, sans-serif;
 
-      /* Colores por Categoría */
-      --type-c: #f39c12; /* Carbohidratos - Amarillo */
-      --type-v: #2ecc71; /* Vegetales - Verde */
-      --type-p: #e74c3c; /* Proteínas - Rojo */
-      --type-s: #9b59b6; /* Especiales/Otros - Morado */
+      /* Category Colors */
+      --type-c: #f39c12; /* Carbs */
+      --type-v: #2ecc71; /* Vegetables */
+      --type-p: #e74c3c; /* Proteins */
+      --type-s: #9b59b6; /* Special/Spices */
     }
 
     * { 
@@ -41,7 +45,7 @@
       height: 100%;
       height: 100dvh;
       overflow: hidden;
-      background-color: #2b1e1a;
+      background-color: #1a120f;
       color: var(--text-dark);
       font-family: var(--font-cozy);
       display: flex;
@@ -64,20 +68,20 @@
 
     @media (min-width: 441px) {
       #app-viewport {
-        height: 92vh;
-        max-height: 900px;
-        border-radius: 16px;
+        height: 94vh;
+        max-height: 920px;
+        border-radius: 20px;
         border: 6px solid var(--panel-wood);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        box-shadow: 0 12px 35px rgba(0,0,0,0.6);
       }
     }
 
-    /* Start Screen & Screens Overlay */
+    /* Start Screen Overlay */
     .screen-overlay {
       position: absolute;
       inset: 0;
       background: var(--bg-wood);
-      z-index: 200;
+      z-index: 300;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -91,32 +95,30 @@
     }
 
     .title-banner {
-      margin-top: 20px;
+      margin-top: 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .main-title {
-      font-size: 2.8rem;
-      font-weight: 700;
+      font-size: 2.6rem;
+      font-weight: 800;
       color: var(--panel-wood);
       text-shadow: 2px 2px 0px rgba(255,255,255,0.6);
       line-height: 1.1;
-      text-align: center;
     }
 
     .sub-title {
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       font-weight: 600;
       color: var(--accent-orange);
     }
 
-    /* Start Screen Animation Showcase */
     .start-animation-stage {
       width: 100%;
-      height: 220px;
+      height: 200px;
       position: relative;
       background: rgba(0,0,0,0.05);
       border-radius: 16px;
@@ -126,62 +128,10 @@
       align-items: center;
     }
 
-    .mini-fridge {
-      width: 80px;
-      height: 100px;
-      background: #a8dadc;
-      border: 3px solid #457b9d;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      top: 15px;
-      box-shadow: 3px 3px 0px #1d3557;
-    }
-
-    .floating-preview-card {
-      width: 60px;
-      height: 85px;
-      background: var(--card-bg);
-      border: 2px solid #e6d7c3;
-      border-radius: 8px;
-      position: absolute;
-      bottom: 25px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      animation: previewCardFly 2.5s infinite ease-in-out;
-    }
-
-    @keyframes previewCardFly {
-      0% {
-        transform: translateY(-120px) scale(0.4) rotate(-15deg);
-        opacity: 0;
-      }
-      30% {
-        transform: translateY(0px) scale(1) rotate(5deg);
-        opacity: 1;
-      }
-      70% {
-        transform: translateY(0px) scale(1) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(30px) scale(0.6) rotate(10deg);
-        opacity: 0;
-      }
-    }
-
-    /* Deck Selection Options */
     .deck-selection-container {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
       width: 100%;
       margin: 10px 0;
     }
@@ -190,367 +140,343 @@
       background: #fff;
       border: 3px solid #e0d0c0;
       border-radius: 12px;
-      padding: 14px 16px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       cursor: pointer;
       text-align: left;
-      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s, border-color 0.2s;
       box-shadow: 0 4px 6px rgba(0,0,0,0.06);
     }
 
-    .deck-option-card:hover, .deck-option-card:active {
+    .deck-option-card:hover {
       transform: translateY(-2px);
       border-color: var(--accent-orange);
-      box-shadow: 0 6px 12px rgba(224, 122, 95, 0.2);
     }
 
     .deck-icon {
-      font-size: 2.4rem;
+      font-size: 2.2rem;
       background: rgba(0,0,0,0.04);
-      padding: 10px;
+      padding: 8px;
       border-radius: 10px;
     }
 
     .deck-info h3 {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--panel-wood);
-      margin-bottom: 2px;
     }
 
     .deck-info p {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: #666;
-      line-height: 1.2;
     }
 
-    /* HUD Header - Bigger text for better phone readability */
-    .hud {
-      background: var(--panel-wood);
-      padding: 8px 6px;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 5px;
-      text-align: center;
-      color: #fff;
-      z-index: 10;
-    }
-
-    .hud-box {
-      background: rgba(255,255,255,0.15);
-      padding: 6px 2px;
-      border-radius: 8px;
-    }
-
-    .hud-label {
-      font-size: 0.62rem;
-      text-transform: uppercase;
-      opacity: 0.9;
-    }
-
-    .hud-value {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--accent-yellow);
-    }
-
-    /* Slots Area (Kitchenware, Diets, Chef Skills) - Expanded to full width */
-    .slots-bar {
+    /* TOP UTILITY BUTTONS BAR */
+    .top-options-bar {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 8px 6px;
-      background: rgba(0,0,0,0.12);
-      border-bottom: 2px solid rgba(0,0,0,0.1);
-      z-index: 10;
-      gap: 4px;
-      width: 100%;
+      padding: 6px 10px;
+      background: var(--panel-dark);
+      z-index: 20;
     }
 
-    .slot-group {
+    .top-btn {
+      padding: 4px 14px;
+      border-radius: 12px;
+      border: none;
+      font-weight: 800;
+      font-size: 0.75rem;
+      color: white;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.3);
+    }
+
+    .top-btn-options { background: #f39c12; }
+    .top-btn-runinfo { background: #e63946; }
+
+    /* BALATRO-INSPIRED CONDENSED HEADER HUD */
+    .balatro-hud {
+      background: #4a382a;
+      padding: 8px;
+      display: grid;
+      grid-template-columns: 1.1fr 1.8fr 1fr;
+      gap: 6px;
+      align-items: center;
+      color: #fff;
+      border-bottom: 3px solid #32241b;
+      z-index: 10;
+    }
+
+    /* Left Info Box */
+    .hud-left-info {
+      background: #36271d;
+      border: 2px solid #5a4334;
+      border-radius: 8px;
+      padding: 6px 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      flex: 1;
+      text-align: center;
     }
 
-    .slot-group-title {
+    .level-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .level-desc {
+      font-size: 0.55rem;
+      color: #ccc;
+      margin-top: 3px;
+      line-height: 1.1;
+    }
+
+    .target-score-badge {
+      margin-top: 4px;
+      background: rgba(0,0,0,0.3);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #f2cc8f;
+    }
+
+    /* Center Score Calculation Box */
+    .hud-score-calc-box {
+      background: #231814;
+      border: 2px solid #5a4334;
+      border-radius: 10px;
+      padding: 6px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .hud-score-label {
       font-size: 0.55rem;
       text-transform: uppercase;
-      color: var(--panel-wood);
       font-weight: 800;
-      margin-bottom: 3px;
+      color: #aaa;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
-    .slots-row {
+    .calc-row {
       display: flex;
-      gap: 3px;
-      width: 100%;
+      align-items: center;
+      gap: 4px;
+      margin-top: 2px;
+    }
+
+    .calc-chip {
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
+    }
+
+    .calc-blue { background: #2196f3; }
+    .calc-red { background: #e63946; }
+
+    .calc-x {
+      color: #e07a5f;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    /* Right Metrics Grid */
+    .hud-metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+    }
+
+    .metric-card {
+      background: #36271d;
+      border: 1.5px solid #5a4334;
+      border-radius: 6px;
+      padding: 3px;
+      text-align: center;
+    }
+
+    .metric-card.full-width {
+      grid-column: span 2;
+    }
+
+    .metric-lbl {
+      font-size: 0.5rem;
+      text-transform: uppercase;
+      color: #aaa;
+      font-weight: 700;
+    }
+
+    .metric-val {
+      font-size: 0.85rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .val-blue { color: #64b5f6; }
+    .val-red { color: #e57373; }
+    .val-gold { color: #ffd54f; }
+
+    /* SINGLE HORIZONTAL INVENTORY & SHELF TRAY */
+    .inventory-tray {
+      background: var(--panel-dark);
+      padding: 6px;
+      border-bottom: 3px solid #231814;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .shelf-sub-panel {
+      background: #4a382a;
+      border: 1.5px dashed #6b5341;
+      border-radius: 8px;
+      padding: 4px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sub-panel-title {
+      font-size: 0.52rem;
+      font-weight: 800;
+      color: #d4a373;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .shelf-dishes-area {
+      display: flex;
+      gap: 4px;
+      min-width: 50px;
+      align-items: center;
       justify-content: center;
     }
 
+    .shelf-item-icon {
+      font-size: 1.3rem;
+      position: relative;
+    }
+
+    .slots-sub-row {
+      display: flex;
+      gap: 3px;
+    }
+
     .slot-item {
-      width: 30px;
-      height: 38px;
-      border: 2px dashed rgba(90, 62, 43, 0.4);
+      width: 28px;
+      height: 32px;
+      border: 1.5px dashed rgba(255,255,255,0.25);
       border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
-      background: rgba(255,255,255,0.3);
+      font-size: 1rem;
+      background: rgba(0,0,0,0.2);
       cursor: pointer;
-      position: relative;
     }
 
     .slot-item.filled {
       border-style: solid;
       border-color: var(--accent-orange);
       background: #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
     }
 
-    .slot-item.diet-slot.filled {
-      border-color: var(--accent-green);
-    }
+    .slot-item.diet-slot.filled { border-color: var(--accent-green); }
 
-    .slot-item.skill-slot.filled {
-      border-color: var(--accent-purple);
-      animation: pulseSkill 1.5s infinite alternate;
-    }
-
-    @keyframes pulseSkill {
-      0% { box-shadow: 0 0 2px var(--accent-purple); }
-      100% { box-shadow: 0 0 8px var(--accent-purple); }
-    }
-
-    /* Top Bar */
-    .top-utility-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 14px;
-      background: rgba(0,0,0,0.05);
-      z-index: 10;
-    }
-
-    .btn-recipe-book {
-      background: var(--accent-yellow);
-      border: 2px solid #d4a359;
-      color: var(--text-dark);
-      padding: 6px 12px;
-      border-radius: 10px;
-      font-family: var(--font-cozy);
-      font-weight: 700;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-
-    /* Stage Area */
+    /* PLAY FIELD & PREP AREA (WOODEN CUTTING BOARD) */
     .stage {
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 8px 12px;
+      padding: 8px 10px;
       position: relative;
-      z-index: 1;
     }
 
-    /* Shelf */
-    .dish-shelf-container {
-      width: 100%;
-      height: 52px;
-      background: #8c6239;
-      border-bottom: 4px solid #5a3e2b;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      padding: 0 8px;
-      gap: 8px;
-      box-shadow: inset 0 -4px 6px rgba(0,0,0,0.2);
-    }
-
-    .shelf-label {
-      font-size: 0.7rem;
-      color: #f4eae1;
-      font-weight: 700;
-      text-transform: uppercase;
-      writing-mode: vertical-lr;
-      transform: rotate(180deg);
-    }
-
-    .shelf-dishes {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      flex: 1;
-      height: 100%;
-      align-items: center;
-    }
-
-    .shelf-item {
-      font-size: 2rem;
-      position: relative;
-      animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .special-badge {
-      position: absolute;
-      bottom: -2px;
-      left: -2px;
-      font-size: 0.8rem;
-      line-height: 1;
-      background: rgba(0,0,0,0.6);
-      border-radius: 50%;
-      padding: 1px;
-    }
-
-    /* Kitchen Props */
-    .kitchen-props {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 4px 0;
-      z-index: 2;
-    }
-
-    .fridge-deck {
-      width: 75px;
-      height: 95px;
-      background: #a8dadc;
-      border: 3px solid #457b9d;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      box-shadow: 3px 3px 0px #1d3557;
-      cursor: pointer;
-    }
-
-    .fridge-deck.dealing {
-      animation: fridgePulse 0.4s infinite alternate;
-      background-color: #f4a261;
-      border-color: #e76f51;
-    }
-
-    .fridge-icon {
-      font-size: 1.8rem;
-    }
-
-    .fridge-icon.spinning {
-      animation: iconSpin 0.6s infinite linear;
-    }
-
-    .fridge-handle {
-      position: absolute;
-      right: 6px;
-      top: 28px;
-      width: 5px;
-      height: 30px;
-      background: #1d3557;
-      border-radius: 2px;
-    }
-
-    .fridge-count {
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: #1d3557;
-    }
-
-    .trash-bin {
-      width: 65px;
-      height: 75px;
-      background: #e63946;
-      border: 3px solid #a81825;
-      border-radius: 6px 6px 12px 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 1.6rem;
-      box-shadow: -2px 3px 0px #780000;
-    }
-
-    /* Cutting Board Area */
-    .cutting-board {
-      background: #d4a373;
-      border: 4px solid #bc8a5f;
-      height: 120px;
+    .prep-area-board {
+      background: #c89662;
+      border: 4px solid #8c5e34;
       border-radius: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
+      padding: 8px 6px 12px 6px;
+      box-shadow: inset 0 3px 6px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.15);
       position: relative;
-      box-shadow: inset 0 4px 8px rgba(0,0,0,0.15);
-      z-index: 1;
-    }
-
-    .mixing-pot {
-      animation: potShake 0.15s infinite alternate;
-    }
-
-    .serving-plate {
-      position: absolute;
-      font-size: 4.2rem;
-      z-index: 5;
-      animation: plateAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
-    }
-
-    /* Dynamic Banner */
-    .score-banner {
-      height: 34px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.05rem;
-      font-weight: 700;
-    }
-
-    /* Hand & Controls Container - Clean separation from buttons */
-    .hand-container {
-      padding: 6px 10px 10px 10px;
-      background: var(--counter-top);
-      border-top: 4px solid #e0d0c0;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      align-items: center;
+    }
+
+    .prep-area-title {
+      position: absolute;
+      top: -10px;
+      background: #8c5e34;
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 800;
+      padding: 1px 10px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .played-cards-row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      min-height: 95px;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    /* Dish Title & Clean Score Text */
+    .dish-eval-text-container {
+      margin-top: 6px;
+      text-align: center;
+      min-height: 28px;
+    }
+
+    .dish-eval-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--panel-wood);
+    }
+
+    .dish-eval-calc {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--accent-orange);
+      margin-left: 6px;
+    }
+
+    /* PLAYER HAND CONTAINER */
+    .hand-container {
+      padding: 4px 10px 10px 10px;
+      background: var(--counter-top);
+      border-top: 3px solid #e0d0c0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
       position: relative;
       z-index: 20;
     }
 
-    .reorder-bar {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      padding: 0 4px;
-    }
-
-    .btn-sort {
-      background: #7f5539;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 5px 10px;
-      font-family: var(--font-cozy);
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 2px 0 rgba(0,0,0,0.2);
-    }
-
-    /* Hand Carousel with bigger cards and proper spacing */
     .hand-arc-wrapper {
       position: relative;
-      height: 115px;
+      height: 110px;
       width: 100%;
       display: flex;
       justify-content: center;
@@ -565,74 +491,38 @@
       justify-content: center;
     }
 
-    /* Card Styling - Larger for Motorola G35 phone screen */
+    /* CARD DESIGN */
     .card {
-      width: 66px;
-      height: 100px;
+      width: 64px;
+      height: 96px;
       background: var(--card-bg);
       color: var(--text-dark);
       border-radius: 8px;
-      border: 2px solid #e6d7c3;
+      border: 2px solid #d4c4b0;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 5px;
-      font-size: 0.72rem;
-      font-weight: 600;
+      padding: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
       cursor: pointer;
       position: absolute;
       bottom: 0;
       transform-origin: bottom center;
-      transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), left 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+      transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), left 0.25s;
       box-shadow: 0 4px 6px rgba(0,0,0,0.15);
     }
 
-    /* Card States Styling */
-    .card.state-frozen {
-      background: #e0f7fa !important;
-      border-color: #00bcd4 !important;
-      box-shadow: 0 0 8px rgba(0, 188, 212, 0.6);
+    .card.selected {
+      border-color: var(--accent-orange) !important;
+      box-shadow: 0 0 12px rgba(224, 122, 95, 0.9) !important;
     }
-
-    .card.state-gourmet {
-      background: #fff8e1 !important;
-      border-color: #ffd700 !important;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-    }
-
-    .card.state-expiring {
-      background: #fff3e0 !important;
-      border-color: #ff9800 !important;
-    }
-
-    .card.state-rotten {
-      background: #efebe9 !important;
-      border-color: #5d4037 !important;
-      color: #795548 !important;
-      opacity: 0.75;
-    }
-
-    .card-state-badge {
-      position: absolute;
-      top: 2px;
-      right: 3px;
-      font-size: 0.6rem;
-      font-weight: 800;
-      padding: 1px 3px;
-      border-radius: 4px;
-      line-height: 1;
-    }
-
-    .badge-frozen { background: #00bcd4; color: #fff; }
-    .badge-gourmet { background: #ffd700; color: #3e2723; }
-    .badge-expiring { background: #ff9800; color: #fff; }
-    .badge-rotten { background: #5d4037; color: #fff; }
 
     .card-corner {
       position: absolute;
       top: 3px;
       left: 4px;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 800;
       line-height: 1;
     }
@@ -642,96 +532,162 @@
     .card-corner.type-protein { color: var(--type-p); }
     .card-corner.type-special { color: var(--type-s); }
 
-    /* Selected state: maintains natural z-index ordering without popping to front */
-    .card.selected {
-      border-color: var(--accent-orange) !important;
-      box-shadow: 0 0 12px rgba(224, 122, 95, 0.8) !important;
+    .card-icon { font-size: 1.5rem; text-align: center; margin-top: 6px; }
+    .card-title { text-align: center; font-size: 0.6rem; line-height: 1; font-weight: 700; }
+    .card-points { text-align: right; font-size: 0.7rem; color: #666; font-weight: 800; }
+
+    /* SORT BUTTONS BAR */
+    .sort-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      align-items: center;
     }
 
-    .card.scoring-active {
-      animation: cardHighlight 0.4s ease-in-out infinite alternate;
-      border-color: var(--accent-yellow) !important;
+    .btn-sort {
+      background: #6b4c38;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 4px 12px;
+      font-family: var(--font-cozy);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.2);
     }
 
-    .card.trashed-card {
-      opacity: 0.4;
-      border-color: var(--accent-red) !important;
-      transform: scale(0.7) !important;
-    }
-
-    .card-icon { font-size: 1.4rem; text-align: center; margin-top: 8px; }
-    .card-title { text-align: center; font-size: 0.62rem; line-height: 1; font-weight: 700; }
-    .card-points { text-align: right; font-size: 0.72rem; color: #777; font-weight: bold; }
-
-    /* Fly Motion Keyframes */
-    .fly-draw-anim {
-      z-index: 50 !important;
-      animation: flyFromFridgeToHand 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-
-    .fly-trash {
-      animation: flyToTrash 0.4s ease-in forwards !important;
-    }
-
-    /* Action Buttons - Distinctly separated from the hand */
+    /* ACTION BUTTONS WITH 3D EFFECT */
     .actions { 
       display: flex; 
-      gap: 10px; 
-      margin-top: 4px;
+      gap: 12px; 
+      margin-top: 2px;
       z-index: 10;
     }
     
-    .btn {
+    .btn-action {
       flex: 1;
-      padding: 12px;
+      padding: 12px 6px;
       border: none;
       border-radius: 12px;
       font-family: var(--font-cozy);
-      font-size: 1.1rem;
-      font-weight: 700;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: white;
       cursor: pointer;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      transition: transform 0.1s;
     }
 
-    .btn:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.15); }
-    .btn-cook { background: var(--accent-orange); color: white; }
-    .btn-discard { background: var(--accent-green); color: white; }
-    .btn-secondary { background: #5a3e2b; color: white; }
-    .btn:disabled { background: #ccc !important; opacity: 0.6; box-shadow: none; cursor: not-allowed; }
+    .btn-discard {
+      background: linear-gradient(180deg, #e63946, #c1121f);
+      box-shadow: 0 4px 0 #780000;
+    }
 
-    /* Play Button Redesign (Smaller & Better Look) */
-    .play-btn {
-      padding: 10px 24px;
-      font-size: 14px;
-      font-weight: 600;
+    .btn-cook {
+      background: linear-gradient(180deg, #2196f3, #1565c0);
+      box-shadow: 0 4px 0 #0d47a1;
+    }
+
+    .btn-action:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.3);
+    }
+
+    .btn-action:disabled {
+      background: #bbb !important;
+      box-shadow: 0 4px 0 #888 !important;
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* BOTTOM HUD & INDICATORS PANEL */
+    .bottom-hud-panel {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      gap: 8px;
+      align-items: center;
+      padding-top: 4px;
+    }
+
+    /* FRIDGE DECK WITH OPEN STATE */
+    .fridge-widget {
+      height: 60px;
+      background: #7bdff2;
+      border: 3px solid #48cae4;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 3px 0 #0096c7;
+      cursor: pointer;
+    }
+
+    .fridge-widget.open-state {
+      background: #b2f7ef;
+      border-color: #00b4d8;
+    }
+
+    .fridge-handle {
+      position: absolute;
+      right: 5px;
+      top: 15px;
+      width: 4px;
+      height: 22px;
+      background: #0077b6;
+      border-radius: 2px;
+    }
+
+    .fridge-widget.open-state .fridge-handle {
+      right: auto;
+      left: 5px;
+    }
+
+    .fridge-count {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #03045e;
+    }
+
+    /* CHEF SKILLS PANEL */
+    .chef-skills-panel {
+      background: var(--hud-dark);
+      border-radius: 10px;
+      padding: 4px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .skills-panel-title {
+      font-size: 0.55rem;
+      color: #aaa;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #ffffff;
-      background: linear-gradient(135deg, #ff4e50, #f9d423);
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(255, 78, 80, 0.4);
-      transition: all 0.3s ease;
-      margin-top: 20px;
+      margin-bottom: 3px;
     }
 
-    .play-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(255, 78, 80, 0.6);
+    /* TRASH BIN */
+    .trash-widget {
+      height: 60px;
+      background: #e63946;
+      border: 3px solid #ba181b;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      box-shadow: 0 3px 0 #660708;
     }
 
-    .play-btn:active {
-      transform: translateY(1px);
-      box-shadow: 0 2px 10px rgba(255, 78, 80, 0.4);
-    }
-
-    /* Modals */
+    /* MODALS & POPUPS */
     .modal {
       position: absolute;
       inset: 0;
       background: var(--bg-wood);
-      z-index: 100;
+      z-index: 250;
       display: flex;
       flex-direction: column;
       padding: 18px;
@@ -739,7 +695,7 @@
     }
 
     .modal.hidden { display: none; }
-    .modal-header { font-size: 1.5rem; font-weight: 700; color: var(--panel-wood); text-align: center; }
+    .modal-header { font-size: 1.5rem; font-weight: 800; color: var(--panel-wood); text-align: center; }
 
     .recipe-list, .shop-grid, .review-list {
       display: flex;
@@ -762,13 +718,9 @@
     .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
     .shop-item { flex-direction: column; justify-content: space-between; text-align: center; }
 
-    /* Card Description Popup Modal (Hold to View) */
     .popup-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       background: rgba(0, 0, 0, 0.6);
       display: flex;
       align-items: center;
@@ -776,144 +728,53 @@
       z-index: 1000;
     }
 
-    .popup-overlay.hidden {
-      display: none !important;
-    }
+    .popup-overlay.hidden { display: none !important; }
 
     .popup-content {
       background: #2a2a2a;
       border: 1px solid #444;
-      padding: 25px 30px;
+      padding: 20px 24px;
       border-radius: 12px;
       text-align: center;
       max-width: 300px;
-      width: 80%;
       box-shadow: 0 8px 25px rgba(0,0,0,0.5);
     }
 
-    .popup-content h3 {
-      color: #f9d423;
-      margin-bottom: 10px;
-    }
-
-    .popup-content p {
-      color: #ccc;
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
+    .popup-content h3 { color: #f2cc8f; margin-bottom: 8px; }
+    .popup-content p { color: #ccc; font-size: 0.85rem; margin-bottom: 16px; }
 
     .close-btn {
       padding: 6px 16px;
-      background: #ff4e50;
+      background: #e63946;
       color: #fff;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      font-weight: 600;
-    }
-
-    .close-btn:hover {
-      background: #e03b3d;
-    }
-
-    /* Floating Text Pops */
-    .floating-text {
-      position: absolute;
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: #ffd166;
-      text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
-      pointer-events: none;
-      z-index: 60;
-      animation: floatUp 0.8s ease-out forwards;
-    }
-
-    @keyframes flyFromFridgeToHand {
-      0% {
-        transform: translate(var(--start-x, -130px), var(--start-y, -220px)) scale(0.2) rotate(-120deg);
-        opacity: 0;
-      }
-      70% {
-        transform: scale(1.15) rotate(10deg);
-        opacity: 1;
-      }
-      100% { opacity: 1; }
-    }
-
-    @keyframes flyToTrash {
-      0% { transform: scale(1); opacity: 1; }
-      100% { transform: translate(140px, -120px) scale(0.1) rotate(60deg); opacity: 0; }
-    }
-
-    @keyframes cardHighlight {
-      0% { transform: scale(1.05) translateY(-5px); }
-      100% { transform: scale(1.15) translateY(-12px); }
-    }
-
-    @keyframes popIn {
-      0% { transform: scale(0); }
-      80% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-
-    @keyframes potShake {
-      0% { transform: rotate(-4deg) scale(1.03); }
-      100% { transform: rotate(4deg) scale(0.97); }
-    }
-
-    @keyframes plateAppear {
-      0% { transform: scale(0) rotate(-180deg); opacity: 0; }
-      70% { transform: scale(1.2) rotate(10deg); opacity: 1; }
-      100% { transform: scale(1) rotate(0deg); opacity: 1; }
-    }
-
-    @keyframes floatUp {
-      0% { opacity: 1; transform: translateY(0) scale(0.8); }
-      50% { opacity: 1; transform: translateY(-30px) scale(1.2); }
-      100% { opacity: 0; transform: translateY(-60px) scale(1); }
-    }
-
-    @keyframes fridgePulse {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.08); }
-    }
-
-    @keyframes iconSpin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      font-weight: 700;
     }
   </style>
 </head>
 <body>
 
 <div id="app-viewport">
-  <!-- Start Screen & Deck Selection -->
+  <!-- START SCREEN OVERLAY -->
   <div class="screen-overlay" id="ui-start-screen">
     <div class="title-banner">
       <h1 class="main-title">What are we eating?</h1>
+      <div class="sub-title">Culinary Card Crafter</div>
     </div>
 
-    <!-- Animation Showcase -->
     <div class="start-animation-stage">
-      <div class="mini-fridge">
-        <div class="fridge-handle" style="top:22px; height:24px;"></div>
-        <div style="font-size:1.6rem;">🧊</div>
-      </div>
-      <div class="floating-preview-card">
-        <div style="font-size:0.6rem; color:#f39c12; font-weight:800;">C</div>
-        <div>🧀</div>
-        <div style="font-size:0.65rem; color:#777;">+15</div>
-      </div>
+      <div style="font-size: 4rem;">🍳</div>
     </div>
 
-    <button class="play-btn" id="ui-btn-goto-deck-select">Play Game</button>
+    <button class="top-btn top-btn-options" id="ui-btn-goto-deck-select" style="font-size:1.1rem; padding:12px 30px;">Play Game</button>
   </div>
 
-  <!-- Deck Selection Screen Overlay -->
+  <!-- DECK SELECT SCREEN OVERLAY -->
   <div class="screen-overlay hidden" id="ui-deck-screen">
-    <div class="title-banner" style="margin-top: 10px;">
-      <h2 class="main-title" style="font-size: 2rem;">Choose Your Deck</h2>
-      <div class="sub-title" style="font-size: 0.95rem;">Select your culinary style for this run</div>
+    <div class="title-banner">
+      <h2 class="main-title" style="font-size: 2rem;">Choose Deck</h2>
     </div>
 
     <div class="deck-selection-container">
@@ -921,7 +782,7 @@
         <div class="deck-icon">🃏</div>
         <div class="deck-info">
           <h3>Regular Deck</h3>
-          <p>The standard culinary mix featuring balanced carbs, vegetables, proteins, and spices.</p>
+          <p>Standard balanced deck with standard ingredients.</p>
         </div>
       </div>
 
@@ -929,7 +790,7 @@
         <div class="deck-icon">🥗</div>
         <div class="deck-info">
           <h3>Vegetarian Deck</h3>
-          <p>Plant-based alternatives! Regular proteins are swapped for savory vegetarian replacements.</p>
+          <p>Plant-based proteins replace meat items.</p>
         </div>
       </div>
 
@@ -937,137 +798,168 @@
         <div class="deck-icon">✨</div>
         <div class="deck-info">
           <h3>Specialty Deck</h3>
-          <p>High risk, high reward! All ingredients start with special modifiers (Frozen, Gourmet, Expiring).</p>
+          <p>All ingredients spawn with special modifiers.</p>
         </div>
       </div>
     </div>
 
-    <button class="btn btn-secondary" id="ui-btn-back-start" style="font-size: 0.95rem; padding: 10px; flex: unset; width: 100%;">Back</button>
+    <button class="btn-sort" id="ui-btn-back-start" style="padding: 10px; width: 100%;">Back</button>
   </div>
 
-  <!-- HUD Header -->
-  <div class="hud">
-    <div class="hud-box"><div class="hud-label">Target Pts</div><div class="hud-value" id="ui-target-score">0</div></div>
-    <div class="hud-box"><div class="hud-label">Dishes Goal</div><div class="hud-value" id="ui-target-dishes">0/0</div></div>
-    <div class="hud-box"><div class="hud-label">Score</div><div class="hud-value" id="ui-score">0</div></div>
-    <div class="hud-box"><div class="hud-label">Hands</div><div class="hud-value" id="ui-hands">0</div></div>
-    <div class="hud-box"><div class="hud-label">Discards</div><div class="hud-value" id="ui-discards">0</div></div>
+  <!-- TOP OPTIONS BAR -->
+  <div class="top-options-bar">
+    <button class="top-btn top-btn-options" id="ui-open-recipes-btn">Options</button>
+    <button class="top-btn top-btn-runinfo" id="ui-run-info-btn">Run Info</button>
   </div>
 
-  <!-- Slots Bar for Kitchenware (3), Diets (2), and Skills (2) - Stretched to full screen width -->
-  <div class="slots-bar">
-    <div class="slot-group">
-      <div class="slot-group-title">Kitchenware</div>
-      <div class="slots-row" id="ui-kitchenware-slots"></div>
-    </div>
-    <div class="slot-group">
-      <div class="slot-group-title">Diets</div>
-      <div class="slots-row" id="ui-diet-slots"></div>
-    </div>
-    <div class="slot-group">
-      <div class="slot-group-title">Chef Skills</div>
-      <div class="slots-row" id="ui-skill-slots"></div>
-    </div>
-  </div>
-
-  <div class="top-utility-bar">
-    <div style="font-size:0.95rem; font-weight:bold; color:var(--panel-wood);" id="ui-forks">🍴 0</div>
-    <button class="btn-recipe-book" id="ui-open-recipes-btn">📖 Recipes</button>
-  </div>
-
-  <!-- Stage Area -->
-  <div class="stage">
-    <!-- Finished Dishes Shelf -->
-    <div class="dish-shelf-container">
-      <div class="shelf-label">Shelf</div>
-      <div class="shelf-dishes" id="ui-dish-shelf"></div>
+  <!-- BALATRO-INSPIRED HEADER HUD -->
+  <div class="balatro-hud">
+    <div class="hud-left-info">
+      <div class="level-title" id="ui-level-name">The Fish</div>
+      <div class="level-desc">Target Requirement</div>
+      <div class="target-score-badge">Score: <span id="ui-target-score">100</span></div>
     </div>
 
-    <!-- Kitchen Props -->
-    <div class="kitchen-props">
-      <!-- Refrigerator Deck -->
-      <div class="fridge-deck" id="ui-fridge">
-        <div class="fridge-handle"></div>
-        <div class="fridge-icon" id="ui-fridge-icon">🧊</div>
-        <div class="fridge-count" id="ui-deck-count">0</div>
+    <div class="hud-score-calc-box">
+      <div class="hud-score-label">Round Score</div>
+      <div class="calc-row">
+        <div class="calc-chip calc-blue" id="ui-hud-base-pts">0</div>
+        <div class="calc-x">X</div>
+        <div class="calc-chip calc-red" id="ui-hud-mult">1.0</div>
       </div>
-
-      <!-- Trash Bin -->
-      <div class="trash-bin" id="ui-trash">🗑️</div>
     </div>
 
-    <!-- Cutting Board Area -->
-    <div class="cutting-board" id="ui-cooking-pot"></div>
-
-    <!-- Dynamic Scoring Banner -->
-    <div class="score-banner" id="ui-score-banner">
-      <span id="ui-banner-dish" style="color: var(--panel-wood);">Select Cards</span>
-      <span id="ui-banner-calc" style="color: var(--accent-orange);"></span>
+    <div class="hud-metrics-grid">
+      <div class="metric-card">
+        <div class="metric-lbl">Hands</div>
+        <div class="metric-val val-blue" id="ui-hands">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-lbl">Discards</div>
+        <div class="metric-val val-red" id="ui-discards">0</div>
+      </div>
+      <div class="metric-card full-width">
+        <div class="metric-lbl">Forks</div>
+        <div class="metric-val val-gold" id="ui-forks">🍴 0</div>
+      </div>
     </div>
   </div>
 
-  <!-- Hand & Controls -->
+  <!-- INVENTORY & SHELF SINGLE TRAY -->
+  <div class="inventory-tray">
+    <!-- Shelf Dished Icons Area -->
+    <div class="shelf-sub-panel">
+      <div class="sub-panel-title">Shelf</div>
+      <div class="shelf-dishes-area" id="ui-dish-shelf"></div>
+    </div>
+
+    <!-- Kitchenware Sub Panel -->
+    <div class="shelf-sub-panel" style="flex: 1;">
+      <div class="sub-panel-title">Kitchenware</div>
+      <div class="slots-sub-row" id="ui-kitchenware-slots"></div>
+    </div>
+
+    <!-- Diets Sub Panel -->
+    <div class="shelf-sub-panel">
+      <div class="sub-panel-title">Diets</div>
+      <div class="slots-sub-row" id="ui-diet-slots"></div>
+    </div>
+  </div>
+
+  <!-- PLAY FIELD / PREP AREA -->
+  <div class="stage">
+    <div class="prep-area-board">
+      <div class="prep-area-title">Prep Area</div>
+      <div class="played-cards-row" id="ui-cooking-pot"></div>
+    </div>
+
+    <div class="dish-eval-text-container">
+      <span class="dish-eval-title" id="ui-banner-dish">Select Cards</span>
+      <span class="dish-eval-calc" id="ui-banner-calc"></span>
+    </div>
+  </div>
+
+  <!-- PLAYER HAND & BOTTOM CONTROLS -->
   <div class="hand-container">
-    <div class="reorder-bar">
-      <button class="btn-sort" id="ui-sort-type-btn">Sort by Type</button>
-      <button class="btn-sort" id="ui-sort-score-btn">Sort by Score</button>
+    <div class="sort-bar">
+      <span style="font-size:0.65rem; font-weight:800; color:#8c6239; text-transform:uppercase;">Sort Hand</span>
+      <button class="btn-sort" id="ui-sort-type-btn">Suit</button>
+      <button class="btn-sort" id="ui-sort-score-btn">Rank</button>
     </div>
 
     <div class="hand-arc-wrapper">
       <div class="hand" id="ui-hand"></div>
     </div>
 
+    <!-- ACTION BUTTONS -->
     <div class="actions">
-      <button class="btn btn-cook" id="ui-cook-btn" disabled>Cook</button>
-      <button class="btn btn-discard" id="ui-discard-btn" disabled>Discard</button>
+      <button class="btn-action btn-discard" id="ui-discard-btn" disabled>Discard</button>
+      <button class="btn-action btn-cook" id="ui-cook-btn" disabled>Cook</button>
+    </div>
+
+    <!-- BOTTOM INDICATORS PANEL -->
+    <div class="bottom-hud-panel">
+      <!-- Fridge Widget -->
+      <div class="fridge-widget" id="ui-fridge">
+        <div class="fridge-handle"></div>
+        <div class="fridge-count" id="ui-deck-count">0</div>
+      </div>
+
+      <!-- Chef Skills Panel -->
+      <div class="chef-skills-panel">
+        <div class="skills-panel-title">Chef Skills</div>
+        <div class="slots-sub-row" id="ui-skill-slots"></div>
+      </div>
+
+      <!-- Trash Bin -->
+      <div class="trash-widget">🗑️</div>
     </div>
   </div>
 
-  <!-- Recipe Book Modal -->
+  <!-- RECIPE BOOK MODAL -->
   <div class="modal hidden" id="ui-recipes-modal">
     <div class="modal-header">📖 Recipe Book</div>
     <div class="recipe-list" id="ui-recipe-list"></div>
-    <button class="btn btn-cook" id="ui-close-recipes-btn">Close</button>
+    <button class="btn-action btn-cook" id="ui-close-recipes-btn">Close</button>
   </div>
 
-  <!-- Level Complete Popup Modal -->
+  <!-- LEVEL COMPLETE MODAL -->
   <div class="modal hidden" id="ui-level-complete-modal">
     <div class="modal-header">🎉 Level Complete!</div>
-    <p style="text-align:center; font-size:1rem;" id="ui-complete-summary">You reached all level requirements!</p>
-    <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px;">
-      <button class="btn btn-secondary" id="ui-btn-review-dishes">📜 Review Dishes</button>
-      <button class="btn btn-cook" id="ui-btn-go-shop">🛒 Go to Supermarket</button>
+    <p style="text-align:center;" id="ui-complete-summary">Requirements reached!</p>
+    <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
+      <button class="btn-sort" id="ui-btn-review-dishes">📜 Review Dishes</button>
+      <button class="btn-action btn-cook" id="ui-btn-go-shop">🛒 Go to Supermarket</button>
     </div>
   </div>
 
-  <!-- Review Dishes Modal -->
+  <!-- REVIEW DISHES MODAL -->
   <div class="modal hidden" id="ui-review-modal">
     <div class="modal-header">🍽️ Dishes Prepared</div>
     <div class="review-list" id="ui-review-list"></div>
-    <button class="btn btn-secondary" id="ui-copy-clipboard-btn">📋 Copy to Clipboard</button>
-    <button class="btn btn-cook" id="ui-close-review-btn">Proceed to Supermarket</button>
+    <button class="btn-sort" id="ui-copy-clipboard-btn">📋 Copy to Clipboard</button>
+    <button class="btn-action btn-cook" id="ui-close-review-btn">Proceed to Supermarket</button>
   </div>
 
-  <!-- Supermarket Modal -->
+  <!-- SUPERMARKET MODAL -->
   <div class="modal hidden" id="ui-shop">
     <div class="modal-header">🛒 Supermarket</div>
-    <p style="text-align:center; font-size:0.95rem;" id="ui-shop-summary">Spend Forks on kitchenware, skills, diets & ingredients!</p>
     <div class="shop-grid" id="ui-shop-items"></div>
-    <button class="btn btn-cook" id="ui-next-week-btn">Next Level</button>
+    <button class="btn-action btn-cook" id="ui-next-week-btn">Next Level</button>
   </div>
 
-  <!-- Card Description Popup Modal (Hold to View) -->
+  <!-- CARD POPUP MODAL -->
   <div id="card-popup-modal" class="popup-overlay hidden">
     <div class="popup-content">
       <h3 id="popup-card-title">Card Title</h3>
-      <p id="popup-card-desc">Card description goes here...</p>
+      <p id="popup-card-desc">Card description...</p>
       <button id="popup-close-btn" class="close-btn">Close</button>
     </div>
   </div>
 </div>
 
 <script type="module">
-  import { BASE_INGREDIENTS } from './ingredients.js';
+  import { BASE_INGREDIENTS, VEGETARIAN_PROTEINS } from './ingredients.js';
   import { DishEvaluator, RECIPE_BOOK } from './dishes.js';
   import { BASE_DIETS } from './diets.js';
   import { LevelManager } from './levels.js';
@@ -1088,32 +980,17 @@
   ];
 
   export const CHEF_SKILLS_DB = [
-    { id: 'flash_freeze', name: 'Flash Freeze', icon: '❄️', costForks: 2, desc: 'Freeze 1 card (1 turn timer)' },
-    { id: 'gourmet_touch', name: 'Gourmet Touch', icon: '✨', costForks: 3, desc: 'Make 1 selected card Gourmet (+0.5 Mult)' },
-    { id: 'tenderize', name: 'Tenderize', icon: '🔨', costForks: 2, desc: '+15 Base Points to 1 selected card' },
-    { id: 'restock', name: 'Pantry Restock', icon: '🔄', costForks: 2, desc: 'Redraw selected cards instantly' },
-    { id: 'ferment', name: 'Quick Ferment', icon: '🧪', costForks: 2, desc: 'Add +2 Mult bonus to 1 card' },
-    { id: 'marinate', name: 'Marinate', icon: '🥩', costForks: 3, desc: 'Convert 1 card into Protein' },
-    { id: 'julienne', name: 'Julienne', icon: '🥕', costForks: 2, desc: 'Convert 1 card into Vegetable' },
-    { id: 'grandma_secret', name: 'Grandma Secret', icon: '👵', costForks: 4, desc: "Spawn a Grandma's Hug card" },
-    { id: 'clean', name: 'Deep Clean', icon: '🧹', costForks: 2, desc: 'Remove all low-point cards from hand' },
-    { id: 'duplicate', name: 'Duplication', icon: '👯', costForks: 4, desc: 'Duplicate 1 selected card' }
+    { id: 'flash_freeze', name: 'Flash Freeze', icon: '📜', costForks: 2, desc: 'Freeze 1 card' },
+    { id: 'gourmet_touch', name: 'Gourmet Touch', icon: '📜', costForks: 3, desc: 'Make 1 card Gourmet (+0.5 Mult)' },
+    { id: 'tenderize', name: 'Tenderize', icon: '📜', costForks: 2, desc: '+15 Base Points to 1 card' },
+    { id: 'restock', name: 'Pantry Restock', icon: '📜', costForks: 2, desc: 'Redraw selected cards instantly' },
+    { id: 'ferment', name: 'Quick Ferment', icon: '📜', costForks: 2, desc: 'Add +2 Mult bonus to 1 card' },
+    { id: 'marinate', name: 'Marinate', icon: '📜', costForks: 3, desc: 'Convert 1 card into Protein' },
+    { id: 'julienne', name: 'Julienne', icon: '📜', costForks: 2, desc: 'Convert 1 card into Vegetable' },
+    { id: 'grandma_secret', name: 'Grandma Secret', icon: '📜', costForks: 4, desc: "Spawn a Grandma's Hug card" },
+    { id: 'clean', name: 'Deep Clean', icon: '📜', costForks: 2, desc: 'Remove low-point cards from hand' },
+    { id: 'duplicate', name: 'Duplication', icon: '📜', costForks: 4, desc: 'Duplicate 1 selected card' }
   ];
-
-  // Vegetarian replacement map for standard proteins
-  const vegetarianProteinMap = {
-    "Chicken": "Tofu",
-    "Beef": "Seitan",
-    "Fish": "Veggie Burger",
-    "Egg": "Tempeh"
-  };
-
-  function getProteinCard(originalName, isVegetarianDeck) {
-    if (isVegetarianDeck && vegetarianProteinMap[originalName]) {
-      return vegetarianProteinMap[originalName];
-    }
-    return originalName;
-  }
 
   function getCategoryLetter(type) {
     if (type === 'carbs') return 'C';
@@ -1147,13 +1024,20 @@
   function applyDeckType(deckType) {
     let sourceIngredients = [...BASE_INGREDIENTS];
 
+    if (deckType === 'vegetarian') {
+      sourceIngredients = sourceIngredients.map(card => {
+        if (card.type === 'protein') {
+          if (card.id === 'beef') return { ...VEGETARIAN_PROTEINS.find(p => p.id === 'seitan') };
+          if (card.id === 'chicken') return { ...VEGETARIAN_PROTEINS.find(p => p.id === 'tofu') };
+          if (card.id === 'egg') return { ...VEGETARIAN_PROTEINS.find(p => p.id === 'tempeh') };
+          if (card.id === 'fish') return { ...VEGETARIAN_PROTEINS.find(p => p.id === 'veggie_burger') };
+        }
+        return { ...card };
+      });
+    }
+
     let deck = [...sourceIngredients, ...sourceIngredients, ...sourceIngredients].map(card => {
       let c = { ...card };
-      
-      // Apply vegetarian protein replacements if running the vegetarian deck
-      if (deckType === 'vegetarian' && c.type === 'protein') {
-        c.name = getProteinCard(c.name, true);
-      }
 
       if (deckType === 'special') {
         const rand = Math.random();
@@ -1167,25 +1051,6 @@
         } else {
           c.state = 'expiring';
           c.name = `Fresh ${c.name} (Expiring)`;
-        }
-      } else if (deckType === 'regular' || deckType === 'vegetarian') {
-        const isSpecialChance = Math.random();
-        if (isSpecialChance < 0.10) {
-          const randState = Math.random();
-          if (randState < 0.33) {
-            c.state = 'gourmet';
-            c.name = `Gourmet ${c.name}`;
-          } else if (randState < 0.66) {
-            c.state = 'frozen';
-            c.frozenTimer = 1;
-            c.name = `Frozen ${c.name}`;
-          } else {
-            c.state = 'expiring';
-            c.name = `Fresh ${c.name} (Expiring)`;
-          }
-        } else {
-          c.state = c.state || 'normal';
-          c.frozenTimer = c.state === 'frozen' ? 1 : 0;
         }
       } else {
         c.state = c.state || 'normal';
@@ -1209,29 +1074,17 @@
     state.hand = [];
     state.selectedIndices = [];
 
+    document.getElementById('ui-level-name').innerText = level.levelName || `Level ${state.week}`;
     document.getElementById('ui-dish-shelf').innerHTML = '';
     state.fridgeDeck = applyDeckType(state.selectedDeckType);
 
     renderSlots();
+    populateRecipeBook();
     updateHUD();
     await performInitialDeal();
   }
 
   function shuffle(arr) { arr.sort(() => Math.random() - 0.5); }
-
-  function getFridgeOffset() {
-    const fridgeEl = document.getElementById('ui-fridge');
-    const handWrapper = document.querySelector('.hand-arc-wrapper');
-    if (!fridgeEl || !handWrapper) return { x: -130, y: -220 };
-
-    const fridgeRect = fridgeEl.getBoundingClientRect();
-    const handRect = handWrapper.getBoundingClientRect();
-
-    const startX = (fridgeRect.left + fridgeRect.width / 2) - (handRect.left + handRect.width / 2);
-    const startY = (fridgeRect.top + fridgeRect.height / 2) - (handRect.top + handRect.height / 2);
-
-    return { x: startX, y: startY };
-  }
 
   function renderSlots() {
     const kwContainer = document.getElementById('ui-kitchenware-slots');
@@ -1261,8 +1114,8 @@
     for (let i = 0; i < 2; i++) {
       const item = state.chefSkills[i];
       const slot = document.createElement('div');
-      slot.className = `slot-item skill-slot ${item ? 'filled' : ''}`;
-      slot.title = item ? `${item.name}: ${item.desc} (Click to Use)` : 'Empty Skill Slot';
+      slot.className = `slot-item ${item ? 'filled' : ''}`;
+      slot.title = item ? `${item.name}: ${item.desc}` : 'Empty Skill Slot';
       slot.innerHTML = item ? item.icon : '📜';
       if (item) {
         slot.onclick = () => useSkill(i);
@@ -1293,24 +1146,10 @@
       state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
       state.selectedIndices = [];
       drawHand();
-    } else if (skill.id === 'marinate') {
-      if (state.selectedIndices.length !== 1) return alert("Select 1 card!");
-      state.hand[state.selectedIndices[0]].type = 'protein';
-    } else if (skill.id === 'julienne') {
-      if (state.selectedIndices.length !== 1) return alert("Select 1 card!");
-      state.hand[state.selectedIndices[0]].type = 'vegetable';
-    } else if (skill.id === 'grandma_secret') {
-      state.hand.push({ id: 'grandma_hug', name: "Grandma's Hug", type: 'special', points: 25, multiplierBonus: 3, icon: '👵', state: 'normal' });
     } else if (skill.id === 'duplicate') {
       if (state.selectedIndices.length !== 1) return alert("Select 1 card to duplicate!");
       const card = state.hand[state.selectedIndices[0]];
       state.hand.push({ ...card });
-    } else if (skill.id === 'clean') {
-      state.hand = state.hand.filter(c => (c.points || 0) > 5 && c.state !== 'rotten');
-    } else if (skill.id === 'ferment') {
-      if (state.selectedIndices.length !== 1) return alert("Select 1 card!");
-      const card = state.hand[state.selectedIndices[0]];
-      card.multiplierBonus = (card.multiplierBonus || 0) + 2;
     }
 
     state.chefSkills.splice(slotIndex, 1);
@@ -1319,69 +1158,26 @@
     evaluateDishPreview();
   }
 
-  function processTurnCardStateUpdates() {
-    state.hand.forEach(card => {
-      if (card.state === 'expiring' && !card.usedThisTurn) {
-        card.state = 'rotten';
-      }
-
-      if (card.state === 'frozen') {
-        if (card.frozenTimer > 0) {
-          card.frozenTimer -= 1;
-        } else {
-          card.state = 'normal';
-          card.points = (card.points || 0) + 50;
-        }
-      }
-      card.usedThisTurn = false;
-    });
-  }
-
-  // Draw 1 random card of each type at the start of the game
-  function initializeStartingHand(deck, deckType) {
-    const cardTypes = ["protein", "vegetable", "carbs", "special"];
+  function initializeStartingHand(deck) {
     let startingHand = [];
-
-    cardTypes.forEach(type => {
-      let pool = deck.filter(card => card.type === type || (type === 'special' && card.type === 'spice'));
-      if (pool.length > 0) {
-        let randomIndex = Math.floor(Math.random() * pool.length);
-        let selectedCard = { ...pool[randomIndex] };
-        
-        if (deckType === 'vegetarian' && selectedCard.type === 'protein') {
-          selectedCard.name = getProteinCard(selectedCard.name, true);
-        }
-        
-        startingHand.push(selectedCard);
-      }
-    });
-
-    // Fill up remaining hand slots up to standard size if needed
     while (startingHand.length < MAX_HAND_SIZE && deck.length > 0) {
       let randomIndex = Math.floor(Math.random() * deck.length);
       startingHand.push({ ...deck[randomIndex] });
       deck.splice(randomIndex, 1);
     }
-
     return startingHand;
   }
 
   async function performInitialDeal() {
     state.isAnimating = true;
     const fridgeEl = document.getElementById('ui-fridge');
-    const iconEl = document.getElementById('ui-fridge-icon');
+    fridgeEl.classList.add('open-state');
 
-    fridgeEl.classList.add('dealing');
-    iconEl.innerText = '⏳';
-    iconEl.classList.add('spinning');
-
-    // Use custom starting handler to ensure 1 random card of each type is present
-    state.hand = initializeStartingHand(state.fridgeDeck, state.selectedDeckType);
+    state.hand = initializeStartingHand(state.fridgeDeck);
     renderHand();
 
-    fridgeEl.classList.remove('dealing');
-    iconEl.innerText = '🧊';
-    iconEl.classList.remove('spinning');
+    await sleep(250);
+    fridgeEl.classList.remove('open-state');
     state.isAnimating = false;
     evaluateDishPreview();
     updateHUD();
@@ -1394,114 +1190,37 @@
 
     state.isAnimating = true;
     const fridgeEl = document.getElementById('ui-fridge');
-    const iconEl = document.getElementById('ui-fridge-icon');
-
-    fridgeEl.classList.add('dealing');
-    iconEl.innerText = '⏳';
-    iconEl.classList.add('spinning');
+    fridgeEl.classList.add('open-state');
 
     for (let i = 0; i < cardsNeeded; i++) {
       if (state.fridgeDeck.length > 0) {
         const drawnCard = { ...state.fridgeDeck.pop() };
-        drawnCard.drawnThisTurn = true;
         state.hand.push(drawnCard);
         renderHand();
-
-        const handEl = document.getElementById('ui-hand');
-        const lastCard = handEl.lastElementChild;
-        if (lastCard) {
-          const offset = getFridgeOffset();
-          lastCard.style.setProperty('--start-x', `${offset.x}px`);
-          lastCard.style.setProperty('--start-y', `${offset.y}px`);
-          lastCard.classList.add('fly-draw-anim');
-        }
         updateHUD();
-        await sleep(80);
+        await sleep(60);
       }
     }
 
-    fridgeEl.classList.remove('dealing');
-    iconEl.innerText = '🧊';
-    iconEl.classList.remove('spinning');
+    fridgeEl.classList.remove('open-state');
     state.isAnimating = false;
     evaluateDishPreview();
   }
 
   function updateHUD() {
     document.getElementById('ui-target-score').innerText = state.targetScore;
-    document.getElementById('ui-target-dishes').innerText = `${state.finishedDishes.length}/${state.targetDishes}`;
-    document.getElementById('ui-score').innerText = state.score;
     document.getElementById('ui-hands').innerText = state.handsLeft;
     document.getElementById('ui-discards').innerText = state.discardsLeft;
     document.getElementById('ui-forks').innerText = `🍴 ${state.forks}`;
     document.getElementById('ui-deck-count').innerText = state.fridgeDeck.length;
   }
 
-  function getCardStateBadgeHTML(card) {
-    if (card.state === 'frozen') {
-      return `<div class="card-state-badge badge-frozen">🧊 ${card.frozenTimer ?? 1}t</div>`;
-    }
-    if (card.state === 'gourmet') {
-      return `<div class="card-state-badge badge-gourmet">✨ +0.5x</div>`;
-    }
-    if (card.state === 'expiring') {
-      return `<div class="card-state-badge badge-expiring">🔥 Now!</div>`;
-    }
-    if (card.state === 'rotten') {
-      return `<div class="card-state-badge badge-rotten">💀 Rot</div>`;
-    }
-    return '';
-  }
-
-  // Hold Card Description Popup Implementation
-  let holdTimer = null;
-  const HOLD_DURATION = 600; // 600ms hold requirement
-
-  function setupCardHoldListener(cardElement, cardData) {
-    const startHold = (e) => {
-      holdTimer = setTimeout(() => {
-        showCardPopup(cardData);
-      }, HOLD_DURATION);
-    };
-
-    const cancelHold = () => {
-      if (holdTimer) {
-        clearTimeout(holdTimer);
-        holdTimer = null;
-      }
-    };
-
-    cardElement.addEventListener("mousedown", startHold);
-    cardElement.addEventListener("mouseup", cancelHold);
-    cardElement.addEventListener("mouseleave", cancelHold);
-    
-    cardElement.addEventListener("touchstart", startHold);
-    cardElement.addEventListener("touchend", cancelHold);
-    cardElement.addEventListener("touchmove", cancelHold);
-  }
-
-  function showCardPopup(card) {
-    document.getElementById("popup-card-title").innerText = card.name;
-    document.getElementById("popup-card-desc").innerText = card.description || `Category: ${card.type.toUpperCase()} | Points: +${card.points || 0}`;
-    document.getElementById("card-popup-modal").classList.remove("hidden");
-  }
-
-  document.getElementById("popup-close-btn").addEventListener("click", () => {
-    document.getElementById("card-popup-modal").classList.add("hidden");
-  });
-
-  document.getElementById("card-popup-modal").addEventListener("click", (e) => {
-    if (e.target === document.getElementById("card-popup-modal")) {
-      document.getElementById("card-popup-modal").classList.add("hidden");
-    }
-  });
-
   function renderHand() {
     const handEl = document.getElementById('ui-hand');
     handEl.innerHTML = '';
 
     const total = state.hand.length;
-    const maxAngle = 30;
+    const maxAngle = 24;
     const angleStep = total > 1 ? (maxAngle * 2) / (total - 1) : 0;
     const centerOffset = (total - 1) / 2;
 
@@ -1511,36 +1230,29 @@
 
       const offset = idx - centerOffset;
       const angle = offset * angleStep;
-      const translateY = Math.abs(offset) * 4;
+      const translateY = Math.abs(offset) * 3;
 
-      const cardStateClass = card.state ? `state-${card.state}` : '';
-      cardEl.className = `card ${cardStateClass} ${isSelected ? 'selected' : ''}`;
+      cardEl.className = `card ${isSelected ? 'selected' : ''}`;
       cardEl.dataset.index = idx;
-
-      cardEl.style.zIndex = idx + 1;
 
       let transformStr = `rotate(${angle}deg) translateY(${translateY}px)`;
       if (isSelected) {
-        transformStr = `rotate(${angle}deg) translateY(${translateY - 14}px) scale(1.05)`;
+        transformStr = `rotate(${angle}deg) translateY(${translateY - 16}px) scale(1.05)`;
       }
 
       cardEl.style.transform = transformStr;
-      cardEl.style.left = `calc(50% - 33px + ${(offset) * 36}px)`;
+      cardEl.style.left = `calc(50% - 32px + ${(offset) * 32}px)`;
 
       cardEl.onclick = () => {
         if (state.isAnimating) return;
         toggleSelectCard(idx);
       };
 
-      // Attach hold listener for description popup modal
-      setupCardHoldListener(cardEl, card);
-
       const categoryLetter = getCategoryLetter(card.type);
       const isSpecialCat = categoryLetter === 'S';
 
       cardEl.innerHTML = `
         <div class="card-corner ${isSpecialCat ? 'type-special' : `type-${card.type}`}">${categoryLetter}</div>
-        ${getCardStateBadgeHTML(card)}
         <div class="card-icon">${card.state === 'rotten' ? '🤢' : card.icon}</div>
         <div class="card-title">${card.name}</div>
         <div class="card-points">${card.multiplierBonus ? `${card.multiplierBonus}x` : `+${card.points}`}</div>
@@ -1561,17 +1273,14 @@
       const miniEl = document.createElement('div');
       const categoryLetter = getCategoryLetter(card.type);
       const isSpecialCat = categoryLetter === 'S';
-      const cardStateClass = card.state ? `state-${card.state}` : '';
 
-      miniEl.className = `card ${cardStateClass}`;
-      miniEl.id = `pot-card-${idx}`;
+      miniEl.className = 'card';
       miniEl.style.position = 'relative';
       miniEl.style.transform = 'scale(0.85)';
       miniEl.style.left = '0';
-      miniEl.style.zIndex = '5';
+      miniEl.onclick = () => showCardPopup(card);
       miniEl.innerHTML = `
         <div class="card-corner ${isSpecialCat ? 'type-special' : `type-${card.type}`}">${categoryLetter}</div>
-        ${getCardStateBadgeHTML(card)}
         <div class="card-icon">${card.state === 'rotten' ? '🤢' : card.icon}</div>
         <div class="card-title">${card.name}</div>
         <div class="card-points">${card.multiplierBonus ? `${card.multiplierBonus}x` : `+${card.points}`}</div>
@@ -1579,6 +1288,16 @@
       potEl.appendChild(miniEl);
     });
   }
+
+  function showCardPopup(card) {
+    document.getElementById('popup-card-title').innerText = `${card.icon} ${card.name}`;
+    document.getElementById('popup-card-desc').innerText = `Type: ${card.type.toUpperCase()}\nBase Points: ${card.points}\nState: ${card.state || 'Normal'}`;
+    document.getElementById('card-popup-modal').classList.remove('hidden');
+  }
+
+  document.getElementById('popup-close-btn').onclick = () => {
+    document.getElementById('card-popup-modal').classList.add('hidden');
+  };
 
   function toggleSelectCard(index) {
     const selIdx = state.selectedIndices.indexOf(index);
@@ -1589,30 +1308,16 @@
 
   function sortHandByType() {
     if (state.isAnimating || state.hand.length === 0) return;
-    const selectedObjects = state.selectedIndices.map(i => state.hand[i]);
-
-    state.hand.sort((a, b) => {
-      const orderA = TYPE_ORDER[a.type] || 4;
-      const orderB = TYPE_ORDER[b.type] || 4;
-      if (orderA !== orderB) return orderA - orderB;
-      return b.points - a.points;
-    });
-
-    state.selectedIndices = selectedObjects.map(obj => state.hand.indexOf(obj)).filter(i => i !== -1);
+    state.hand.sort((a, b) => (TYPE_ORDER[a.type] || 4) - (TYPE_ORDER[b.type] || 4));
+    state.selectedIndices = [];
     renderHand();
   }
 
   function sortHandByScore() {
     if (state.isAnimating || state.hand.length === 0) return;
-    const selectedObjects = state.selectedIndices.map(i => state.hand[i]);
-
     state.sortScoreAscending = !state.sortScoreAscending;
-
-    state.hand.sort((a, b) => {
-      return state.sortScoreAscending ? a.points - b.points : b.points - a.points;
-    });
-
-    state.selectedIndices = selectedObjects.map(obj => state.hand.indexOf(obj)).filter(i => i !== -1);
+    state.hand.sort((a, b) => state.sortScoreAscending ? a.points - b.points : b.points - a.points);
+    state.selectedIndices = [];
     renderHand();
   }
 
@@ -1629,6 +1334,8 @@
     if (!hasSelection) {
       bannerDish.innerText = "Select Cards";
       bannerCalc.innerText = "";
+      document.getElementById('ui-hud-base-pts').innerText = "0";
+      document.getElementById('ui-hud-mult').innerText = "1.0";
       return;
     }
 
@@ -1637,373 +1344,163 @@
 
     let totalMult = dish.multiplier;
     selectedCards.forEach(c => {
-      if (c.state !== 'frozen' && c.state !== 'rotten') {
-        if (c.multiplierBonus) totalMult += c.multiplierBonus;
-        if (c.state === 'gourmet') totalMult += 0.5;
-      }
-    });
-
-    const validCards = selectedCards.filter(c => c.state !== 'frozen' && c.state !== 'rotten');
-    state.kitchenware.forEach(kw => {
-      if (kw.id === 'skillet' && validCards.some(c => c.type === 'protein')) totalMult += 3;
-      if (kw.id === 'knife' && validCards.filter(c => c.type === 'protein').length === 1) totalMult += 2;
-      if (kw.id === 'spicerack') totalMult += validCards.filter(c => c.type === 'spice').length * 0.5;
-      if (kw.id === 'deepfryer') totalMult *= 1.5;
+      if (c.multiplierBonus) totalMult += c.multiplierBonus;
     });
 
     bannerDish.innerText = dish.name;
     bannerCalc.innerText = `(${dish.basePoints} pts x ${totalMult.toFixed(1)})`;
-  }
 
-  function triggerFloatingText(text, containerEl) {
-    const floatEl = document.createElement('div');
-    floatEl.className = 'floating-text';
-    floatEl.innerText = text;
-    containerEl.appendChild(floatEl);
-    setTimeout(() => floatEl.remove(), 800);
+    document.getElementById('ui-hud-base-pts').innerText = dish.basePoints;
+    document.getElementById('ui-hud-mult').innerText = totalMult.toFixed(1);
   }
 
   async function cookSelected() {
     if (state.handsLeft <= 0 || state.isAnimating) return;
     state.isAnimating = true;
 
-    document.getElementById('ui-cook-btn').disabled = true;
-    document.getElementById('ui-discard-btn').disabled = true;
-
     const selectedCards = state.selectedIndices.map(i => state.hand[i]);
     const dish = DishEvaluator.evaluate(selectedCards, state.activeDiets);
-    const potEl = document.getElementById('ui-cooking-pot');
-
-    const bannerDish = document.getElementById('ui-banner-dish');
-    const bannerCalc = document.getElementById('ui-banner-calc');
 
     let accumulatedPoints = dish.basePoints;
     let accumulatedMult = dish.multiplier;
-    let hasSpecialIngredient = false;
 
-    const validCards = selectedCards.filter(c => c.state !== 'frozen' && c.state !== 'rotten');
-    state.kitchenware.forEach(kw => {
-      if (kw.id === 'skillet' && validCards.some(c => c.type === 'protein')) accumulatedMult += 3;
-      if (kw.id === 'blender') accumulatedPoints += validCards.filter(c => c.type === 'vegetable').length * 15;
-      if (kw.id === 'knife' && validCards.filter(c => c.type === 'protein').length === 1) accumulatedMult += 2;
-      if (kw.id === 'airfryer' && !validCards.some(c => c.type === 'dairy')) accumulatedPoints += 50;
-      if (kw.id === 'spicerack') accumulatedMult += validCards.filter(c => c.type === 'spice').length * 0.5;
-      if (kw.id === 'deepfryer') accumulatedMult *= 1.5;
-      if (kw.id === 'wok' && validCards.some(c => c.type === 'carbs')) state.forks += 2;
-    });
-
-    for (let i = 0; i < state.selectedIndices.length; i++) {
-      const idx = state.selectedIndices[i];
-      const card = state.hand[idx];
-      const potCardEl = document.getElementById(`pot-card-${idx}`);
-      card.usedThisTurn = true;
-
-      if (getCategoryLetter(card.type) === 'S') {
-        hasSpecialIngredient = true;
-      }
-
-      potCardEl.classList.add('scoring-active');
-      await sleep(220);
-
-      const isCardValid = dish.validCardIndices.includes(i) && card.state !== 'frozen' && card.state !== 'rotten';
-
-      if (isCardValid) {
-        let cardPts = card.points || 0;
-
-        if (card.state === 'expiring' && card.drawnThisTurn) {
-          cardPts += 25;
-          triggerFloatingText(`+25 FRESH BONUS!`, potCardEl);
-        }
-
-        if (state.kitchenware.some(k => k.id === 'sousvide') && card.type === 'protein') {
-          cardPts += 20;
-        }
-
-        if (card.state === 'gourmet') {
-          accumulatedMult += 0.5;
-          triggerFloatingText(`+0.5x GOURMET!`, potCardEl);
-        }
-
-        if (card.multiplierBonus) {
-          accumulatedMult += card.multiplierBonus;
-          triggerFloatingText(`+${card.multiplierBonus}x MULT!`, potCardEl);
-        } else {
-          accumulatedPoints += cardPts;
-          triggerFloatingText(`+${cardPts}`, potCardEl);
-        }
-        bannerCalc.className = 'score-pop';
-        bannerCalc.innerText = `${accumulatedPoints} pts x ${accumulatedMult.toFixed(1)}`;
-      } else {
-        const failReason = card.state === 'frozen' ? 'FROZEN!' : (card.state === 'rotten' ? 'ROTTEN!' : 'TRASH!');
-        triggerFloatingText(`+0 ${failReason}`, potCardEl);
-        potCardEl.classList.remove('scoring-active');
-        potCardEl.classList.add('trashed-card');
-        bannerCalc.className = 'score-pop';
-        bannerCalc.innerText = `${accumulatedPoints} pts (+0 ${failReason})`;
-        potCardEl.classList.add('fly-trash');
-      }
-
-      await sleep(300);
-      bannerCalc.className = '';
-      if (isCardValid) potCardEl.classList.remove('scoring-active');
-    }
-
-    potEl.classList.add('mixing-pot');
-    bannerDish.innerText = "Cooking & Mixing... 🍳";
-    await sleep(650);
-    potEl.classList.remove('mixing-pot');
-
-    potEl.innerHTML = '';
-    const plateEl = document.createElement('div');
-    plateEl.className = 'serving-plate';
-    plateEl.innerText = dish.icon;
-    potEl.appendChild(plateEl);
-
-    state.activeDiets.forEach(diet => {
-      if (diet.applyEffect) {
-        accumulatedPoints = diet.applyEffect(selectedCards, accumulatedPoints);
-      }
+    selectedCards.forEach(c => {
+      if (c.multiplierBonus) accumulatedMult += c.multiplierBonus;
+      else accumulatedPoints += (c.points || 0);
     });
 
     const finalScore = Math.max(0, Math.round(accumulatedPoints * accumulatedMult));
-    bannerDish.innerText = `${dish.name.toUpperCase()}! 🔥`;
-    bannerCalc.innerText = `${accumulatedPoints} x ${accumulatedMult.toFixed(1)} = +${finalScore} PTS!`;
-    bannerCalc.className = 'score-pop';
-    triggerFloatingText(`+${finalScore}!`, potEl);
 
-    await sleep(850);
-
-    if (accumulatedMult > 0) {
-      addDishToShelf(dish.icon, dish.name, hasSpecialIngredient);
-    }
-
+    addDishToShelf(dish.icon, dish.name, finalScore);
     state.score += finalScore;
     state.handsLeft -= 1;
 
     state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
     state.selectedIndices = [];
 
-    potEl.innerHTML = '';
     state.isAnimating = false;
-
-    processTurnCardStateUpdates();
     updateHUD();
     await drawHand();
     checkLevelEnd();
   }
 
-  function addDishToShelf(icon, name, isSpecial) {
+  function addDishToShelf(icon, name, score) {
     const shelf = document.getElementById('ui-dish-shelf');
     const dishEl = document.createElement('div');
-    dishEl.className = 'shelf-item';
-    dishEl.innerHTML = `${icon}${isSpecial ? '<div class="special-badge">⭐</div>' : ''}`;
+    dishEl.className = 'shelf-item-icon';
+    dishEl.innerText = icon;
     shelf.appendChild(dishEl);
 
-    state.finishedDishes.push({ icon, name, isSpecial });
+    state.finishedDishes.push({ icon, name, score });
   }
 
   async function discardSelected() {
     if (state.discardsLeft <= 0 || state.isAnimating) return;
     state.isAnimating = true;
 
-    state.selectedIndices.forEach(idx => {
-      const potCardEl = document.getElementById(`pot-card-${idx}`);
-      if (potCardEl) potCardEl.classList.add('fly-trash');
-    });
-
-    await sleep(320);
-
     state.discardsLeft -= 1;
     state.hand = state.hand.filter((_, idx) => !state.selectedIndices.includes(idx));
     state.selectedIndices = [];
 
     state.isAnimating = false;
-    document.getElementById('ui-cooking-pot').innerHTML = '';
-    
-    processTurnCardStateUpdates();
     updateHUD();
     await drawHand();
   }
 
   function checkLevelEnd() {
-    if (state.handsLeft <= 0) {
-      const dishesCompleted = state.finishedDishes.length;
-      const reachedDishes = dishesCompleted >= state.targetDishes;
-      const reachedScore = state.score >= state.targetScore;
-
-      if (reachedDishes && reachedScore) {
-        const extraDishes = Math.max(0, dishesCompleted - state.targetDishes);
-        const bonusForks = 5 + (extraDishes * 2);
-        state.forks += bonusForks;
-
-        document.getElementById('ui-complete-summary').innerText = 
-          `Goals Reached: ${dishesCompleted}/${state.targetDishes} Dishes & ${state.score}/${state.targetScore} Pts. Bonus Forks earned: +${bonusForks}`;
-
+    if (state.score >= state.targetScore || state.handsLeft <= 0) {
+      if (state.score >= state.targetScore) {
+        state.forks += 5;
+        document.getElementById('ui-complete-summary').innerText = `Target score reached! Score: ${state.score} / ${state.targetScore}`;
         document.getElementById('ui-level-complete-modal').classList.remove('hidden');
       } else {
-        alert(`Game Over! Both goals were not met.\nDishes: ${dishesCompleted}/${state.targetDishes} ${reachedDishes ? '✅' : '❌'}\nScore: ${state.score}/${state.targetScore} ${reachedScore ? '✅' : '❌'}`);
+        alert("Game Over! Target score not met.");
         state.week = 1;
-        state.forks = 0;
-        state.kitchenware = [];
-        state.activeDiets = [];
-        state.chefSkills = [];
         initGame();
       }
     }
   }
 
-  function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
-  function renderRecipes() {
-    const listEl = document.getElementById('ui-recipe-list');
-    listEl.innerHTML = '';
+  function populateRecipeBook() {
+    const list = document.getElementById('ui-recipe-list');
+    list.innerHTML = '';
     RECIPE_BOOK.forEach(r => {
-      const item = document.createElement('div');
-      item.className = 'recipe-card';
-      item.innerHTML = `
-        <div style="font-size:2rem;">${r.icon}</div>
-        <div>
-          <div style="font-weight:bold; font-size:1rem;">${r.name} (${r.multiplier}x)</div>
-          <div style="font-size:0.85rem; color:#666;">${r.desc}</div>
+      const card = document.createElement('div');
+      card.className = 'recipe-card';
+      card.innerHTML = `
+        <div style="font-size: 1.8rem;">${r.icon || '🍲'}</div>
+        <div style="flex:1;">
+          <strong style="color:var(--panel-wood);">${r.name}</strong>
+          <p style="font-size:0.75rem; color:#666;">Base Pts: ${r.basePoints} | Mult: x${r.multiplier}</p>
         </div>
       `;
-      listEl.appendChild(item);
+      list.appendChild(card);
     });
   }
 
-  function renderDishesReview() {
-    const reviewList = document.getElementById('ui-review-list');
-    reviewList.innerHTML = '';
+  function populateShop() {
+    const grid = document.getElementById('ui-shop-items');
+    grid.innerHTML = '';
 
-    if (state.finishedDishes.length === 0) {
-      reviewList.innerHTML = '<p style="text-align:center; color:#888;">No dishes prepared in this level.</p>';
-      return;
-    }
+    const shopPool = [...KITCHENWARE_DB, ...CHEF_SKILLS_DB, ...BASE_DIETS];
+    shuffle(shopPool);
 
-    state.finishedDishes.forEach((d, idx) => {
-      const item = document.createElement('div');
-      item.className = 'review-item';
-      item.innerHTML = `
-        <div style="font-size:2rem; position:relative;">
-          ${d.icon}
-          ${d.isSpecial ? '<span style="font-size:0.7rem; position:absolute; bottom:0; left:0;">⭐</span>' : ''}
-        </div>
-        <div>
-          <div style="font-weight:bold; font-size:1rem;">#${idx + 1} - ${d.name}</div>
-          <div style="font-size:0.85rem; color:#666;">${d.isSpecial ? 'Special Edition Dish' : 'Standard Recipe'}</div>
-        </div>
-      `;
-      reviewList.appendChild(item);
-    });
-  }
-
-  function copyDishesToClipboard() {
-    if (state.finishedDishes.length === 0) {
-      alert("No dishes to copy!");
-      return;
-    }
-
-    const dishText = state.finishedDishes
-      .map((d, i) => `${i + 1}. ${d.icon} ${d.name}${d.isSpecial ? ' ⭐ (Special)' : ''}`)
-      .join('\n');
-
-    const fullMessage = `🍳 Culinary Crafter - Level ${state.week} Dishes:\n${dishText}\nTotal Score: ${state.score} pts!`;
-
-    navigator.clipboard.writeText(fullMessage).then(() => {
-      alert("Dishes copied to clipboard!");
-    }).catch(err => {
-      console.error("Clipboard copy failed: ", err);
-      alert("Could not copy to clipboard automatically.");
-    });
-  }
-
-  function generateShopCard() {
-    const randomBase = BASE_INGREDIENTS[Math.floor(Math.random() * BASE_INGREDIENTS.length)];
-    const card = { ...randomBase };
-
-    if (state.selectedDeckType === 'vegetarian' && card.type === 'protein') {
-      card.name = getProteinCard(card.name, true);
-    }
-
-    const randState = Math.random();
-    if (randState < 0.25) {
-      card.state = 'gourmet';
-      card.name = `Gourmet ${card.name}`;
-      card.costForks = (card.costForks || 3) + 2;
-    } else if (randState < 0.45) {
-      card.state = 'frozen';
-      card.frozenTimer = 1;
-      card.name = `Frozen ${card.name}`;
-      card.costForks = (card.costForks || 3) + 1;
-    } else if (randState < 0.60) {
-      card.state = 'expiring';
-      card.name = `Fresh ${card.name} (Expiring)`;
-      card.costForks = (card.costForks || 3) + 1;
-    } else {
-      card.state = 'normal';
-    }
-
-    return card;
-  }
-
-  function renderShopItems() {
-    const shopGrid = document.getElementById('ui-shop-items');
-    shopGrid.innerHTML = '';
-
-    const shopOptions = [
-      KITCHENWARE_DB[Math.floor(Math.random() * KITCHENWARE_DB.length)],
-      CHEF_SKILLS_DB[Math.floor(Math.random() * CHEF_SKILLS_DB.length)],
-      BASE_DIETS[Math.floor(Math.random() * BASE_DIETS.length)],
-      generateShopCard()
-    ];
-
-    shopOptions.forEach((item, idx) => {
-      const isKitchenware = KITCHENWARE_DB.some(k => k.id === item.id);
-      const isSkill = CHEF_SKILLS_DB.some(s => s.id === item.id);
-      const isDiet = 'description' in item || BASE_DIETS.some(d => d.name === item.name);
-
-      let stateBadge = '';
-      if (item.state === 'frozen') stateBadge = ' 🧊 [Frozen]';
-      if (item.state === 'gourmet') stateBadge = ' ✨ [Gourmet]';
-      if (item.state === 'expiring') stateBadge = ' 🔥 [Expiring]';
-
-      const cost = item.costForks || 3;
+    shopPool.slice(0, 4).forEach(item => {
       const itemEl = document.createElement('div');
       itemEl.className = 'shop-item';
       itemEl.innerHTML = `
-        <div style="font-size:1.6rem;">${item.icon || '📜'}</div>
-        <div style="font-weight:bold; font-size:0.9rem;">${item.name}${stateBadge}</div>
-        <div style="font-size: 0.75rem; color: #666;">${item.desc || item.description || (item.multiplierBonus ? `+${item.multiplierBonus}x Mult` : `+${item.points} pts`)}</div>
-        <button class="btn btn-cook" style="padding: 6px; font-size: 0.85rem;" id="buy-${idx}">Buy (🍴${cost})</button>
+        <div style="font-size: 2rem;">${item.icon}</div>
+        <div><strong>${item.name}</strong></div>
+        <p style="font-size: 0.7rem; color: #666;">${item.desc || item.description}</p>
+        <button class="btn-sort" style="margin-top: 6px; width: 100%;">Buy (🍴 ${item.costForks || 3})</button>
       `;
-      shopGrid.appendChild(itemEl);
 
-      document.getElementById(`buy-${idx}`).onclick = () => buyItem(item, cost, isKitchenware, isSkill, isDiet);
+      itemEl.querySelector('button').onclick = () => {
+        const cost = item.costForks || 3;
+        if (state.forks < cost) return alert("Not enough Forks!");
+
+        if (KITCHENWARE_DB.some(k => k.id === item.id)) {
+          if (state.kitchenware.length >= 3) return alert("Kitchenware slots full!");
+          state.kitchenware.push(item);
+        } else if (CHEF_SKILLS_DB.some(s => s.id === item.id)) {
+          if (state.chefSkills.length >= 2) return alert("Skill slots full!");
+          state.chefSkills.push(item);
+        } else {
+          if (state.activeDiets.length >= 2) return alert("Diet slots full!");
+          state.activeDiets.push(item);
+        }
+
+        state.forks -= cost;
+        itemEl.style.opacity = '0.4';
+        itemEl.querySelector('button').disabled = true;
+        renderSlots();
+        updateHUD();
+      };
+
+      grid.appendChild(itemEl);
     });
   }
 
-  function buyItem(item, cost, isKitchenware, isSkill, isDiet) {
-    if (state.forks < cost) return alert("Not enough Forks!");
-
-    if (isKitchenware) {
-      if (state.kitchenware.length >= 3) return alert("Kitchenware slots full (3/3)!");
-      state.kitchenware.push(item);
-    } else if (isSkill) {
-      if (state.chefSkills.length >= 2) return alert("Chef Skill slots full (2/2)!");
-      state.chefSkills.push(item);
-    } else if (isDiet) {
-      if (state.activeDiets.length >= 2) return alert("Diet slots full (2/2)!");
-      state.activeDiets.push(item);
-    } else {
-      state.fridgeDeck.push({ ...item });
-    }
-
-    state.forks -= cost;
-    renderSlots();
-    updateHUD();
+  function renderReviewDishes() {
+    const list = document.getElementById('ui-review-list');
+    list.innerHTML = '';
+    state.finishedDishes.forEach(d => {
+      const item = document.createElement('div');
+      item.className = 'review-item';
+      item.innerHTML = `
+        <div style="font-size: 1.5rem;">${d.icon}</div>
+        <div style="flex:1;">
+          <strong>${d.name}</strong>
+          <p style="font-size:0.75rem; color:#666;">Score: ${d.score} pts</p>
+        </div>
+      `;
+      list.appendChild(item);
+    });
   }
 
-  // Start Screen & Deck Selection Menu Bindings
+  function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+  // START SCREEN BINDINGS
   document.getElementById('ui-btn-goto-deck-select').onclick = () => {
     document.getElementById('ui-start-screen').classList.add('hidden');
     document.getElementById('ui-deck-screen').classList.remove('hidden');
@@ -2037,12 +1534,7 @@
   document.getElementById('ui-sort-type-btn').onclick = sortHandByType;
   document.getElementById('ui-sort-score-btn').onclick = sortHandByScore;
 
-  document.getElementById('ui-fridge').onclick = () => {
-    if (!state.isAnimating && state.hand.length < MAX_HAND_SIZE) drawHand();
-  };
-
   document.getElementById('ui-open-recipes-btn').onclick = () => {
-    renderRecipes();
     document.getElementById('ui-recipes-modal').classList.remove('hidden');
   };
 
@@ -2051,23 +1543,27 @@
   };
 
   document.getElementById('ui-btn-review-dishes').onclick = () => {
+    renderReviewDishes();
     document.getElementById('ui-level-complete-modal').classList.add('hidden');
-    renderDishesReview();
     document.getElementById('ui-review-modal').classList.remove('hidden');
   };
 
-  document.getElementById('ui-copy-clipboard-btn').onclick = copyDishesToClipboard;
+  document.getElementById('ui-copy-clipboard-btn').onclick = () => {
+    const summary = state.finishedDishes.map(d => `${d.icon} ${d.name} (${d.score} pts)`).join('\n');
+    navigator.clipboard.writeText(`Dishes Prepared in Level ${state.week}:\n${summary}`);
+    alert("Dishes copied to clipboard!");
+  };
 
   document.getElementById('ui-close-review-btn').onclick = () => {
     document.getElementById('ui-review-modal').classList.add('hidden');
+    populateShop();
     document.getElementById('ui-shop').classList.remove('hidden');
-    renderShopItems();
   };
 
   document.getElementById('ui-btn-go-shop').onclick = () => {
     document.getElementById('ui-level-complete-modal').classList.add('hidden');
+    populateShop();
     document.getElementById('ui-shop').classList.remove('hidden');
-    renderShopItems();
   };
 
   document.getElementById('ui-next-week-btn').onclick = () => {
