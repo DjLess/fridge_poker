@@ -1,4 +1,3 @@
-// Regular ingredients (Multiple copies added to deck)
 export const BASE_INGREDIENTS = [
   // Carbs (C)
   { id: 'rice', name: 'Rice', type: 'carbs', points: 5, icon: '🍚', state: 'normal' },
@@ -12,17 +11,25 @@ export const BASE_INGREDIENTS = [
   { id: 'carrot', name: 'Carrot', type: 'vegetable', points: 5, icon: '🥕', state: 'normal' },
   { id: 'broccoli', name: 'Broccoli', type: 'vegetable', points: 6, icon: '🥦', state: 'normal' },
 
-  // Proteins (P)
-  { id: 'beef', name: 'Beef', type: 'protein', points: 12, icon: '🥩', state: 'normal' },
-  { id: 'chicken', name: 'Chicken', type: 'protein', points: 10, icon: '🍗', state: 'normal' },
-  { id: 'egg', name: 'Egg', type: 'protein', points: 7, icon: '🥚', state: 'normal' },
-  { id: 'fish', name: 'Fish', type: 'protein', points: 11, icon: '🐟', state: 'normal' },
+  // Proteins (P) - Standard Meat Proteins
+  { id: 'beef', name: 'Beef', type: 'protein', points: 12, icon: '🥩', tags: ['meat'], state: 'normal' },
+  { id: 'chicken', name: 'Chicken', type: 'protein', points: 10, icon: '🍗', tags: ['meat'], state: 'normal' },
+  { id: 'egg', name: 'Egg', type: 'protein', points: 7, icon: '🥚', tags: ['animal_product'], state: 'normal' },
+  { id: 'fish', name: 'Fish', type: 'protein', points: 11, icon: '🐟', tags: ['meat', 'fish'], state: 'normal' },
 
   // Seasonings & Dairy (S)
   { id: 'garlic', name: 'Garlic & Herbs', type: 'spice', points: 3, multiplierBonus: 1, icon: '🧄', state: 'normal' },
   { id: 'cheese', name: 'Cheese', type: 'dairy', points: 6, multiplierBonus: 1, icon: '🧀', state: 'normal' },
   { id: 'butter', name: 'Butter', type: 'dairy', points: 4, multiplierBonus: 1, icon: '🧈', state: 'normal' },
   { id: 'chili', name: 'Chili Pepper', type: 'spice', points: 2, multiplierBonus: 2, icon: '🌶️', state: 'normal' }
+];
+
+// Vegetarian Proteins for Vegetarian Deck
+export const VEGETARIAN_PROTEINS = [
+  { id: 'seitan', name: 'Seitan', type: 'protein', points: 12, icon: '🫘', tags: ['plant_protein'], state: 'normal' },
+  { id: 'tofu', name: 'Tofu', type: 'protein', points: 10, icon: '🧊', tags: ['plant_protein'], state: 'normal' },
+  { id: 'tempeh', name: 'Tempeh', type: 'protein', points: 7, icon: '🥜', tags: ['plant_protein'], state: 'normal' },
+  { id: 'veggie_burger', name: 'Veggie Patty', type: 'protein', points: 11, icon: '🍔', tags: ['plant_protein'], state: 'normal' }
 ];
 
 // Metaphorical / Emotional Special Ingredients (Only 1 copy per deck)
