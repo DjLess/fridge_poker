@@ -1,4 +1,3 @@
-// levels.js
 export const LEVEL_CONFIGS = [
   { week: 1, targetScore: 100, targetDishes: 2, maxHands: 4, maxDiscards: 3, levelName: 'Cozy Cottage Kitchen' },
   { week: 2, targetScore: 220, targetDishes: 3, maxHands: 4, maxDiscards: 3, levelName: 'Family Diner' },
