@@ -10,6 +10,7 @@ export class Diet {
 
   applyEffect(selectedCards, currentBasePoints) {
     let scoreMod = 0;
+    // Exclude frozen or rotten cards from diet calculations as they are inedible
     const validCards = selectedCards.filter(c => c.state !== 'frozen' && c.state !== 'rotten');
 
     if (this.type === 'veg') {

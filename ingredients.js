@@ -24,6 +24,7 @@ export const BASE_INGREDIENTS = [
   { id: 'chili', name: 'Chili Pepper', type: 'spice', points: 2, multiplierBonus: 2, icon: '🌶️', state: 'normal' }
 ];
 
+// Vegetarian Proteins for Vegetarian Deck
 export const VEGETARIAN_PROTEINS = [
   { id: 'seitan', name: 'Seitan', type: 'protein', points: 12, icon: '🫘', tags: ['plant_protein'], state: 'normal' },
   { id: 'tofu', name: 'Tofu', type: 'protein', points: 10, icon: '🧊', tags: ['plant_protein'], state: 'normal' },
@@ -31,6 +32,7 @@ export const VEGETARIAN_PROTEINS = [
   { id: 'veggie_burger', name: 'Veggie Patty', type: 'protein', points: 11, icon: '🍔', tags: ['plant_protein'], state: 'normal' }
 ];
 
+// Metaphorical / Emotional Special Ingredients (Only 1 copy per deck)
 export const METAPHORICAL_INGREDIENTS = [
   { id: 'love', name: 'Love', type: 'special', points: 15, multiplierBonus: 2, icon: '💖', state: 'normal' },
   { id: 'patience', name: 'Patience', type: 'special', points: 10, multiplierBonus: 3, icon: '⏳', state: 'normal' },
